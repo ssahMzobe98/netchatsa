@@ -1,0 +1,11 @@
+<?php
+session_start();
+if(isset($_SESSION['adminSession'])){
+	unset($_SESSION['adminSession']);
+	session_destroy();	
+}
+else{
+	session_destroy();
+}
+header("Location:../");exit();
+?>
