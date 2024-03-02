@@ -1,11 +1,11 @@
 <?php
-namespace Providers\MMSHightech;
-use Poviders\Response\Response;
+namespace App\Providers\MMSHightech;
+use App\Poviders\Response\Response;
+use App\Providers\Constants\StatusConstants;
 class MMSHightech{
-	<?php
     public $connection;
 
-    public function __construct()
+    public function __construct(string $notConnected=StatusConstants::CONNECTION_STATUS_NOT_CONNECTED)
     {
         $this->dbConn();
     }

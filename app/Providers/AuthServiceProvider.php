@@ -4,13 +4,20 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Providers\IService\IAuthServiceProvider;
-use App\Prividers\Factory\DataGeneratorFactory;
+use App\Providers\Factory\DataGeneratorFactory;
+use App\Providers\Factory\MMSServiceFactory;
+use App\Providers\MMSHightech\MMSHightech;
+use App\Providers\Constants\ServiceConstants;
+use App\Providers\Constants\StatusConstants;
 class AuthServiceProvider extends ServiceProvider implements IAuthServiceProvider
 {
     // use DBConnectServiceTrait;
-    public $dataProvider;
-    public function init(){
-        $this->dataProvider=DataGeneratorFactory::make(ServiceConstants::GENERATE_DATA,[]);
+    private $dataProvider;
+    public $cleanData;
+    public function __construct(){
+        $this->cleanData=MMSServiceFactory::make(ServiceConstants::CLEANDATA,[null]);
+        $this->dataProvider=DataGeneratorFactory::make(ServiceConstants::GENERATE_DATA,[$this->cleanData->connect]);
+        
     }
 
     public function WashDUnitDataSet(?string $data = null): string
@@ -31,12 +38,12 @@ class AuthServiceProvider extends ServiceProvider implements IAuthServiceProvide
     }
     public function login(?string $pass=null,?string $email=null):array{
         if(!isset($pass)){
-            return return ['response'=>'F','data'=>'Password Required!'];
+            return ['response'=>'F','data'=>'Password Required!'];
         }
         if(!isset($email)){
-            return return ['response'=>'F','data'=>'Email Required!'];
+            return ['response'=>'F','data'=>'Email Required!'];
         }
-        $pass = $this->lockPassWord($pass);
+        $pass = $this->cleanData->lockPassWord($pass);
         $response = $this->dataProvider->verifyLogin($pass,$email);
         if($response===0){
             return['response'=>'F','data'=>'Email|Password Incorrect.'];
@@ -45,17 +52,13 @@ class AuthServiceProvider extends ServiceProvider implements IAuthServiceProvide
             return['response'=>'F','data'=>'Sorry Multiple Accounts with this email detected.'];
         }
         $userDetails = $this->getCurrentUserDetails($email);
+
         if(empty($userDetails)){
              return['response'=>'F','data'=>'User With email not found.'];
         }
-        if($userDetails['user_type']==StatusConstants::USER_TYPE_APP){
-            $device = $_SERVER;
-            return['response'=>'F','data'=>$device];
-
+        if($userDetails['verify']!==StatusConstants::VERIFIED){
+            return['response'=>'F','data'=>'Account not verified'];
         }
-        return [];
-
-
-
+        return['response'=>'S','data'=>$userDetails];
     }
 }

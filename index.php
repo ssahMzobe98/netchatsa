@@ -215,13 +215,13 @@ button:hover{
                     data:{emailLogin:emailLogin,passLogin:passLogin},
                     success:function(e){
                         response = JSON.parse(e);
-                        console.log(response);
+                        // console.log(response);
                         if(response['response']==='F'){
                             $(".errorResolution").attr("style","padding:5px 5px;color:red;").html(response['data']);
                         }
                         else{
                             $(".errorResolution").attr("style","padding:5px 5px;color:green;").html("Logging into to your account..");
-                            window.location=("./app");
+                            window.location=("./"+response['user_type']);
                         }
                     }
                 });

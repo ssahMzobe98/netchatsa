@@ -1,14 +1,15 @@
 <?php
 
-namespace Mmshightech\service;
+namespace Src\Classes;
 
 use App\Providers\Response\Response;
-use App\Providers\TraitService\DBConnectTrait;
+use App\Providers\TraitService\DBConnectServiceTrait;
 use App\Providers\IService\ICleanData;
 use App\Providers\Constants\StatusConstants;
 
 class CleanData implements ICleanData{
-    protected function cleanData(string $mess){
+    use DBConnectServiceTrait;
+    public function cleanData(string $mess){
         $mess = str_replace('<', "?", $mess);
         $mess = str_replace('>', "?", $mess);
         $mess = str_replace("\\r\\n", "<br>", $mess);
@@ -47,9 +48,7 @@ class CleanData implements ICleanData{
         return $this->ibhubesiLesilisa(
             md5(
                 $this->ibhubesiLesilisa(
-                    md5(
-                        $this->ibhubesiLesilisa($pass)
-                    )
+                    $pass
                 )
             )
         );
@@ -70,14 +69,14 @@ class CleanData implements ICleanData{
         }
         return $verifiedData;
     }
-    private function ibhubesiLesilisa($pwd){
+    public function ibhubesiLesilisa($pwd){
         $strArr=array("L","9","D","!","a","K","1","b","Y","$","R","c","@","F","d","S","3","e","5","-","A","f","g","6","V","h","G","i","W","j","k","l","T","%","m","8","B","n","E","+","o","X","p","C","*","q","r","Q","s","M","+","t","N","2","u","H","v","4","U","w","I","7","&","x","O","y","J","z","=","P");
         $intArr=array('!','1','B','$','9','T','%','3','^','5','*','2','6','Y','(','7','+','8','G','-','4','E');
         //print sizeof($strArr)."   ";
         $fihliwe=$this->shayIqanda($this->wamaHalahle($pwd),$strArr);
         return $fihliwe;
     }
-    private function shayIqanda($iqanda,$arr){
+    public function shayIqanda($iqanda,$arr){
         $bhozo=str_split($iqanda);
         $khala="";
         foreach ($bhozo as $value) {
@@ -90,12 +89,12 @@ class CleanData implements ICleanData{
         }
         return $khala;
     }
-    private function hash1($inamba){
+    public function hash1($inamba){
         $hi=(($inamba^3)*((8%$inamba)/0.5))/30;
         //print $hi."  ";
         return $hi;
     }
-    private function position($pos){
+    public function position($pos){
         ///print_r($strArr);
         if($pos>69){
             $pos/=3;
@@ -106,7 +105,7 @@ class CleanData implements ICleanData{
             return $pos;
         }
     }
-    private function wamaHalahle($pwd){
+    public function wamaHalahle($pwd){
         $umphumela=str_split($pwd);
         $ubhozo="fr%";$ucikicane="fRg";$isithupha="3g@";
         $k=0;

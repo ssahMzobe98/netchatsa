@@ -9,5 +9,15 @@ class StatusConstants
     public const USER_TYPE_APP = "APP";
     public const USER_TYPE_ADMIN = "ADMIN";
     public const USER_TYPE_TERTIARY = "TERTIARY";
+    public const ADMIN_PATH='admin';
+    public const APP_PATH = 'app';
+    public const TERTIARY_ADMIN_PATH='tertiary';
+    public const VERIFIED = 'verified';
+    public const DEFAULT_SYSTEM_SENDER ='noreply@netchatsa.com';
+    public const MAILER_PASS = 'noreply@netchatsa2018Msizi';
+    public const MAIL_HOST = 'smtp.hostinger.com';
+    public const DEFAULT_SYSTEM_SENDER_NAME = 'NETCHATSA APP';
+    public const MAIL_USERNAME = 'noreply@netchatsa.com';
+    public const MAIL_PASSWORD = '';
 }
 ?>
