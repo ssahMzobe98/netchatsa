@@ -87,7 +87,7 @@ For inquiries regarding the use of this software, please contact MMS HIGH TECH a
 }
 .main{
 	width: 350px;
-	height: 500px;
+	height: 600px;
 	background: red;
 	overflow: hidden;
 	background: url("https://img.freepik.com/premium-vector/abstract-realistic-technology-particle-background_23-2148414765.jpg?w=740") no-repeat center/ cover;
@@ -101,6 +101,7 @@ For inquiries regarding the use of this software, please contact MMS HIGH TECH a
 	position: relative;
 	width:100%;
 	height: 100%;
+	margin-top: -20%;
 }
 label{
 	color: #fff;
@@ -112,7 +113,7 @@ label{
 	cursor: pointer;
 	transition: .5s ease-in-out;
 }
-input{
+input,select{
 	width: 60%;
 	height: 40px;
 	background: #e0dede;
@@ -148,7 +149,7 @@ button:hover{
 	height: 460px;
 	background: #eee;
 	border-radius: 60% / 10%;
-	transform: translateY(-180px);
+	transform: translateY(-100px);
 	transition: .8s ease-in-out;
 }
 .login label{
@@ -157,7 +158,7 @@ button:hover{
 }
 
 #chk:checked ~ .login{
-	transform: translateY(-500px);
+	transform: translateY(-400px);
 }
 #chk:checked ~ .login label{
 	transform: scale(1);	
@@ -177,10 +178,18 @@ button:hover{
 			<div class="signup">
 				<div>
 					<label for="chk" aria-hidden="true">Sign up</label>
-					<input type="number" name="number" placeholder="ID Number" required="">
-					<input type="email" name="email" placeholder="Email" required="">
-					<input type="password" name="pswd" placeholder="Password" required="">
-					<button>Sign up</button>
+					<select class="indicator">
+						<option value='1'>SA ID</option>
+						<option value='0'>Passport</option>
+					</select>
+					<input type="number" class="numberNew" placeholder="ID Number" required="">
+					<input type="text" class="name" placeholder="First Name" required="">
+					<input type="text" class="surname" placeholder="Last Name" required="">
+					<input type="email" class="emailNew" placeholder="Email" required="">
+					<input type="password" class="pswdNew" placeholder="Password" required="">
+					<button onclick="signup()">Sign up</button>
+					<div style='font-size: 8px;text-align: center;color:white;'>By Signing up you agree to our user TsnCs.</div>
+					<div class="errorResolutionSignup" hidden></div>
 				</div>
 			</div>
 
@@ -191,10 +200,68 @@ button:hover{
 					<input type="password" class="pswd" placeholder="Password" required="">
 					<button onclick="login()">Login</button>
 				</div>
+				<div style='font-size: 8px;text-align: center;color:red;'>By logging in you agree to our user TsnCs.</div>
 				<div class="errorResolution" hidden></div>
 			</div>
 	</div>
 	<script>
+		function completeDetails(){
+			const gender=$(".gender").val();
+			const region=$(".region").val();
+			const dob=$(".dob").val();
+			const address=$(".address").val();
+			const provice=$(".provice").val();
+			const otp=$(".otp").val();
+			$(".errorResolutionCompleteDetails").removeAttr('hidden').attr("style","padding:10px 10px;color:green").html("<span style='display:flex;'><img src='img/loader.gif' style='width:15%;border-radius: 20px;'> Processing Request...</span>");
+			if(gender===""){
+				$('.gender').attr("style","border:1px solid red;");
+				$(".errorResolutionCompleteDetails").attr("style","border:1px solid red;color:red;text-align:center;").html("Field Required*");
+			}
+			else if(region===""){
+				$('.region').attr("style","border:1px solid red;");
+				$(".errorResolutionCompleteDetails").attr("style","border:1px solid red;color:red;text-align:center;").html("Field Required*");
+			}
+			else if(dob===""){
+				$('.dob').attr("style","border:1px solid red;");
+				$(".errorResolutionCompleteDetails").attr("style","border:1px solid red;color:red;text-align:center;").html("Field Required*");
+			}
+			else if(address===""){
+				$('.address').attr("style","border:1px solid red;");
+				$(".errorResolutionCompleteDetails").attr("style","border:1px solid red;color:red;text-align:center;").html("Field Required*");
+			}
+			else if(provice===""){
+				$('.provice').attr("style","border:1px solid red;");
+				$(".errorResolutionCompleteDetails").attr("style","border:1px solid red;color:red;text-align:center;").html("Field Required*");
+			}
+			else if(otp===""){
+				$('.otp').attr("style","border:1px solid red;");
+				$(".errorResolutionCompleteDetails").attr("style","border:1px solid red;color:red;text-align:center;").html("Field Required*");
+			}
+			else{
+				$.ajax({
+                    url:'./routes/routeLogin.php',
+                    type:'post',
+                    data:{
+                    	gender:gender,
+						region:region,
+						dob:dob,
+						address:address,
+						provice:provice,
+						otp:otp
+                    },
+                    success:function(e){
+                        response = JSON.parse(e);
+                        if(response['responseStatus']==='F'){
+                            $(".errorResolutionCompleteDetails").attr("style","padding:5px 5px;color:red;").html(response['responseMessage']);
+                        }
+                        else{
+                            $(".errorResolutionCompleteDetails").attr("style","padding:5px 5px;color:green;").html("Account Created, Please login.");
+                            
+                        }
+                    }
+                });
+			}
+		}
 		function login(){
 			const emailLogin = $('.email').val();
 			const passLogin = $('.pswd').val();
@@ -202,6 +269,10 @@ button:hover{
 			if(emailLogin===''){
 				$(".email").attr("style",'border: 1px solid red;');
 				$(".errorResolution").attr("style","border:1px solid red;color:red;text-align:center;").html("Field Required*");
+			}
+			else if(!validateEmail(emailLogin)){
+				$(".email").attr("style",'border: 1px solid red;');
+				$(".errorResolution").attr("style","border:1px solid red;color:red;text-align:center;").html("Email Not Valid*");
 			}
 			else if(passLogin===''){
 				$(".pass").attr("style",'border: 1px solid red;');
@@ -216,8 +287,11 @@ button:hover{
                     success:function(e){
                         response = JSON.parse(e);
                         // console.log(response);
-                        if(response['response']==='F'){
-                            $(".errorResolution").attr("style","padding:5px 5px;color:red;").html(response['data']);
+                        if(response['responseStatus']==='F'){
+                            $(".errorResolution").attr("style","padding:5px 5px;color:red;").html(response['responseMessage']);
+                            if (typeof response !== 'undefined' && response['status'] === 'INCOMPLETE') {
+                            	loadAfterQuery('.main','completeRegistra.php');
+                            }
                         }
                         else{
                             $(".errorResolution").attr("style","padding:5px 5px;color:green;").html("Logging into to your account..");
@@ -227,6 +301,95 @@ button:hover{
                 });
 			}
 		}
+
+		function signup(){
+			const emailNew = $('.emailNew').val();
+			const pswdNew = $('.pswdNew').val();
+			const indicator = $(".indicator").val();
+			const numberNew = $(".numberNew").val();
+			const name = $(".name").val();
+			const surname = $(".surname").val();
+			$(".errorResolutionSignup").removeAttr('hidden').attr("style","padding:5px 5px;color:green;font-size:12px;text-align:center;margin-top:-2%;").html("<span style='display:flex;'><img src='img/loader.gif' style='width:10%;border-radius: 20px;'> Processing Request...</span>"); 
+			if(emailNew===''){
+				$(".emailNew").attr("style",'border: 1px solid red;');
+				$(".errorResolutionSignup").attr("style","padding:5px 5px;color:green;font-size:12px;text-align:center;margin-top:-2%;").html("Field Required*");
+			}
+			else if(!validateEmail(emailNew)){
+				$(".emailNew").attr("style",'border: 1px solid red;');
+				$(".errorResolutionSignup").attr("style","padding:5px 5px;color:green;font-size:12px;text-align:center;margin-top:-2%;").html("Email Not Valid*");
+			}
+			else if(pswdNew===''){
+				$(".pswdNew").attr("style",'border: 1px solid red;');
+				$(".errorResolutionSignup").attr("style","padding:5px 5px;color:green;font-size:12px;text-align:center;margin-top:-2%;").html("Field Required*");
+			}
+			else if(indicator===''){
+				$(".indicator").attr("style",'border: 1px solid red;');
+				$(".errorResolutionSignup").attr("style","padding:5px 5px;color:green;font-size:12px;text-align:center;margin-top:-2%;").html("Field Required*");
+			}
+			else if(numberNew===''){
+				$(".numberNew").attr("style",'border: 1px solid red;');
+				$(".errorResolutionSignup").attr("style","padding:5px 5px;color:green;font-size:12px;text-align:center;margin-top:-2%;").html("Field Required*");
+			}
+			else if(name===''){
+				$(".name").attr("style",'border: 1px solid red;');
+				$(".errorResolutionSignup").attr("style","padding:5px 5px;color:green;font-size:12px;text-align:center;margin-top:-2%;").html("Field Required*");
+			}
+			else if(surname===''){
+				$(".surname").attr("style",'border: 1px solid red;');
+				$(".errorResolutionSignup").attr("style","padding:5px 5px;color:green;font-size:12px;text-align:center;margin-top:-2%;").html("Field Required*");
+			}
+			else{
+				const dash = 'APP';
+                $.ajax({
+                    url:'./routes/routeLogin.php',
+                    type:'post',
+                    data:{emailNew:emailNew,pswdNew:pswdNew,indicator:indicator,numberNew:numberNew,name:name,surname:surname},
+                    success:function(e){
+                        response = JSON.parse(e);
+                        console.log(response);
+                        if(response['responseStatus']==='F'){
+                            $(".errorResolutionSignup").attr("style","padding:5px 5px;color:red;font-size:12px;text-align:center;margin-top:-2%;").html(response['responseMessage']);
+
+                        }
+                        else{
+                            $(".errorResolutionSignup").attr("style","padding:5px 5px;color:green;font-size:12px;text-align:center;margin-top:-2%;").html("Account successfully created!.");
+                            loadAfterQuery('.main','completeRegistra.php');
+
+                            // window.location=("./"+response['user_type']);
+                        }
+                    }
+                });
+			}
+		}
+		function validateEmail(email) {
+		    var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		    return regex.test(email);
+		}
+		function loadAfterQuery(rclass,dir){
+		  $(rclass).html("<center><img src='img/loader.gif' style='width:20%;padding:10px 10px;justify-content:center;align-content:center;text-align:center;'></center>").load(dir);
+		}
+
+
+	</script>
+	<script>
+		function autoCompleteAddress() {
+		    var input = document.querySelector('.address');
+		    var autocomplete = new google.maps.places.Autocomplete(input);
+		    autocomplete.setFields(['address_components', 'formatted_address']);
+		    autocomplete.addListener('place_changed', function() {
+		        var place = autocomplete.getPlace();
+		        console.log(place.formatted_address);
+		    });
+		}
+		function loadGoogleMapsScript() {
+		    var script = document.createElement('script');
+		    script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB89PxjqngFvCG66ljG_CLVc3oQlzk0YBI&libraries=places&callback=autoCompleteAddress';
+		    script.defer = true;
+		    //AIzaSyB89PxjqngFvCG66ljG_CLVc3oQlzk0YBI&callback=initMap&libraries=places&v=weekly
+		    document.body.appendChild(script);
+		}
+		loadGoogleMapsScript();
+
 	</script>
 </body>
 </html>

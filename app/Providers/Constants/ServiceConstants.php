@@ -9,4 +9,5 @@ class ServiceConstants
     public const GENERATE_DATA = "DataProvider";
     public const CLEANDATA = "CleanData";
     public const AUTH_SERVICE_PROVIDER = "AuthServiceProvider";
+    public const USER = "UserPdo";
 }

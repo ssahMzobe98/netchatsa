@@ -1,6 +1,6 @@
 <?php
 namespace App\Providers\MMSHightech;
-use App\Poviders\Response\Response;
+use App\Providers\Response\Response;
 use App\Providers\Constants\StatusConstants;
 class MMSHightech{
     public $connection;

@@ -12,7 +12,8 @@ class StatusConstants
     public const ADMIN_PATH='admin';
     public const APP_PATH = 'app';
     public const TERTIARY_ADMIN_PATH='tertiary';
-    public const VERIFIED = 'verified';
+    public const VERIFIED = 'VERIFIED';
+    public const INCOMPLETE = 'INCOMPLETE';
     public const DEFAULT_SYSTEM_SENDER ='noreply@netchatsa.com';
     public const MAILER_PASS = 'noreply@netchatsa2018Msizi';
     public const MAIL_HOST = 'smtp.hostinger.com';

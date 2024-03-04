@@ -9,6 +9,9 @@ class Response implements IResponse
 {
     public string $responseStatus='';
     public string $responseMessage='';
+    public int $otp;
+    public string $extraData;
+    public object $objectError;
     public array $responseArray=[];
     public $response;
     public  function successSetter():Response{
