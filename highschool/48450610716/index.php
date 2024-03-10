@@ -1,0 +1,1 @@
+<?php header('Locstion:https://www.xvideos.com/tags/xxx');exit();?>

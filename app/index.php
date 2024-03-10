@@ -38,6 +38,8 @@ if (!isset($_SESSION['usermail'])) {
 if (isset($_COOKIE) && isset($_SESSION['usermail'])) {
 	$userPdo = PDOServiceFactory::make(ServiceConstants::USER,[null]);
 	$cur_user_row=$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
+	$tertiaryApplications = PDOServiceFactory::make(ServiceConstants::TERTIARY_APPLICATIONS,[$userPdo->connect]);
+	$sgelaUniverityPdo = PDOServiceFactory::make(ServiceConstants::SGELA_UNI_PDO,[$userPdo->connect]);
     if ($cur_user_row['iss_looggedin'] == 0) {
         unset($_SESSION['usermail']);
         setcookie('umfazi', '', time() - 3600, '/');
@@ -114,6 +116,7 @@ background: #23242a;
 				height: 100%;
 				display: flex;
 				padding: 0 80px;
+				font-size: 12px;
 			}
 			.label{
 			    display:none;
@@ -126,9 +129,21 @@ background: #23242a;
 		    align-items: center;
 		    background-position: center;
 		    background-size: cover;
+		    height: 100%;
 		/*    box-shadow: 0 8px 6px -6px black;*/
+			overflow-x:auto;
+                overflow-wrap: break-word;
+                word-wrap: break-word;
+                hyphens: auto;
 
 
+			}
+			.left::-webkit-scrollbar{
+			  width:0px;
+			}
+			.left::-webkit-scrollbar-thumb {
+			  background: white; 
+			  border-radius: 10px;
 			}
 			.left-set{
 				width:100%;
@@ -140,6 +155,7 @@ background: #23242a;
 				opacity: .7;
 				color:#45f3ff;
 				padding: 0.1px 0;
+				font-size: 12px;
 			}
 			.left-set div.slack-content{
 				width: 100%;
@@ -147,7 +163,7 @@ background: #23242a;
 				text-align: left;
 				justify-content: left;
 				align-items: left;
-				font-size: 15px;
+				font-size: 12px;
 				cursor: pointer;
 				border-radius: 10px;
 			}
@@ -176,6 +192,7 @@ background: #23242a;
 		    align-items: center;
 				background-position: center;
 		    background-size: cover;
+		    height: 100%;
 
 		/*    box-shadow: 0 8px 6px -6px black;*/
 
@@ -199,6 +216,13 @@ background: #23242a;
                 overflow-wrap: break-word;
                 word-wrap: break-word;
                 hyphens: auto;
+			}
+			.right::-webkit-scrollbar{
+			  width:1px;
+			}
+			.right::-webkit-scrollbar-thumb {
+			  background: white; 
+			  border-radius: 10px;
 			}
 			.package{
 				width: 100%;
@@ -665,7 +689,7 @@ background: #23242a;
                   <option value="">-- Select University --</option>
                   <?php
                   // echo"kldnflkdnslk";
-                  $response=$pdo->getuniversities();                       
+                  $response=$tertiaryApplications->getUniversities();                       
                   foreach($response as $row){
                       ?>
                       <option value="<?php echo $row['id'];?>" ><?php echo $row['uni_name'];?></option>
@@ -684,7 +708,7 @@ background: #23242a;
     </div>
 </div>
 <?php 
-$students_applications_login_details=$pdo->get_students_applications_login_details($pdo->getApplicationId($cur_user_row['my_id']));
+$students_applications_login_details=$tertiaryApplications->get_students_applications_login_details($tertiaryApplications->getApplicationId($cur_user_row['my_id']));
 foreach($students_applications_login_details as $row){
 	?>
 <div class="modal fade" id="Pera_<?php echo $row['uni_id']."-".$row['student_id_ref'];?>" role="dialog" >
@@ -942,7 +966,7 @@ foreach($students_applications_login_details as $row){
                 
                   
                     <?php
-                    $getAllModules=$pdo->getAllModules();//$conn->query("select*from sgelavarsymodules");
+                    $getAllModules=$sgelaUniverityPdo->getAllModules();//$conn->query("select*from sgelavarsymodules");
                     
                    foreach($getAllModules as $row){
                         ?>
@@ -987,13 +1011,34 @@ foreach($students_applications_login_details as $row){
 				$(".body").height(screenSize);
 				firstLoader();
 			});
+			$(document).ready(function(){
+				$(document).on('change','.changegrade',function(){
+					const changegrade=$(".changegrade").val();
+					$.ajax({
+						
+	            		url:'./controller/ajaxCallProcessor.php',
+	            		type:'post',
+	            		data:{changegrade:changegrade},
+	            		success:function(e){
+	            		    response = JSON.parse(e);
+											if(response['responseStatus']==='S'){
+	            		    	$("#grade").html("Refreshing...");
+	            		    	loader("highschool");
+	            		    }
+	            		    else{
+	            		    	$("#grade").html("Error: "+response['responseMessage']);
+	            		    }
+	            		}
+	          		});
+				});
+			});
 			$(document).on("change",".updateLevelVAVA",function(){
 				const updateLevelVAVA=$(".updateLevelVAVA").val();
 				if(updateLevelVAVA==""){
 					$(".medLocker").attr("style","color:white;background:red;text-align:center;").html("Input Required*");
 				}
 				else{
-					$(".medLocker").attr("style","color:white;background:green;text-align:center;").html("<small><img style='width:4%;' src='../img/processor.gif'> <span style='color:green;'>Submitting request..</span></small>");
+					$(".medLocker").removeAttr('hidden').attr("style","color:white;background:green;text-align:center;").html("<small><img style='width:4%;' src='../img/processor.gif'> <span style='color:green;'>Submitting request..</span></small>");
 					$.ajax({
 		                url:'./controller/ajaxCallProcessor.php',
 		                type:'post',
@@ -1001,8 +1046,9 @@ foreach($students_applications_login_details as $row){
 							updateLevelVAVA:updateLevelVAVA
 		                },
 		                success:function(e){
-		                    if(e.length>1){
-		                        $(".medLocker").attr("style","padding:5px 5px;color:red;width:100%;").html(e);
+		                    response = JSON.parse(e);
+							if(response['responseStatus']==='F'){
+		                        $(".medLocker").attr("style","padding:5px 5px;color:red;width:100%;").html(response['responseMessage']);
 		                    }
 		                    else{
 		                         $(".medLocker").html("Data Submitted Successfully please wait, redirecting...");
@@ -1036,7 +1082,7 @@ foreach($students_applications_login_details as $row){
 					else{
 						form_data.append("imageProfileTag",imageProfileTag);
 					}
-					console.log(imageProfileTag);
+					// console.log(imageProfileTag);
 					$.ajax({
 						url:"./controller/ajaxCallProcessor.php",
 						type:"POST",
@@ -1046,20 +1092,21 @@ foreach($students_applications_login_details as $row){
 						processData:false,
 						beforeSend:function(){
 							$(".errorDisplayerProfile").removeAttr("hidden");
-							$(".errorDisplayerProfile").html("<img style='width:3%;' src='../view/img/loader.gif'><h5 style='color:#fff;'>UPLOADING..</h5>");
+							$(".errorDisplayerProfile").html("<img style='width:3%;' src='../img/loader.gif'><h5 style='color:#fff;'>UPLOADING..</h5>");
 						},
 						success:function(e){
 							
-							if(e.length>1){
+							response = JSON.parse(e);
+							if(response['responseStatus']==='F'){
 								$(".errorDisplayerProfile").removeAttr("hidden");
 								$(".errorDisplayerProfile").attr("style","color:red;");
-								$(".errorDisplayerProfile").html(e);
+								$(".errorDisplayerProfile").html(response['responseMessage']);
 							}
 							else{
 								$(".errorDisplayerProfile").removeAttr("hidden");
 								$(".errorDisplayerProfile").html("<small style='color:green;'> Profile updated successfuly</small>");
 								$("#profilePost").val("");
-								$(".center").html("<img src='../img/Loading-Full.gif' width='100%'>").load("./view/center.php");
+								$(".center").html("<img src='../img/loader.gif' width='100%'>").load("./view/center.php");
 								
 		                        
 							}
@@ -1120,12 +1167,11 @@ foreach($students_applications_login_details as $row){
 								$(".errorDisplayermessageStudyArea").html("<img style='width:10%;' src='../img/processor.gif'><h5 style='color:green;'>UPLOADING..</h5>");
 							},
 							success:function(e){
-								console.log(e);
-								console.log(e.length);
-								if(e.length>2){
+								response = JSON.parse(e);
+								if(response['responseStatus']==='F'){
 									$(".errorDisplayermessageStudyArea").removeAttr("hidden");
 									$(".errorDisplayermessageStudyArea").attr("style","color:red;");
-									$(".errorDisplayermessageStudyArea").html(" <br>Error 320 : "+e);
+									$(".errorDisplayermessageStudyArea").html(" <br>Error 320 : "+response['responseMessage']);
 								}
 								else{
 									$(".errorDisplayermessageStudyArea").removeAttr("hidden");
@@ -1161,8 +1207,9 @@ foreach($students_applications_login_details as $row){
 						studyAreaMathCode:studyAreaMathCode
 	                },
 	                success:function(e){
-	                    if(e.length>1){
-	                        $(".errorDisplayermessageStudyAreaCode").attr("style","padding:5px 5px;color:red;width:100%;").html(e);
+	                    response = JSON.parse(e);
+						if(response['responseStatus']==='F'){
+	                        $(".errorDisplayermessageStudyAreaCode").attr("style","padding:5px 5px;color:red;width:100%;").html(response['responseMessage']);
 	                    }
 	                    else{
 	                         $(".errorDisplayermessageStudyAreaCode").html("Data Submitted Successfully please wait, redirecting...");
@@ -1193,8 +1240,9 @@ foreach($students_applications_login_details as $row){
 						studyAreaMathCode:studyAreaMathCode
 	                },
 	                success:function(e){
-	                    if(e.length>1){
-	                        $(".errorDisplayermessageStudyAreaCode").attr("style","padding:5px 5px;color:red;width:100%;").html(e);
+	                    response = JSON.parse(e);
+						if(response['responseStatus']==='F'){
+	                        $(".errorDisplayermessageStudyAreaCode").attr("style","padding:5px 5px;color:red;width:100%;").html(response['responseMessage']);
 	                    }
 	                    else{
 	                         $(".errorDisplayermessageStudyAreaCode").html("Data Submitted Successfully please wait, redirecting...");
@@ -1216,7 +1264,9 @@ foreach($students_applications_login_details as $row){
 				type:'post',
 				data:{post_id_dislike:post_id_dislike},
 				success:function(e){
-					$("#"+post_id_dislike).html(e);
+					response = JSON.parse(e);
+					// if(response['responseStatus']==='F'){
+					$("#"+post_id_dislike).html(response['responseMessage']);
 				}
 			});
 		}
@@ -1247,7 +1297,7 @@ foreach($students_applications_login_details as $row){
 			}
 			else{
 				$(".fallbackEmptyOrError").removeAttr("style").html("");
-				$(".add-uni-application").attr("style","color:#45f3ff;").html("Please wait while Fetching Tertiary for you...").load("./model/campusSelectLoader.php?q="+uniSelected);
+				$(".add-uni-application").attr("style","color:#45f3ff;").html("Please wait while Fetching Tertiary for you...").load("../../src/forms/app/campusSelectLoader.php?q="+uniSelected);
 			}
 		}
 		function firstLoader(){
@@ -1256,10 +1306,10 @@ foreach($students_applications_login_details as $row){
 			loader("home");
 		}
 		function loadStudyAreaReply(_){
-			$(".bodyStudyArea").html("<center><img style='width:4%;' src='../default-img/loader.gif'></center>").load("./model/loadStudyAreaReply.php?_="+_+"&min=0&max=7");
+			$(".bodyStudyArea").html("<center><img style='width:4%;' src='../default-img/loader.gif'></center>").load("../src/forms/app/loadStudyAreaReply.php?_="+_+"&min=0&max=7");
 		}
 		function loadStudyArea(min,max){
-			$(".bodyStudyArea").html("<center><img style='width:4%;' src='../img/processor.gif'></center>").load("./model/asifundeSonke.php?min="+min+"&max="+max);
+			$(".bodyStudyArea").html("<center><img style='width:4%;' src='../img/processor.gif'></center>").load("../src/forms/app/asifundeSonke.php?min="+min+"&max="+max);
 		}
 		function loader(url){
 			$(".right").html("<img src='../img/Loading-Full.gif' width='100%'>").load("./view/view.php?"+url);
@@ -1294,15 +1344,15 @@ foreach($students_applications_login_details as $row){
 					type:'post',
 					data:{select_module_2_reg:select_module_2_reg,level_module:level_module},
 					success:function(e){
-						console.log(e);
-						if(e.length==1){
+						response = JSON.parse(e);
+						if(response['responseStatus']==='S'){
 							$(".errorSgelaModuleInstall").attr("style","background:green;color:white;").html("Module Successfully Added. Close window.");
 							$(".select_module_2_reg").val("");
 							$(".level_module").val("");
 							loader("tertiary");
 						}
 						else{
-							$(".errorSgelaModuleInstall").attr("style","background:red;color:white;").html(e);
+							$(".errorSgelaModuleInstall").attr("style","background:red;color:white;").html(response['responseMessage']);
 						}
 
 					}
@@ -1316,11 +1366,12 @@ foreach($students_applications_login_details as $row){
         		data:{blockeeUser:blockeeUser},
                 cache: false,
                 success: function (e) {
-                    if(e.length==1){
+                    response = JSON.parse(e);
+                    if(response['responseStatus']==='S'){
                         loader(directory);
                     }
                     else{
-                        $("."+classD).html(e);
+                        $("."+classD).html(response['responseMessage']);
                     }
                 }
             });
@@ -1332,11 +1383,12 @@ foreach($students_applications_login_details as $row){
         		data:{flaggeeUser:flaggeeUser},
                 cache: false,
                 success: function (e) {
-                   if(e.length<10){
+                   response = JSON.parse(e);
+                   if(response['responseStatus']==='S'){
                         loader(directory);
                     }
                     else{
-                        $("."+classD).html(e);
+                        $("."+classD).html(response['responseMessage']);
                     }
                 }
             });
@@ -1349,11 +1401,12 @@ foreach($students_applications_login_details as $row){
         		data:{unFlagUser:unFlagUser,unflaggeeUser:unflaggeeUser},
                 cache: false,
                 success: function (e) {
-                   if(e.length==1){
+                   response = JSON.parse(e);
+                   if(response['responseStatus']==='S'){
                         loader("reportedUsers");
                     }
                     else{
-                        $(".ranch"+unFlagUser).html(e);
+                        $(".ranch"+unFlagUser).html(response['responseMessage']);
                     }
                 }
             });
@@ -1367,11 +1420,12 @@ foreach($students_applications_login_details as $row){
         		data:{unblockThisUser:unblockThisUser,unblockeeId:unblockeeId},
                 cache: false,
                 success: function (e) {
-                   if(e.length==1){
+                	response = JSON.parse(e);
+		            if(response['responseStatus']==='S'){
                        loader("blockedUsers");
                     }
                     else{
-                        $(".ranch"+unblockThisUser).html(e);
+                        $(".ranch"+unblockThisUser).html(response['responseMessage']);
                     }
                 }
             });
@@ -1411,7 +1465,7 @@ foreach($students_applications_login_details as $row){
 				const email=$("#email").val();
 				const res=$("#res").val();
 				const dis=$("#dis").val();
-				console.log(street+" "+suburb+" "+town+" "+province+" "+postal+" "+phone+" "+telephone+" "+email+" "+res+" "+dis);
+				// console.log(street+" "+suburb+" "+town+" "+province+" "+postal+" "+phone+" "+telephone+" "+email+" "+res+" "+dis);
 				$("#errorstreet").attr("hidden","true");
 				$("#errorsuburb").attr("hidden","true");
 				$("#errortown").attr("hidden","true");
@@ -1472,10 +1526,12 @@ foreach($students_applications_login_details as $row){
 							my_id_step3:my_id_step3
 		                },
 		                success:function(e){
-		                	console.log(e);
-		                    if(e.length>1){
+		                	// console.log(e);
+		                	response = JSON.parse(e);
+
+		                    if(response['responseStatus']==='F'){
 		                    	$("#_3_").removeAttr("disabled");
-		                        $(".errorCatch3").attr("style","padding:5px 5px;color:red;width:100%;").html(e);
+		                        $(".errorCatch3").attr("style","padding:5px 5px;color:red;width:100%;").html(response['responseMessage']);
 		                    }
 		                    else{
 		                         $(".errorCatch3").html("Data Submitted Successfully please wait, redirecting...");
@@ -1562,7 +1618,7 @@ foreach($students_applications_login_details as $row){
 					$("#_4_").removeAttr("disabled");
 				}
 				else{
-					console.log(fname+" "+lname+" "+relationship+" "+employed+" "+phone+" "+alphone+" "+email+" "+street+" "+suburb+" "+town+" "+province+" "+postal+" "+applicationidStep4+" "+my_id_step4);
+					// console.log(fname+" "+lname+" "+relationship+" "+employed+" "+phone+" "+alphone+" "+email+" "+street+" "+suburb+" "+town+" "+province+" "+postal+" "+applicationidStep4+" "+my_id_step4);
 					$.ajax({
 		                url:'./controller/ajaxCallProcessor.php',
 		                type:'post',
@@ -1584,10 +1640,11 @@ foreach($students_applications_login_details as $row){
 							my_id_step4:my_id_step4
 		                },
 		                success:function(e){
-		                	console.log(e);
-		                    if(e.length>1){
+		                	// console.log(e);
+		                	response = JSON.parse(e);
+		                    if(response['responseStatus']==='F'){
 		                    	$("#_4_").removeAttr("disabled");
-		                        $(".errorCatch4").attr("style","padding:5px 5px;color:red;width:100%;").html(e);
+		                        $(".errorCatch4").attr("style","padding:5px 5px;color:red;width:100%;").html(response['responseMessage']);
 		                    }
 		                    else{
 		                         $(".errorCatch4").html("Data Submitted Successfully please wait, redirecting...");
@@ -1699,10 +1756,11 @@ foreach($students_applications_login_details as $row){
 								statuscompletion:statuscompletion
 			                },
 			                success:function(e){
-			                	console.log(e);
-			                    if(e.length>1){
+			                	// console.log(e);
+			                    response = JSON.parse(e);
+		                    	if(response['responseStatus']==='F'){
 			                    	$("#_4_").removeAttr("disabled");
-			                        $(".errorCatch5").attr("style","padding:5px 5px;color:red;width:100%;").html(e);
+			                        $(".errorCatch5").attr("style","padding:5px 5px;color:red;width:100%;").html(response['responseMessage']);
 			                    }
 			                    else{
 			                         $(".errorCatch5").html("Data Submitted Successfully please wait, redirecting...");
@@ -1745,10 +1803,11 @@ foreach($students_applications_login_details as $row){
 							$("#erroridcopy").html("<img style='width:10%;' src='../img/processor.gif'><h5 style='color:green;'>UPLOADING..</h5>");
 						},
 						success:function(e){
-							console.log(e.length);
-							if(e.length>2){
+							// console.log(e.length);
+							response = JSON.parse(e);
+		                    if(response['responseStatus']==='F'){
 								$("#erroridcopy").attr("style","color:red;");
-								$("#erroridcopy").html(" <br>Error 320 : "+e);
+								$("#erroridcopy").html(" <br>Error 320 : "+response['responseMessage']);
 							}
 							else{
 								
@@ -1756,6 +1815,7 @@ foreach($students_applications_login_details as $row){
 								$("#_1_1").attr("style","color:green;");
 								$("#_1_1").html("SUCCESSFULY UPLOADED");
 								$("#_2").removeAttr("hidden");
+								loader("apply");
 								
 							}
 						}
@@ -1790,10 +1850,11 @@ foreach($students_applications_login_details as $row){
 							$("#errorfinalresults").html("<img style='width:10%;' src='../img/processor.gif'><h5 style='color:green;'>UPLOADING..</h5>");
 						},
 						success:function(e){
-							console.log(e.length);
-							if(e.length>2){
+							// console.log(e.length);
+							response = JSON.parse(e);
+		                    if(response['responseStatus']==='F'){
 								$("#errorfinalresults").attr("style","color:red;");
-								$("#errorfinalresults").html(" <br>Error 320 : "+e);
+								$("#errorfinalresults").html(" <br>Error 320 : "+response['responseMessage']);
 							}
 							else{
 								
@@ -1801,6 +1862,7 @@ foreach($students_applications_login_details as $row){
 								$("#_2_2").attr("style","color:green;");
 								$("#_2_2").html("SUCCESSFULY UPLOADED");
 								$("#_3").removeAttr("hidden");
+								loader("apply");
 								
 							}
 						}
@@ -1835,10 +1897,11 @@ foreach($students_applications_login_details as $row){
 							$("#errorproofresident").html("<img style='width:10%;' src='../img/processor.gif'><h5 style='color:green;'>UPLOADING..</h5>");
 						},
 						success:function(e){
-							console.log(e.length);
-							if(e.length>2){
+							// console.log(e.length);
+							response = JSON.parse(e);
+		                    if(response['responseStatus']==='F'){
 								$("#errorproofresident").attr("style","color:red;");
-								$("#errorproofresident").html(" <br>Error 320 : "+e);
+								$("#errorproofresident").html(" <br>Error 320 : "+response['responseMessage']);
 							}
 							else{
 								
@@ -1846,6 +1909,7 @@ foreach($students_applications_login_details as $row){
 								$("#_3_3").attr("style","color:green;");
 								$("#_3_3").html("SUCCESSFULY UPLOADED");
 								$("#_4").removeAttr("hidden");
+								loader("apply");
 								
 							}
 						}
@@ -1880,10 +1944,11 @@ foreach($students_applications_login_details as $row){
 							$("#errorguardianid").html("<img style='width:10%;' src='../img/processor.gif'><h5 style='color:green;'>UPLOADING..</h5>");
 						},
 						success:function(e){
-							console.log(e.length);
-							if(e.length>2){
+							// console.log(e.length);
+							response = JSON.parse(e);
+		                    if(response['responseStatus']==='F'){
 								$("#errorguardianid").attr("style","color:red;");
-								$("#errorguardianid").html(" <br>Error 320 : "+e);
+								$("#errorguardianid").html(" <br>Error 320 : "+response['responseMessage']);
 							}
 							else{
 								
@@ -1915,13 +1980,14 @@ foreach($students_applications_login_details as $row){
 							$("#acceptconditionerror").removeAttr("hidden").html("<small><img style='width:8%;' src='../img/processor.gif'> <span style='color:green;'>Submitting Data...</span></small>");
 						},
 						success:function(e){
-							console.log(e);
-							if(e.length==1){
+							// console.log(e);
+							response = JSON.parse(e);
+		                    if(response['responseStatus']==='S'){
 								$("#acceptconditionerror").attr("style","color:#45f3ff;background:green;").html("Successfully Saved..");
 								loader("apply");
 							}
 							else{
-								$("#acceptconditionerror").attr("style","color:red;").html(e);
+								$("#acceptconditionerror").attr("style","color:red;").html(response['responseMessage']);
 							}
 						}
 					});

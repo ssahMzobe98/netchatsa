@@ -1,5 +1,5 @@
 <?php
-include_once("../vendor/autoload.php");
+include_once("../../vendor/autoload.php");
 use Src\Classes\Pdo\UserPdo;
 use App\Providers\Constants\ServiceConstants;
 use App\Providers\Constants\StatusConstants;

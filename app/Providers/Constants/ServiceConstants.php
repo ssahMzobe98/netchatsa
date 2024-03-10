@@ -10,4 +10,16 @@ class ServiceConstants
     public const CLEANDATA = "CleanData";
     public const AUTH_SERVICE_PROVIDER = "AuthServiceProvider";
     public const USER = "UserPdo";
+    public const TERTIARY_APPLICATIONS = "TertiaryApplicationsPdo";
+    public const MATRIC_UPGRADE_PDO = "MatricUpgradePdo";
+    public const MUSIC_PDO="MusicPdo";
+    public const NAVIGATION_HISTORY_PDO="NavigationHistoryPdo";
+    public const NETCHATSA_SUBJECT_PDO="NetchatsaSubjectPdo";
+    public const NOTIFICATION_PDO = "NotificationsPdo";
+    public const SGELA_UNI_PDO = "SgelaUniversityPdo";
+    public const STUDY_AREA_PDO = "StudyAreaPdo";
+    public const TIME_PDO = "TimePdo";
+    public const PAYMENT_PROCESSOR = "PaymentProcessor";
+    public const PAYFAST_INTEGRATION = "PayFastIntegration";
+    public const DRAMA_CLASS_PDO = 'DramaClassPdo';
 }

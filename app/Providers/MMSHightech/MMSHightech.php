@@ -17,7 +17,7 @@ class MMSHightech{
         $dbnam = 'netchatsa';
         $this->connection = mysqli_connect('localhost', $user, $pass, $dbnam) or die("Connection was not established!!");
         // Disable auto-commit
-        mysqli_autocommit($this->connection, false);
+        mysqli_autocommit($this->connection, true);
     }
 
     public function getAllDataSafely($query, $paramType = "", $paramArray = []): array

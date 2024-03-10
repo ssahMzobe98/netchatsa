@@ -1,5 +1,5 @@
 <?php
-include_once("../vendor/autoload.php");
+include_once("../../vendor/autoload.php");
 use Src\Classes\Pdo\UserPdo;
 use App\Providers\Constants\ServiceConstants;
 use App\Providers\Constants\StatusConstants;
@@ -8,13 +8,15 @@ use App\Providers\Constants\Flags;
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
-if(isset($_SESSION['usermail']))
+if(isset($_SESSION['usermail'])){
 	$userPdo = PDOServiceFactory::make(ServiceConstants::USER,[null]);
 	$cur_user_row=$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
-	$dir="../../img/avatar.png";//default;
-	if($cur_user_row['profile_image']!="empty"){
-		$dir="../../img/userProfileImages/".$cur_user_row['my_id']."/".$cur_user_row['profile_image'];
+	$dir="../img/avatar.png";//default;
+	// echo $cur_user_row['profile_image'];
+	if(isset($cur_user_row['profile_image'])&&$cur_user_row['profile_image']!="empty" && strlen($cur_user_row['profile_image'])>5){
+		$dir="../img/userProfileImages/".$cur_user_row['my_id']."/".$cur_user_row['profile_image'];
 	}
+	// echo"<br>";echo $dir;
 	?>
 	<style>
 		
@@ -81,14 +83,19 @@ if(isset($_SESSION['usermail']))
 }
 
 .img-setter-profile {
-	width: 100%;
+	width: 80%;
 	border-radius: 100%;
 	border-top: 2px solid #45f3ff;
 	border-bottom: 2px solid #FFFF;
-	height:90vh;
+	height:40vh;
 	color:#45f3ff;
 	background: navy;
 	box-shadow: 0px 0px 40px rgba(0,0,0,.5);
+	align-items: center;
+	justify-content: center;
+	justify-items: center;
+	justify-self: center;
+	text-align: center;
 }
 .img-setter-profile img{
 	width: 100%;
@@ -242,9 +249,9 @@ textarea{
 	</style>
 	<div class="box">
 		<div class="dictator">
-			<div class="img-setter-profile" style="cursor:pointer;" id="myBtn" data-toggle="modal" data-target="#img_gost0">
+			<center><div class="img-setter-profile" style="cursor:pointer;" id="myBtn" data-toggle="modal" data-target="#img_gost0">
 				<img src="<?php echo $dir;?>">
-			</div>
+			</div></center>
 			<div style="padding: 10px 10px;"></div>
 			<div class="setBack">
 				<h2>My Profile</h2>
@@ -289,57 +296,7 @@ textarea{
       
     </div>
 </div>
-	<script>
-		
-// const dropArea = document.querySelector(".drag-area"),
-// dragText = dropArea.querySelector(".dragText"),
-// button = dropArea.querySelector(".browse"),
-// input = dropArea.querySelector(".sector");
-// let file; 
-
-// button.onclick = ()=>{
-//   input.click();
-// }
-
-// input.addEventListener("change", function(){
-//   file = this.files[0];
-//   dropArea.classList.add("active");
-//   showFile(); //calling function
-// });
-// dropArea.addEventListener("dragover", (event)=>{
-//   event.preventDefault(); //preventing from default behaviour
-//   dropArea.classList.add("active");
-//   dragText.textContent = "Release to Upload File";
-// });
-// dropArea.addEventListener("dragleave", ()=>{
-//   dropArea.classList.remove("active");
-//   dragText.textContent = "Drag & Drop to Upload File";
-// });
-// dropArea.addEventListener("drop", (event)=>{
-//   event.preventDefault();
-//   file = event.dataTransfer.files[0];
-//   showFile(); 
-// });
-// function showFile(){
-//   let fileType = file.type;
-//   let validExtensions = ["image/jpeg", "image/jpg", "image/png","image/gif"];
-//   if(validExtensions.includes(fileType)){ 
-//     let fileReader = new FileReader();
-//     fileReader.onload = ()=>{
-//       let fileURL = fileReader.result; 
-//       let imgTag = `<img src="${fileURL}" alt="">`; 
-//       dropArea.innerHTML = imgTag; 
-//     }
-//     fileReader.readAsDataURL(file);
-//   }else{
-//     alert("This is not an Image File!");
-//     dropArea.classList.remove("active");
-//     dragText.textContent = "Drag & Drop to Upload File";
-//   }
-// }
-</script>
-	<?php
-
+<?php
 }
 else{
 	session_destroy();
