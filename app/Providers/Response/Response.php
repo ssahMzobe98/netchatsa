@@ -11,6 +11,7 @@ class Response implements IResponse
     public string $responseMessage='';
     public int $otp;
     public string|object|array $extraData;
+    public string|object|array $moreExtraData;
     public object $objectError;
     public array $responseArray=[];
     public $response;

@@ -88,7 +88,7 @@ if(isset($_SESSION['usermail'])){
                                 form_data.append("studyAreaMathTextReply",studyAreaMathTextReply);
                                 
                                 $(".errorDisplayermessageStudyAreaReply").removeAttr("hidden");
-                                $(".errorDisplayermessageStudyAreaReply").html("<small><img style='width:8%;' src='../../img/processor.gif'> <span style='color:green;'>Submitting File Data...</span></small>");
+                                $(".errorDisplayermessageStudyAreaReply").removeAttr("hidden").html("<small><img style='width:5%;' src='../img/loader.gif'> <span style='color:green;'>Processing request...</span></small>");
                                 $.ajax({
                                     url:"./controller/ajaxCallProcessor.php",
                                     type:"POST",
@@ -98,7 +98,7 @@ if(isset($_SESSION['usermail'])){
                                     processData:false,
                                     beforeSend:function(){
                                         $(".errorDisplayermessageStudyAreaReply").removeAttr("hidden");
-                                        $(".errorDisplayermessageStudyAreaReply").html("<img style='width:10%;' src='../../img/processor.gif'><h5 style='color:green;'>UPLOADING..</h5>");
+                                        $(".errorDisplayermessageStudyAreaReply").html("<img style='width:10%;' src='../img/loader.gif'><h5 style='color:green;'>UPLOADING..</h5>");
                                     },
                                     success:function(e){
                                         response = JSON.parse(e);

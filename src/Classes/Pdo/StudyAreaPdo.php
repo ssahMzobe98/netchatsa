@@ -31,6 +31,7 @@ class StudyAreaPdo{
 		$sql="INSERT into likes(post_id,user,time_liked)values(?,?,NOW())";
 		return $this->connect->postDataSafely($sql,$strParams,$params);
 	}
+	// public function getNumLikes
 	public function addDislikeCounts($post_id,$my_id):Response{
 		$params=[$post_id,$my_id];
 		$strParams="ss";
@@ -129,7 +130,7 @@ LIMIT
 		return $this->connect->numRows($sql,$strParams,$params);
 	}
 	public function getSearchItemsForStudyArea(string $search ="",string $id=""):array{
-		$sql="SELECT * FROM studyarea
+		$sql="SELECT * FROM studyarea 
                        WHERE posted_by  
                        NOT IN (select flaggee COLLATE utf8mb4_unicode_ci from flagged_use_list where flagger=?) 
                        and 

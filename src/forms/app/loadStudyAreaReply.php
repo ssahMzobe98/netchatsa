@@ -21,18 +21,21 @@ if(isset($_SESSION['usermail'])){
             }
             else{
                 $row=$response[0];
-                $post_id=$row['post_id'];
-                $text=$row['text'];
-                $img=$row['img'];
-                $video=$row['video'];
-                $time_posted=$row['time_posted'];
-                $posted_by=$row['posted_by'];
+                $post_id=$row['post_id']??'';
+                $text=$row['text']??'';
+                $img=$row['img']??'';
+                $video=$row['video']??'';
+                $time_posted=$row['time_posted']??'';
+                $posted_by=$row['posted_by']??'';
                 $posted_by_info=$studyArea->getOtherUser($posted_by);//array
                 $dir="../posts/netchatsaSudyArea/".$posted_by."/".$img;
                 $dirVideo="../posts/netchatsaSudyArea/".$posted_by."/".$video;
-                $profileIMG=$posted_by_info['profile_image'];
+                $profileIMG=$posted_by_info['profile_image']??'';
                 $profileDir="";
-                $post_id=$row['post_id'];
+                $post_id=$row['post_id']??'';
+                $posted_by_info['username']=$posted_by_info['username']??'';
+                $posted_by_info['name']=$posted_by_info['name']??'';
+                $posted_by_info['surname']=$posted_by_info['surname']??'';
                 if($profileIMG=="empty"){
                     $profileDir="../img/aa.jpg";
                     
@@ -46,11 +49,11 @@ if(isset($_SESSION['usermail'])){
 
                     <div class="headerDisplayMach">
                         <div class="profile" style=""><img src="<?php echo $profileDir;?>"></div>
-                        <div class="userName" ><h5><?php if(strlen($posted_by_info['username'])<17){echo $posted_by_info['username'];}else{$bb=$posted_by_info['username'];
-                            for($i=0;$i<17;$i++){echo $bb[$i];}echo"..";
+                        <div class="userName" ><h5><?php if(strlen($posted_by_info['username'])<14){echo $posted_by_info['username'];}else{$bb=$posted_by_info['username'];
+                            for($i=0;$i<14;$i++){echo $bb[$i];}echo"..";
                         }?></h5></div>
-                        <div class="names" ><h5><?php if(strlen($posted_by_info['name']."_".$posted_by_info['surname'])<17){echo $posted_by_info['name']."_".$posted_by_info['surname'];}else{$aa=$posted_by_info['name']."_".$posted_by_info['surname'];
-                            for($i=0;$i<17;$i++){echo $aa[$i];}echo"..";
+                        <div class="names" ><h5><?php if(strlen($posted_by_info['name']."_".$posted_by_info['surname'])<14){echo $posted_by_info['name']."_".$posted_by_info['surname'];}else{$aa=$posted_by_info['name']."_".$posted_by_info['surname'];
+                            for($i=0;$i<14;$i++){echo $aa[$i];}echo"..";
                         }?></h5></div>
                         <div class="time" ><h5><?php TimePdo::time_Ago(strtotime($time_posted));?></h5></div>
                     </div>
@@ -176,7 +179,7 @@ if(isset($_SESSION['usermail'])){
                         data:{post_id_Code_reply_modal:post_id_Code_reply_modal},
                         cache:false,
                         beforeSend:function(){
-                            $(".replyStudyArea").html("<img style='width:10%;' src='../../img/processor.gif'><h5 style='color:green;'>Fetching Data..</h5>");
+                            $(".replyStudyArea").html("<img style='width:10%;' src='../img/processor.gif'><h5 style='color:green;'>Fetching Data..</h5>");
                         },
                         success:function(e){
                             // console.log(e);
@@ -187,7 +190,7 @@ if(isset($_SESSION['usermail'])){
                 });
             });
             function loadStudyAreaRepliesForSet(post_id,limit, start){
-              console.log("initiate Running ..."+post_id+" "+limit+" "+start);
+              // console.log("initiate Running ..."+post_id+" "+limit+" "+start);
               $("#load_data_respsonse").hide();
               const constant=7;
 
@@ -211,7 +214,7 @@ if(isset($_SESSION['usermail'])){
                 }
                }
               });
-              console.log("stop Running ...");
+              // console.log("stop Running ...");
             }
             function codingReplyClose(){
                 $("#codingReply").modal("hide");

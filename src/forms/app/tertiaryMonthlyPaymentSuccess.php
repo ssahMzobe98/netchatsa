@@ -1,21 +1,37 @@
 <?php
+include_once("../../../vendor/autoload.php");
+use Src\Classes\Pdo\UserPdo;
+use App\Providers\Constants\ServiceConstants;
+use App\Providers\Constants\StatusConstants;
+use App\Providers\Factory\PDOServiceFactory;
+use App\Providers\Constants\Flags;
+use Src\Classes\PayFast\PayFastIntegration;
+
+use App\Providers\Response\Response;
+
+use Src\Classes\Pdo\TimePdo;
 if(session_status() !== PHP_SESSION_ACTIVE){
     session_start();
 }
 if(isset($_SESSION['usermail'])){
-    require_once("../controller/pdo.php");
-    $pdo=new _pdo_();
-    $cur_user_row =$pdo->userInfo($_SESSION['usermail']);
-    $userDirect=$cur_user_row['directory_index'];
-    $url = explode("/",$_SERVER['REQUEST_URI']);
-    $url=str_replace("%20", " ",$url[2]);
-    if($url==$userDirect){
+    // require_once("../controller/pdo.php");
+    $userPdo = PDOServiceFactory::make(ServiceConstants::USER,[null]);
+    // $tertiaryApplications = PDOServiceFactory::make(ServiceConstants::TERTIARY_APPLICATIONS,[$userPdo->connect]);   
+    $matricUpgrade = PDOServiceFactory::make(ServiceConstants::MATRIC_UPGRADE_PDO,[$userPdo->connect]); 
+    // $sgelaUniversity = PDOServiceFactory::make(ServiceConstants::SGELA_UNI_PDO,[$userPdo->connect]);
+    $cur_user_row=$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
+    $paymentProcessor = PDOServiceFactory::make(ServiceConstants::PAYMENT_PROCESSOR,[$userPdo->connect]);
+    $notification = PDOServiceFactory::make(ServiceConstants::NOTIFICATION_PDO,[$userPdo->connect]);
+    $e=new Response();
+    $e->responseStatus = StatusConstants::FAILED_STATUS;
+    $e->responseMessage = 'UNKNOWN REQUEST!!';
+    // $cur_user_row=mysqli_fetch_array($conn->query("select*from create_runaccount where usermail='$a'"));
 	    if(isset($_POST['std_id'],$_POST['amountToPay'],$_POST['pfData'],$_POST['pfParamString'])){
 	        $a=$_SESSION['usermail'];
 	        
 	        //$cur_user_row=mysqli_fetch_array($conn->query("select*from create_runaccount where usermail='$a'"));
 	        $id=$cur_user_row['my_id'];
-	        $getStudentGradeIfExists=$pdo->getStudentGradeIfExists($cur_user_row['my_id'],"tertiary");
+	        $getStudentGradeIfExists=$matricUpgrade->getStudentGradeIfExists($cur_user_row['my_id'],"tertiary");
 	        header( 'HTTP/1.0 200 OK' );
 	        flush();
 	        // require_once("controller/pdo.php");
@@ -68,14 +84,9 @@ if(isset($_SESSION['usermail'])){
 	        $day=date("d");
 	        $month=date("m");
 	        $year=date("Y");
-	        $response=$pdo->processPaymentIntoDBTERTIARY($std_id,$m_payment_id,$pf_payment_id,$payment_status,$item_name,$item_description,$amount_gross,$amount_fee,$amount_net,$name_first,$name_last,$email_address,$merchant_id,$school,$year,$month,$day);
-	        if($response["response"]=="F"){
-	            $e="Payment Posted: Internal Error {Please Report this error: WhatsApp 0685153023} ".$response["data"];
-	        }
-	        else{
-	            
-	           
-	            $month=$pdo->getMonth($month);
+	        $e=$paymentProcessor->processPaymentIntoDBTERTIARY($std_id,$m_payment_id,$pf_payment_id,$payment_status,$item_name,$item_description,$amount_gross,$amount_fee,$amount_net,$name_first,$name_last,$email_address,$merchant_id,$school,$year,$month,$day);
+	       if($e->responseStatus===StatusConstants::SUCCESS_STATUS){
+	            $month=TimePdo::getMonth($month);
 				$emailTo=$email_address;
 			    $emailFrom="np-reply@netchatsa.com";
 			    $Message="<p>Dear Netchatsa Student</p><h5 style='color:green;'>PAYMENT OF (".$amountToPay.") SUCCESSFUL</h5>
@@ -115,7 +126,7 @@ if(isset($_SESSION['usermail'])){
 			    </p>";
 			    $subject="Tertiary Admin Fee Successfully paid ({$std_id})";
 			 //   $pdo->sendEmail($emailTo,$emailFrom,$Message,$subject);
-			    $pdo->fakaKuNotification($subject,$Message,$cur_user_row['my_id'],$emailFrom,$cur_user_row);
+			    $e->extraData=$notification->fakaKuNotification($subject,$Message,$cur_user_row['my_id'],$emailFrom,$cur_user_row);
 			    $emailTo="netchatsa@gmail.com";
 			    $emailFrom="np-reply@netchatsa.com";
 			    $Message="<p>Mr MS Mzobe </p><h5 style='color:green;'>PAYMENT OF (".$amountToPay.") SUCCESSFUL By user ({$emailTo} - {$id})</h5>
@@ -149,23 +160,10 @@ if(isset($_SESSION['usermail'])){
 			    
 			    </p>";
 			    
-			    $pdo->sendEmail("netchatsa@gmail.com",$emailFrom,$Message,$subject);
-			    $e=1;
+			    $e->moreExtraData=$notification->sendEmail("netchatsa@gmail.com",$emailFrom,$Message,$subject);
 	        }
 
 	    }
-	    else{
-	        $e="YOU DO NOT HAVE PERMISSIONS TO BE HERE!!..";
-	    }
-	}
-	else{
-        session_destroy();
-        ?>
-            <script>
-                window.location=("../../?Yazi uyajwayela wena!!, Stop trying to access somebody's account through your own login details.");
-            </script>
-        <?php
-    }
     echo json_encode($e);
 }
 else{

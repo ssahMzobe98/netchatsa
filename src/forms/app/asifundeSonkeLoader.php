@@ -157,7 +157,7 @@ if(isset($_SESSION['usermail'])){
 					            $('#search').attr("placeholder","Search Study Content Here..");
 					        }
 					        else{
-						    const url="model/searchOnStudyArea.php";
+						    const url="../src/forms/app/searchOnStudyArea.php";
 						    $.ajax({
 						      url:url,
 						      type:"POST",
@@ -174,8 +174,8 @@ if(isset($_SESSION['usermail'])){
 					   }
 					</script>
 				</div>
-				<div class="idPos"><button type="button" data-toggle="modal" data-target="#StudyAreaUpload"  class="btn"><i title="Click Upload Problem/Question"  class="fa fa-upload" id="fa" aria-hidden="true"></i></button></div>
-				<div class="idPos"><button type="button" data-toggle="modal" data-target="#coding" class="btn"><i title="Click Write n Upload Your Code"  class="fa fa-code" id="fa" aria-hidden="true"></i></button></div>
+				<div class="idPos"><button type="button" onclick="DynamicDomeSmallModal('studyAreaUpload','upload')"  class="btn"><i title="Click Upload Problem/Question"  class="fa fa-upload" id="fa" aria-hidden="true"></i></button></div>
+				<div class="idPos"><button type="button" onclick="DynamicDomeSmallModal('studyAreaUpload','coding')" class="btn"><i title="Click Write n Upload Your Code"  class="fa fa-code" id="fa" aria-hidden="true"></i></button></div>
 
 			</div>
 			<br>

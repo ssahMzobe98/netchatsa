@@ -22,17 +22,17 @@ if(isset($_SESSION['usermail'])){
 
             $response=$studyArea->getRepliesOfThisPost($post_id,$min,$max,$cur_user_row['my_id']);
             foreach($response as $row){
-                $text=$row['text'];
-                $img=$row['img'];
+                $text=$row['text']??'';
+                $img=$row['img']??'';
                 $video=$row['video'];
-                $time_posted=$row['time_posted'];
-                $posted_by=$row['posted_by'];
+                $time_posted=$row['time_posted']??'';
+                $posted_by=$row['posted_by']??'';
                 $posted_by_info=$studyArea->getOtherUser($posted_by);//array
                 $dir="../posts/netchatsaSudyArea/".$posted_by."/".$img;
                 $dirVideo="../posts/netchatsaSudyArea/".$posted_by."/".$video;
-                $profileIMG=$posted_by_info['profile_image'];
+                $profileIMG=$posted_by_info['profile_image']??'';
                 $profileDir="";
-                $post_id=$row['reply_id'];
+                $post_id=$row['reply_id']??'';
                 if($profileIMG=="empty"){
                     $profileDir="../img/aa.jpg";   
                 }
@@ -44,11 +44,11 @@ if(isset($_SESSION['usermail'])){
 
                     <div class="headerDisplayMach">
                         <div class="profile" style=""><img src="<?php echo $profileDir;?>"></div>
-                        <div class="userName" ><h5><?php if(strlen($posted_by_info['username'])<17){echo $posted_by_info['username'];}else{$bb=$posted_by_info['username'];
-                            for($i=0;$i<17;$i++){echo $bb[$i];}echo"..";
+                        <div class="userName" ><h5><?php if(strlen($posted_by_info['username'])<14){echo $posted_by_info['username'];}else{$bb=$posted_by_info['username'];
+                            for($i=0;$i<14;$i++){echo $bb[$i];}echo"..";
                         }?></h5></div>
-                        <div class="names" ><h5><?php if(strlen($posted_by_info['name']."_".$posted_by_info['surname'])<17){echo $posted_by_info['name']."_".$posted_by_info['surname'];}else{$aa=$posted_by_info['name']."_".$posted_by_info['surname'];
-                            for($i=0;$i<17;$i++){echo $aa[$i];}echo"..";
+                        <div class="names" ><h5><?php if(strlen($posted_by_info['name']."_".$posted_by_info['surname'])<14){echo $posted_by_info['name']."_".$posted_by_info['surname'];}else{$aa=$posted_by_info['name']."_".$posted_by_info['surname'];
+                            for($i=0;$i<14;$i++){echo $aa[$i];}echo"..";
                         }?></h5></div>
                         <div class="time" ><h5><?php TimePdo::time_Ago(strtotime($time_posted));?></h5></div>
                     </div>

@@ -50,7 +50,8 @@ if(isset($_SESSION['usermail'])){
                 $("#studyAreaMathCodeSubmitReply").click(function(){
                     const code=$("#studyAreaMathCodeReply").val();
                     const p_id=$("#post_id2").val();
-                    console.log(p_id);
+                    // console.log(p_id);
+                    $(".errorDisplayermessageStudyAreaCodeReply").removeAttr("hidden").html("<small><img style='width:5%;' src='../img/loader.gif'> <span style='color:green;'>Processing request...</span></small>");
                     if(p_id==""){
                         $(".errorDisplayermessageStudyAreaCodeReply").removeAttr("hidden");
                         $(".errorDisplayermessageStudyAreaCodeReply").attr("style","border-radius:10px;padding:10px;width:100%;color:red;background-color:#000;");
@@ -80,6 +81,7 @@ if(isset($_SESSION['usermail'])){
                                 else{
                                     $("#studyAreaMathCodeReply").val("");
                                     $("#studyAreaMathCodeReply").attr("placeholder","Type Your Message ...");
+                                    $(".errorDisplayermessageStudyAreaCodeReply").html("Reply Sent.");
                                     loadStudyAreaReply(p_id);
                                 }
                             }

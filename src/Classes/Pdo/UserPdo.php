@@ -33,7 +33,7 @@ class UserPdo{
     	$params=[$post_id];
     	$strParams="s";
     	$response=$this->connect->getAllDataSafely($sql,$strParams,$params)[0]??[];
-    	return $response['posted_by'];
+    	return $response['posted_by']??'';
     }
     public function unFlagUser(?int $deleteId=null):Response{
     	$response = new Response();
@@ -61,10 +61,9 @@ class UserPdo{
         $sql="SELECT me.*,cr.name,cr.surname, cr.username from flagged_use_list me 
             left join create_runaccount as cr on cr.my_id COLLATE utf8mb4_unicode_ci= me.flaggee
         where me.flagger=? order by time_flagged DESC";
-        //
         return $this->connect->getAllDataSafely($sql,'s',[$id])??[];
     }
-	public function getBlockedUsersByMe(string $id=""){
+	public function getBlockedUsersByMe(string $id=""):array{
         
         $sql="SELECT me.*,cr.name,cr.surname, cr.username from blocked_user_list me
             left join create_runaccount as cr on cr.my_id COLLATE utf8mb4_unicode_ci= me.blockee
@@ -80,7 +79,11 @@ class UserPdo{
 	}
 	public function fakaKuBlockedUsers(string $my_id="",string $poster=""):Response{
 		$sql="INSERT into blocked_user_list(blocker,blockee,time_blocked)values(?,?,NOW())";
-		return $this->postDataSafely($sql,"ss",[$my_id,$poster]);
+		return $this->connect->postDataSafely($sql,"ss",[$my_id,$poster]);
+	}
+	public function updateUserDataStoryPoint(?string $writeStoryPoint=null,?int $userId=null):Response{
+		$sql = "UPDATE create_runaccount set about=? where id=?";
+		return $this->connect->postDataSafely($sql,"ss",[$writeStoryPoint,$userId]);
 	}
 }
 ?>

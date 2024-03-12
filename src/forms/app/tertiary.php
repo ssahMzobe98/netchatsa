@@ -5,6 +5,8 @@ use App\Providers\Constants\ServiceConstants;
 use App\Providers\Constants\StatusConstants;
 use App\Providers\Factory\PDOServiceFactory;
 use App\Providers\Constants\Flags;
+
+use Src\Classes\Pdo\TimePdo;
 if(session_status() !== PHP_SESSION_ACTIVE){
 	session_start();
 }
@@ -109,7 +111,7 @@ if(isset($_SESSION['usermail'])){
 			}
 			?>
 			<div class="sudoBtmNet">
-				<div class="topNavBtn btn" onclick="SaveToAutoLearn('<?php echo $my_id;?>','<?php echo $status?>')">Request Self learning Access</div>
+				<div class="topNavBtn btn" onclick="SaveToAutoLearn('<?php echo $cur_user_row['my_id'];?>','<?php echo $status?>')">Request Self learning Access</div>
 			</div>
 			
 			<div class="errorRegistrationModea" hidden></div>
@@ -120,7 +122,7 @@ if(isset($_SESSION['usermail'])){
 				const studentSurname = $(".studentSurname").val();
 				const studentSchoolAttecnding = $(".studentSchoolAttecnding").val();
 				const studentCurrentGrade = $(".studentCurrentGrade").val();
-				$(".errorRegistrationModea").removeAttr("hidden").attr("style","color:#45f3ff;").html("<img style='width:4%;color:#45f3ff;' src='../../img/processor.gif'>Processing Request...");
+				$(".errorRegistrationModea").removeAttr("hidden").attr("style","color:#45f3ff;").html("<img style='width:4%;color:#45f3ff;' src='../img/processor.gif'>Processing Request...");
 				if(studentNameconst==""){
 					$(".errorRegistrationModea").attr("style","background:red;color:#45f3ff;").html("All Fields are required!..");
 				}
@@ -143,7 +145,8 @@ if(isset($_SESSION['usermail'])){
 	            		type:'post',
 	            		data:{my_id_new_set:my_id_new_set,status_new_set:status_new_set,studentNameconst:studentNameconst,studentSurname:studentSurname,studentSchoolAttecnding:studentSchoolAttecnding,studentCurrentGrade:studentCurrentGrade,amount:amount},
 	            		success:function(e){
-	            		    if(e.length==1){
+	            		    response = JSON.parse(e);
+							if(response['responseStatus']==='S'){
 	            		    	$(".errorRegistrationModea").html("Refreshing...");
 	            		    	if(status_new_set=="high school"){
 	            		    		loader("highschool");
@@ -153,7 +156,7 @@ if(isset($_SESSION['usermail'])){
 	            		    	}
 	            		    }
 	            		    else{
-	            		    	$(".errorRegistrationModea").attr("style","background:red;color:#45f3ff;").html("Error: "+e);
+	            		    	$(".errorRegistrationModea").attr("style","background:red;color:#45f3ff;").html("Error: "+response['responseMessage']);
 	            		    }
 	            		}
 	          		});
@@ -175,7 +178,7 @@ if(isset($_SESSION['usermail'])){
 		        $month=date("m");
 				$payment_required=150+(150*0.15)+3.50;
 		        $payment_required=number_format( sprintf( '%.2f', $payment_required ), 2, '.', '' );
-		        $monthText=$this->getMonth($month);
+		        $monthText=TimePdo::getMonth($month);
 		        
 		        ?>
 		        <style>
@@ -209,7 +212,7 @@ if(isset($_SESSION['usermail'])){
 					        $(".PaymentRequiredASI").attr("hidden",true);
 					        $(".processingMatricUpgradePaymentASI").removeAttr("hidden").
 					        html("Please Wait, Fetching Payment request...").
-					        load("./tertiaryMonthlyPayment.php");
+					        load("../src/forms/app/tertiaryMonthlyPayment.php");
 					    }
 					</script>
 		       </center>
@@ -417,7 +420,7 @@ if(isset($_SESSION['usermail'])){
                             
             		        $module_info=$sgelaUniversity->getModuleInfo($row['module']);
             		      //  $chapter_info=$this->getModuleChapterInfo($module_id);
-            		        $dir="../../img/aa.jpg";
+            		        $dir="../img/aa.jpg";
             		        ?>
             		        <div class="bodyCamp" onclick="navtocontent(<?php echo $row['id'];?>,<?php echo $row['module'];?>)">
             		            <div class="radeMos">
@@ -545,7 +548,7 @@ if(isset($_SESSION['usermail'])){
 		        		        $module_info=$sgelaUniversity->getModuleInfo($module_id);
 		        		        $chapter_info=$sgelaUniversity->getModuleChapterInfo($module_id);
 		        		        
-		        		        $dir="../../img/aa.jpg";
+		        		        $dir="../img/aa.jpg";
 		        		        
 		        		        ?>
 		        		        <div class="bodyCamp" onclick="navtochapter(<?php echo $module_id;?>)">

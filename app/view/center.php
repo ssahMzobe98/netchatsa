@@ -242,45 +242,47 @@ textarea{
 {
 	height: 44px;
 }
-
-
-
-
 	</style>
 	<div class="box">
 		<div class="dictator">
-			<center><div class="img-setter-profile" style="cursor:pointer;" id="myBtn" data-toggle="modal" data-target="#img_gost0">
+			<center><div class="img-setter-profile" style="cursor:pointer;" onclick="DynamicDomeSmallModal('studyAreaUpload','img_gost0')" id="myBtn" data-toggle="modal" data-target="#img_gost0">
 				<img src="<?php echo $dir;?>">
 			</div></center>
 			<div style="padding: 10px 10px;"></div>
 			<div class="setBack">
 				<h2>My Profile</h2>
-				<p>@userName Name Surname</p>
+				<p><?php echo $cur_user_row['username'].' '.$cur_user_row['name'].' '.$cur_user_row['surname'];?>@userName Name Surname</p>
 				<div class="mode">
-					<p data-toggle="modal" data-target="#UpdateTextFiled" style="cursor: pointer;">click me to Edit</p>
+					<p onclick="DynamicDomeSmallModal('studyAreaUpload','UpdateTextFiled')" style="cursor: pointer;">click me to Edit</p>
 					<div class="displayMyStory">
-						write over 200 words in on here. dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-						quis nostrud exercitation ullamco laboris nisi ut ..
+						<?php
+							$about = str_split($cur_user_row['about']);
+							$aboutSize = count($about);
+							if($aboutSize<255){
+								echo $cur_user_row['about'];
+							}
+							else{
+								for($i=0;$i<255;$i++){
+									echo $about[$i];
+									if($i===254){
+										echo'...';
+									}
+								}
+							}
+						?>
 					</div>
 				</div>
 
 			</div>
 		</div>
 	</div>
-<div class="modal fade" id="UpdateTextFiled" role="dialog">
+<!-- <div class="modal fade" id="UpdateTextFiled" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
           <h4 class="modal-title">Update Story Point</h4>
         </div>
         <div class="modal-body">
-        	<!-- <div class="inputBox">
-				<input type="text" required="required">
-				<span>Userame</span>
-				<i></i>
-			</div> -->
 			<div class="inputBox">
 				<textarea class="writeStoryPoint" placeholder="Type your story.."></textarea>
 				
@@ -295,7 +297,7 @@ textarea{
       </div>
       
     </div>
-</div>
+</div> -->
 <?php
 }
 else{

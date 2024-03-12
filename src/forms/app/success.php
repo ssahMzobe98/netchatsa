@@ -21,6 +21,7 @@ if(isset($_SESSION['usermail'])){
         $tertiaryApplications = PDOServiceFactory::make(ServiceConstants::TERTIARY_APPLICATIONS,[$userPdo->connect]);
         $matricUpgrade = PDOServiceFactory::make(ServiceConstants::MATRIC_UPGRADE_PDO,[$userPdo->connect]);
         $dramaClassPdo = PDOServiceFactory::make(ServiceConstants::DRAMA_CLASS_PDO,[$userPdo->connect]);
+        $notification = PDOServiceFactory::make(ServiceConstants::NOTIFICATION_PDO,[$userPdo->connect]);
         $paymentProcessor = PDOServiceFactory::make(ServiceConstants::PAYMENT_PROCESSOR,[$userPdo->connect]);
         $cur_user_row=$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
         // $payFastIntegration = new ();
@@ -100,7 +101,7 @@ if(isset($_SESSION['usermail'])){
 		    $Message="<p>Dear Applicant</p><h5 style='color:green;'>PAYMENT OF (".$amountToPay.") SUCCESSFUL</h5><p>You have started Tertiary Applications with TAMA Organizationsa via netchatsa APP. Please note that you just completed the 9th step of the application. CONGRATS!!👏 😇</p><h5 style='color:green;'>BURSARIES & NSFAS</h5><p>By completing your Application TAMA Organizationsa you give TAMA Organizationsa the authority to start and complete applications with NSFAS and other relevant Bursary applications depending on the choice of Career/Course </p><h5 style='color:green;'>TERTIARY INSTITUTIONS</h5><p>With TAMA Organizationsa, You will place one application with all the tertiary institutions you desire. TAMA ORGANIZATIONSA will forward your application to all selected (by applicant choice) Tertiry Institutions.</p>";
 		    $subject="TAMA APPLICATIONSA (Completion of step9 Alert)";
 		    // require_once("../controller/pdo.php");
-		    $notification->sendEmail($emailTo,$emailFrom,$Message,$subject);
+		    $e->extraData=$notification->sendEmail($emailTo,$emailFrom,$Message,$subject);
 		    
 		    $emailTo=$matricUpgrade->getEmailUser($id);
 		    $emailFrom="np-reply@netchatsa.com";

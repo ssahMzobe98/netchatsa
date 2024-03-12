@@ -1,18 +1,26 @@
 <?php
+include_once("../../../vendor/autoload.php");
+use Src\Classes\Pdo\UserPdo;
+use App\Providers\Constants\ServiceConstants;
+use App\Providers\Constants\StatusConstants;
+use App\Providers\Factory\PDOServiceFactory;
+use App\Providers\Constants\Flags;
+use Src\Classes\PayFast\PayFastIntegration;
+
+use Src\Classes\Pdo\TimePdo;
 if(session_status() !== PHP_SESSION_ACTIVE){
     session_start();
 }
 if(isset($_SESSION['usermail'])){
-    require_once("../controller/pdo.php");
-    $pdo=new _pdo_();
-    $cur_user_row =$pdo->userInfo($_SESSION['usermail']);
-    $userDirect=$cur_user_row['directory_index'];
-    $url = explode("/",$_SERVER['REQUEST_URI']);
-    $url=str_replace("%20", " ",$url[2]);
-    if($url==$userDirect){
+    // require_once("../controller/pdo.php");
+    $userPdo = PDOServiceFactory::make(ServiceConstants::USER,[null]);
+    // $tertiaryApplications = PDOServiceFactory::make(ServiceConstants::TERTIARY_APPLICATIONS,[$userPdo->connect]);   
+    $matricUpgrade = PDOServiceFactory::make(ServiceConstants::MATRIC_UPGRADE_PDO,[$userPdo->connect]); 
+    // $sgelaUniversity = PDOServiceFactory::make(ServiceConstants::SGELA_UNI_PDO,[$userPdo->connect]);
+    $cur_user_row=$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
     // $cur_user_row=mysqli_fetch_array($conn->query("select*from create_runaccount where usermail='$a'"));
         $id=$cur_user_row['my_id'];
-        $getStudentGradeIfExists=$pdo->getStudentGradeIfExists($cur_user_row['my_id'],"tertiary");
+        $getStudentGradeIfExists=$matricUpgrade->getStudentGradeIfExists($cur_user_row['my_id'],"tertiary");
         $std_id=$getStudentGradeIfExists['id'];
         $payment_required=150+(150*0.15)+3.50;
     	$payment_required=number_format( sprintf( '%.2f', $payment_required ), 2, '.', '' );
@@ -33,11 +41,11 @@ if(isset($_SESSION['usermail'])){
             
         );
             // Generate signature (see Custom Integration -> Step 2)
-        $data["signature"] = $pdo->generateSignature($data, $passPhrase);
-        $pfParamString = $pdo->dataToString($data);
+        $data["signature"] = PayFastIntegration::generateSignature($data, $passPhrase);
+        $pfParamString = PayFastIntegration::dataToString($data);
         //echo 'Param : '.$pfParamString;
         
-        $identifier = $pdo->generatePaymentIdentifier($pfParamString);
+        $identifier = PayFastIntegration::generatePaymentIdentifier($pfParamString);
         $data['pf_payment_id'] = '';
         $data['item_description'] = 'THIS PAYMENT IS A MONTHLY PAYABLE ADMINISTRATION FEE CHARGING TERTIARY STUDENTS REGISTERD WITH NETCHATSA. THE FEES ARE NOT FOR THE CONTENT ON THE APP. FEES ARE ONLY FOR APP ADMINISTRATION.';
         $data['amount_gross'] = number_format( sprintf( '%.2f', $payment_required ), 2, '.', '' );
@@ -54,21 +62,21 @@ if(isset($_SESSION['usermail'])){
                         const amountToPay="<?php echo $payment_required;?>";
                         const pfData ='<?php echo json_encode($data);?>';
                         const pfParamString = '<?php echo $pfParamString;?>';
-                        $(".PaymentRequired").removeAttr("hidden");
+                        $(".PaymentRequiredASI").removeAttr("hidden").html("<small><img style='width:3%;' src='../img/loader.gif'> <span style='color:green;'>Processing Payment Request...</span></small>");
                         $.ajax({
-                    		url:'./model/tertiaryMonthlyPaymentSuccess.php',
+                    		url:'./tertiaryMonthlyPaymentSuccess.php',
                     		type:'post',
                     		data:{std_id:std_id,amountToPay:amountToPay,pfData:pfData,pfParamString:pfParamString},
                     		success:function(e){
-                    		    console.log(e);
-                    		    if(e.length<=2){
+                    		    response = JSON.parse(e);
+                                if(response['responseStatus']==='S'){
                     		        $(".PaymentRequiredASI").attr("style","width:100%;padding:10px 10px;color:#45f3ff;background:green;border:2px solid white;text-align:center;font-size:14px;");
                     		        $(".PaymentRequiredASI").html("Payment Successfull, Processing Request...");
                     		        loader("tertiary");
                     		    }
                     		    else{
                     		        $(".PaymentRequiredASI").attr("style","width:100%;padding:10px 10px;color:#45f3ff;background:red;border:2px solid white;text-align:center;font-size:14px;");
-                    		        $(".PaymentRequiredASI").html(e);
+                    		        $(".PaymentRequiredASI").html(response['responseMessage']);
                     		    }
                     			
                     		}
@@ -76,7 +84,7 @@ if(isset($_SESSION['usermail'])){
                       }
                       else{
                           $(".PaymentRequiredASI").removeAttr("hidden");
-                          //$(".PaymentRequiredASI").removeAttr("hidden").html('Payment Cancelled');
+                          $(".PaymentRequiredASI").removeAttr("hidden").html('<div style="background:red;color:white;">Payment Cancelled</div>');
                       }
                   });
                 </script>
@@ -87,15 +95,6 @@ if(isset($_SESSION['usermail'])){
             Could not Identify your payment request {'.$identifier.'}
         </div>';
        }
-    }
-    else{
-        session_destroy();
-        ?>
-            <script>
-                window.location=("../../?Yazi uyajwayela wena!!, Stop trying to access somebody's account through your own login details.");
-            </script>
-        <?php
-    }
 }
 else{
     session_destroy();

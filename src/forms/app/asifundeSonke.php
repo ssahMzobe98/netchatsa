@@ -17,7 +17,9 @@ if(isset($_SESSION['usermail'])){
 		if(isset($_POST['limit'])&&isset($_POST['start'])){
 			//echo $_GET['min']." ".$_GET['max'];
 			$response=$studyArea->getAsifundeSonke($_POST['start'],$_POST['limit'],$id);
-
+			// echo "<pre>";
+			// print_r($response);
+			// echo"</pre>";
 			foreach($response as $row){
 				$post_id=$row['post_id'];
 				$text=$row['text'];

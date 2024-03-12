@@ -741,103 +741,6 @@ foreach($students_applications_login_details as $row){
 <?php
 }
 ?>
-<div class="modal fade" id="StudyAreaUpload" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Upload My Question/Problem</h4>
-        </div>
-        <div class="modal-body">
-        	<style>
-        		.img_selector,.text_editor{
-        			width: 100%;
-        		}
-        		.img_selector input,.text_editor textarea{
-        			width: 100%;
-        		}
-        		.text_editor textarea{
-        			max-width: 100%;
-        			min-width: 100%;
-
-        			max-height: 50vh;
-
-					border:none;
-					border-left:2px solid #45f3ff;
-					padding: 10px 10px;
-					background: #212121;
-					color: #45f3ff;
-
-        		}
-        	</style>
-        	<div class="img_selector">
-          	<input type="text"  id="studyAreaMathTitle" placeholder="Enter Your Title Here..">
-          </div>
-          <div class="img_selector">
-          	<input type="file" name="file" id="studyAreaMathInput" accept="video/*,image/*">
-          </div>
-          <br>
-          <div class="text_editor">
-          	<textarea id="studyAreaMathText" placeholder="Upload Problem/Question..."></textarea>
-          </div>
-          <div class="buttn">
-          	<button type="button" class="btn" id="studyAreaMath" onclick="uploadMathQuestion()">Ask</button>
-          </div>
-          <div class="errorDisplayermessageStudyArea" hidden></div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-</div>
-<div class="modal fade" id="coding" role="dialog">
-    <div class="modal-dialog">
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Write My Code</h4>
-        </div>
-        <div class="modal-body">
-        	<style>
-        		.img_selector,.text_editor{
-        			width: 100%;
-        		}
-        		.img_selector input,.text_editor textarea{
-        			width: 100%;
-        		}
-        		.text_editor textarea{
-        			max-width: 100%;
-        			min-width: 100%;
-        			min-height: 50vh;
-        			max-height: 90vh;
-        			border:none;
-					border-left:2px solid #45f3ff;
-					padding: 10px 10px;
-					background: #212121;
-					color: #45f3ff;
-        		}
-        	</style>
-        	<div class="img_selector">
-          	<input type="text"  id="studyAreaMathTitleCode" placeholder="Enter Your Title Here..">
-          </div>
-          <div class="text_editor">
-          	<textarea type="code" id="studyAreaMathCode" placeholder="String variable='Add my Problem/Solution Code Here';//JAVA,PHP,..."></textarea>
-          </div>
-          <div class="buttn">
-          	<button type="button" class="btn" id="studyAreaMathCodeSubmit" onclick="UploadCodeQuestion()">Ask</button>
-          </div>
-          <div class="errorDisplayermessageStudyAreaCode" hidden></div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-</div>
 <div class="modal" id="replyStudyArea" role="dialog">
     <div class="modal-dialog">
     
@@ -872,48 +775,6 @@ foreach($students_applications_login_details as $row){
       
     </div>
 </div>
-<div class="modal fade" id="img_gost0" role="dialog">
-    <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 style="color:#45f3ff;" class="modal-title">Update Profile </h4>
-        </div>
-        <div class="modal-body">
-        	<style>
-        		.img_selector,.text_editor{
-                    width: 100%;
-
-                }
-                .img_selector input,.text_editor input{
-                    width: 100%;
-                    color: #45f3ff;
-                    background-color:#212121;
-                    border: none;
-                    border-bottom: 2px solid #45f3ff;
-                }
-                .img_selector select,.text_editor select{
-                    width: 100%;
-                    color: #45f3ff;
-                    background-color:#212121;
-                    border: none;
-                    border-bottom: 2px solid #45f3ff;
-                }
-
-        	</style>
-          <div class="img_selector">
-          	<input type="file" name="file" id="profilePost" accept="image/*">
-          </div>
-          <div class="errorDisplayerProfile" hidden></div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-</div>
 <div class="modal" id="showAnswersModal" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -931,6 +792,18 @@ foreach($students_applications_login_details as $row){
       </div>
     </div>
  </div>
+<div class="modal" id="smallModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+      <div class="smallModal"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" onclick="closeDynamicDomeSmallModal()">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
  <div class="modal fade" id="install_module" role="dialog">
     <div class="modal-dialog">
     
@@ -1198,7 +1071,7 @@ foreach($students_applications_login_details as $row){
 				$(".errorDisplayermessageStudyAreaCode").removeAttr("hidden").attr("style","color:red;").html("Code Body Rquired..");
 			}
 			else{
-				$(".errorDisplayermessageStudyAreaCode").removeAttr("hidden").html("<center><img style='width:4%;' src='../img/processor.gif'> Processing Request</center>");
+				$(".errorDisplayermessageStudyAreaCode").removeAttr("hidden").html("<center><img style='width:4%;color:green;' src='../img/processor.gif'> Processing Request</center>");
 				$.ajax({
 	                url:'./controller/ajaxCallProcessor.php',
 	                type:'post',
@@ -1212,7 +1085,7 @@ foreach($students_applications_login_details as $row){
 	                        $(".errorDisplayermessageStudyAreaCode").attr("style","padding:5px 5px;color:red;width:100%;").html(response['responseMessage']);
 	                    }
 	                    else{
-	                         $(".errorDisplayermessageStudyAreaCode").html("Data Submitted Successfully please wait, redirecting...");
+	                         $(".errorDisplayermessageStudyAreaCode").html("Data Submitted Successfully.");
 	                         loader("asifundeSonke");
 	                    }
 	                    
@@ -1276,17 +1149,20 @@ foreach($students_applications_login_details as $row){
 				type:'post',
 				data:{post_id_views:post_id_views},
 				success:function(e){
-					console.log(e);
+					response = JSON.parse(e);
+					$("#_"+post_id_views).html(response['responseMessage']);
 				}
 			});
 		}
 		function likePost(post_id_like){
+			console.log(post_id_like);
 			$.ajax({
 				url:'./controller/ajaxCallProcessor.php',
 				type:'post',
 				data:{post_id_like:post_id_like},
 				success:function(e){
-					$("#_"+post_id_like).html(e);
+					response = JSON.parse(e);
+					$("#_"+post_id_like).html(response['responseMessage']);
 				}
 			});
 		}
@@ -1306,7 +1182,7 @@ foreach($students_applications_login_details as $row){
 			loader("home");
 		}
 		function loadStudyAreaReply(_){
-			$(".bodyStudyArea").html("<center><img style='width:4%;' src='../default-img/loader.gif'></center>").load("../src/forms/app/loadStudyAreaReply.php?_="+_+"&min=0&max=7");
+			$(".bodyStudyArea").html("<center><img style='width:4%;' src='../img/loader.gif'></center>").load("../src/forms/app/loadStudyAreaReply.php?_="+_+"&min=0&max=7");
 		}
 		function loadStudyArea(min,max){
 			$(".bodyStudyArea").html("<center><img style='width:4%;' src='../img/processor.gif'></center>").load("../src/forms/app/asifundeSonke.php?min="+min+"&max="+max);
@@ -1957,10 +1833,7 @@ foreach($students_applications_login_details as $row){
 								$("#_4_4").html("SUCCESSFULY UPLOADED");
 								$("#_submitFiles").removeAttr("hidden");
 								$("#_submit_").html("<img style='width:8%;' src='../img/processor.gif'> Navigating to next step...");
-
-
 								loader("apply");
-								
 							}
 						}
 					});
@@ -1996,9 +1869,59 @@ foreach($students_applications_login_details as $row){
 					$("#acceptconditionerror").attr("style","color:red;").html("Cannot Proceed until you accept Ts n Cs");
 				}
 			}
-			
-
-
+			function DynamicDomeSmallModal(filename,request){
+			  $.ajax({
+			    url:'../src/forms/app/'+filename+'.php',
+			    type:'post',
+			    data:{'request':request},
+			    beforeSend:function(){
+			      $(".smallModal").html("<img style='width:10%;' src='../img/loader.gif'><h5 style='color:green;'>Fetching Data..</h5>");
+			    },
+			    success:function(e){
+			      // console.log(e);
+			      $(".smallModal").html(e);
+			    }
+			  });
+			  $("#smallModal").modal("show");
+			}
+			function closeDynamicDomeSmallModal(){
+				$("#smallModal").modal("hide");
+				// $("#codingReply").modal("hide");
+				//<button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+			}
+			function saveWriteStoryPoint(){
+				const writeStoryPoint = $("#writeStoryPoint").val();
+				console.log(writeStoryPoint);
+				$(".errorRegistrationModeaHidden").removeAttr("hidden").html("<small><img style='width:8%;' src='../img/loader.gif'> <span style='color:green;'>Submitting Data...</span></small>");
+				if(writeStoryPoint===""){
+					$(".errorRegistrationModeaHidden").removeAttr("hidden").html("<small><span style='color:red;'>Field Required</span></small>");
+				}
+				else{
+					$.ajax({
+						url:"./controller/ajaxCallProcessor.php",
+						type:"POST",
+						data:{
+							writeStoryPoint:writeStoryPoint
+						},
+						cache:false,
+						beforeSend:function(){
+							$(".errorRegistrationModeaHidden").removeAttr("hidden").html("<small><img style='width:8%;' src='../img/loader.gif'> <span style='color:green;'>Submitting Data...</span></small>");
+						},
+						success:function(e){
+							// console.log(e);
+							response = JSON.parse(e);
+		                    if(response['responseStatus']==='S'){
+								$(".errorRegistrationModeaHidden").attr("style","color:#45f3ff;background:green;").html("Successfully Saved..");
+								$(".center").html("<img src='../img/loader.gif' width='100%'>").load("./view/center.php");
+							}
+							else{
+								$(".errorRegistrationModeaHidden").attr("style","color:red;").html(response['responseMessage']);
+							}
+						}
+					});
+				}
+	
+			}
 		</script>
 	<?php
 }

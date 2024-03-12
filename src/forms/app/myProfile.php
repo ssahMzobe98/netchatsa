@@ -13,7 +13,13 @@ if(isset($_SESSION['usermail'])){
 	$userPdo = PDOServiceFactory::make(ServiceConstants::USER,[null]);
 	$studyArea = PDOServiceFactory::make(ServiceConstants::STUDY_AREA_PDO,[$userPdo->connect]);
 	$cur_user_row =$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
-	echo"COMING SOON..";
+	include_once('../../app/view/center.php');
+	?>
+	<div class="class_road_pull" style="width:100%;"></div>fgdh
+	<script>
+		$(".class_road_pull").html("<img src='../img/loader.gif' width='100%'>").load("./view/center.php");
+	</script>
+	<?php
 }
 else{
 	session_destroy();

@@ -275,7 +275,7 @@ if(isset($_SESSION['usermail'])){
 					// $e=["responseStatus"=>"F","responseMessage"=>""];
 				}
 				else{
-					$dir="../documents/".md5($applicationId)."/";
+					$dir="../../documents/".md5($applicationId)."/";
 					if(!is_dir($dir)){
 						mkdir($dir,0777,true);
 					}
@@ -299,6 +299,20 @@ if(isset($_SESSION['usermail'])){
 					}
 				}
 			}	
+		}
+		elseif(isset($_POST['writeStoryPoint'])) {
+			$writeStoryPoint = $cleanData->OMO($_POST['writeStoryPoint']);
+			$e = $userPdo->updateUserDataStoryPoint($writeStoryPoint,$cur_user_row['id']);
+			if($e->responseStatus===StatusConstants::FAILED_STATUS){
+				$subject="Life Story updated and shared successully ";
+				$message="Life story at netchatsa has been updated and shared with your community. <br><br>Share your life story more often, it might be the change some one needs out there.</p>";
+				$my_id_notification=$cur_user_row['my_id'];
+				$from_sender="no-reply@netchatsa.com";
+				$e->extraData=$notification->fakaKuNotification($subject,$message,$my_id_notification,$from_sender,$cur_user_row);
+			}
+			else{
+				$cleanData->connect->rollback();
+			}
 		}
 		// elseif(isset($_POST['updateVersionId'],$_POST['NewVersion'])){
 		//     $updateVersionId = $cleanData->OMO($_POST['updateVersionId']);
@@ -328,7 +342,7 @@ if(isset($_SESSION['usermail'])){
 					$e->responseMessage="application ID for ".$std_id." does not exist";
 				}
 				else{
-					$dir="../documents/".md5($applicationId)."/";
+					$dir="../../documents/".md5($applicationId)."/";
 					if(!is_dir($dir)){
 						mkdir($dir,0777,true);
 					}
@@ -371,7 +385,7 @@ if(isset($_SESSION['usermail'])){
 					$e->responseMessage="application ID for ".$std_id." does not exist";
 				}
 				else{
-					$dir="../documents/".md5($applicationId)."/";
+					$dir="../../documents/".md5($applicationId)."/";
 					if(!is_dir($dir)){
 						mkdir($dir,0777,true);
 					}
@@ -416,7 +430,7 @@ if(isset($_SESSION['usermail'])){
 					$e->responseMessage="application ID for ".$std_id." does not exist";
 				}
 				else{
-					$dir="../documents/".md5($applicationId)."/";
+					$dir="../../documents/".md5($applicationId)."/";
 					if(!is_dir($dir)){
 						mkdir($dir,0777,true);
 					}
@@ -572,12 +586,12 @@ if(isset($_SESSION['usermail'])){
 			}
 		}
 		elseif(isset($_POST['post_id_like'])){
-			// $likeId=$pdo->run_topic();
 			$post_id=$cleanData->OMO($_POST['post_id_like']);
 			$e=$studyArea->addLikeCounts($post_id,$cur_user_row['my_id']);
 			if($e->responseStatus===StatusConstants::SUCCESS_STATUS){
 				$posterInfo=$userPdo->userInfoUNINGmyID($userPdo->getPosterUserMy_id($post_id));
-				$subject="YOUR POST IS GETTING NOTICED (".$response['data'].") likes";
+				$e->responseMessage = $studyArea->getNumLikes($post_id);
+				$subject="YOUR POST IS GETTING NOTICED ".$post_id.") likes";
 				$message="<p>Your is getting noticed, liked by {$posterInfo['name']} {$posterInfo['surname']} and etc</p>";
 				$my_id_notification=$cur_user_row['my_id'];
 				$from_sender="no-reply@netchatsa.com";
@@ -589,10 +603,7 @@ if(isset($_SESSION['usermail'])){
 			// $dislikeId=$pdo->run_topic();
 			$post_id=$cleanData->OMO($_POST['post_id_dislike']);
 			$e=$studyArea->addDislikeCounts($post_id,$cur_user_row['my_id']);
-			if($e->responseStatus===StatusConstants::SUCCESS_STATUS){
-				
-			}
-			else{
+			if($e->responseStatus!==StatusConstants::SUCCESS_STATUS){
 				$cleanData->connect->rollback();
 			}
 		}
@@ -612,7 +623,6 @@ if(isset($_SESSION['usermail'])){
 					$ext=end($ext);
 					$arr=array("jpg","png","jpeng","jpeg","heic","mp4","mv");
 					if(!in_array(strtolower($ext),$arr)){
-						// $e=['responseStatus'=>StatusConstants::FAILED_STATUS,'responseMessage'=>""];
 						$e->responseStatus=StatusConstants::FAILED_STATUS;
 						$e->responseMessage="{".$ext."} Not Supported. Only {jpg,png,jpeng,heic} Format Supported";
 						$tracker=false;
@@ -625,7 +635,7 @@ if(isset($_SESSION['usermail'])){
 							$mp4=1;
 						}
 						$new_name_file=rand(000000,999999)."_netChat.".$ext;
-						$dir="../posts/netchatsaSudyArea/".$cur_user_row['my_id']."/";
+						$dir="../../posts/netchatsaSudyArea/".$cur_user_row['my_id']."/";
 						if(!is_dir($dir)){
 							mkdir($dir,0777,true);
 						}
@@ -882,12 +892,12 @@ if(isset($_SESSION['usermail'])){
 			$img=0;
 			$e=$studyArea->fakaImpenduloKa_AsifundeSonke($iscode,$post_id,$text,$img,$mp4,$cur_user_row['my_id']);
 			if($e->responseStatus===StatusConstants::SUCCESS_STATUS){
-				$posterInfo=$pdo->userInfoUNINGmyID($pdo->getPosterUserMy_id($post_id));
+				$posterInfo=$userPdo->userInfoUNINGmyID($userPdo->getPosterUserMy_id($post_id));
 				$subject="YOUR POST HAS A REPLY";
 				$message="<p>{$cur_user_row['name']} {$cur_user_row['surname']} has replied to your post.</p>";
 				$my_id_notification=$cur_user_row['my_id'];
 				$from_sender="no-reply@netchatsa.com";
-				$e->extraData=$notification->fakaKuNotification($subject,$message,$posterInfo['my_id'],$from_sender,$posterInfo);
+				$e->extraData=$notification->fakaKuNotification($subject,$message,$posterInfo['my_id']??'',$from_sender,$posterInfo);
 				
 			}
 			else{
@@ -990,7 +1000,7 @@ if(isset($_SESSION['usermail'])){
 							$mp4=1;
 						}
 						$new_name_file=rand(000000,999999)."_netChat.".$ext;
-						$dir="../posts/netchatsaSudyArea/".$id."/";
+						$dir="../../posts/netchatsaSudyArea/".$id."/";
 						if(!is_dir($dir)){
 							mkdir($dir,0777,true);
 						}
@@ -1047,7 +1057,7 @@ if(isset($_SESSION['usermail'])){
 			}
 			else{
 				$new_name_file=rand(000000,999999)."_netChat.".$ext;
-				$dir="../img/userProfileImages/".$id."/";
+				$dir="../../img/userProfileImages/".$id."/";
 				if(!is_dir($dir)){
 					mkdir($dir,0777,true);
 				}
