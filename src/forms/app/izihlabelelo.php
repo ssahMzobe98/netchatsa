@@ -125,6 +125,7 @@ if(isset($_SESSION['usermail'])){
 		                                      
 		                                       echo $musicPdo->trackLikes($track_id);
 		                                    ?>)</a>
+		                                  </div>
 		                                      <div>
 		                                        <a  class="mr-4"><i class="fa fa-share-alt" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
 		                                        <a onclick="download_song(<?php echo $track_id;?>)" id="<?php echo $track_id;?>" href="<?php echo $dir_mp3;?>" download><i class="fa fa-download" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
@@ -187,6 +188,7 @@ if(isset($_SESSION['usermail'])){
 		                                      
 		                                       echo $musicPdo->trackLikes($track_id);
 		                                    ?>)</a>
+		                                  </div>
 		                                      <div>
 		                                        <a href="#" class="mr-4"><i class="fa fa-share-alt" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
 		                                        <a onclick="download_song(<?php echo $track_id;?>)" id="<?php echo $track_id;?>" href="<?php echo $dir_mp3;?>" download><i class="fa fa-download" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
@@ -249,6 +251,7 @@ if(isset($_SESSION['usermail'])){
 		                                      
 		                                       echo $musicPdo->trackLikes($track_id);
 		                                    ?>)</a>
+		                                  </div>
 		                                      <div>
 		                                        <a href="#" class="mr-4"><i class="fa fa-share-alt" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
 		                                        <a onclick="download_song(<?php echo $track_id;?>)" id="<?php echo $track_id;?>" href="<?php echo $dir_mp3;?>" download><i class="fa fa-download" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
@@ -311,6 +314,7 @@ if(isset($_SESSION['usermail'])){
 		                                      
 		                                       echo $musicPdo->trackLikes($track_id);
 		                                    ?>)</a>
+		                                  </div>
 		                                      <div>
 		                                        <a href="#" class="mr-4"><i class="fa fa-share-alt" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
 		                                        <a onclick="download_song(<?php echo $track_id;?>)" id="<?php echo $track_id;?>" href="<?php echo $dir_mp3;?>" download><i class="fa fa-download" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
@@ -373,6 +377,7 @@ if(isset($_SESSION['usermail'])){
 		                                      
 		                                       echo $musicPdo->trackLikes($track_id);
 		                                    ?>)</a>
+		                                  </div>
 		                                      <div>
 		                                        <a href="#" class="mr-4"><i class="fa fa-share-alt" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
 		                                        <a onclick="download_song(<?php echo $track_id;?>)" id="<?php echo $track_id;?>" href="<?php echo $dir_mp3;?>" download><i class="fa fa-download" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
@@ -435,6 +440,7 @@ if(isset($_SESSION['usermail'])){
 			                                  <a onclick="likeSong(<?php echo $track_id;?>)" class="<?php echo $track_id;?>"><i class="fa fa-heart" aria-hidden="true"></i>(<?php
 			                                  echo $musicPdo->trackLikes($track_id);
 			                                ?>)</a>
+			                              </div>
 			                                  <div>
 			                                    <a href="#" class="mr-4"><i class="fa fa-share-alt" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
 			                                    <a onclick="download_song(<?php echo $track_id;?>)" id="<?php echo $track_id;?>" href="<?php echo $dir_mp3;?>" download><i class="fa fa-download" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
