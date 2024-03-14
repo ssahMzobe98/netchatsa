@@ -15,10 +15,10 @@ if(isset($_SESSION['usermail'])){
 	$cur_user_row =$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
 	include_once('../../app/view/center.php');
 	?>
-	<div class="class_road_pull" style="width:100%;"></div>fgdh
-	<script>
+	<div class="class_road_pull" style="width:100%;"></div>
+	<!-- <script>
 		$(".class_road_pull").html("<img src='../img/loader.gif' width='100%'>").load("./view/center.php");
-	</script>
+	</script> -->
 	<?php
 }
 else{
