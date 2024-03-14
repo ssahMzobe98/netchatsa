@@ -99,8 +99,8 @@ if(isset($_SESSION['usermail'])){
 		                                  $song_name=$row['track_name'];
 		                                  $artist=$artist_info['artist_stage_name'];
 		                                  $label=$recording_label['recording_label'];
-		                                  $dir_img="../../logo/".$row['track_logo'];
-		                                  $dir_mp3="../../track/".$row['track_mp3'];
+		                                  $dir_img="../logo/".$row['track_logo'];
+		                                  $dir_mp3="../track/".$row['track_mp3'];
 		                                  $track_id=$row['id'];
 		                                  ?>
 		                                  <div class="poca-music-area mt-100 d-flex align-items-center flex-wrap" data-animation="fadeInUp" data-delay="900ms" style="background: #333;margin-top: -3%;width:100%;">
@@ -161,8 +161,8 @@ if(isset($_SESSION['usermail'])){
 		                                  $song_name=$row['track_name'];
 		                                  $artist=$artist_info['artist_stage_name'];
 		                                  $label=$recording_label['recording_label'];
-		                                  $dir_img="../../logo/".$row['track_logo'];
-		                                  $dir_mp3="../../track/".$row['track_mp3'];
+		                                  $dir_img="../logo/".$row['track_logo'];
+		                                  $dir_mp3="../track/".$row['track_mp3'];
 		                                  $track_id=$row['id'];
 		                                  ?>
 		                                  <div class="poca-music-area mt-100 d-flex align-items-center flex-wrap" data-animation="fadeInUp" data-delay="900ms" style="background: #333;margin-top: -3%;">
@@ -223,8 +223,8 @@ if(isset($_SESSION['usermail'])){
 		                                  $song_name=$row['track_name'];
 		                                  $artist=$artist_info['artist_stage_name'];
 		                                  $label=$recording_label['recording_label'];
-		                                  $dir_img="../../logo/".$row['track_logo'];
-		                                  $dir_mp3="../../track/".$row['track_mp3'];
+		                                  $dir_img="../logo/".$row['track_logo'];
+		                                  $dir_mp3="../track/".$row['track_mp3'];
 		                                  $track_id=$row['id'];
 		                                  ?>
 		                                  <div class="poca-music-area mt-100 d-flex align-items-center flex-wrap" data-animation="fadeInUp" data-delay="900ms" style="background: #333;margin-top: -3%;">
@@ -285,8 +285,8 @@ if(isset($_SESSION['usermail'])){
 		                                  $song_name=$row['track_name'];
 		                                  $artist=$artist_info['artist_stage_name'];
 		                                  $label=$recording_label['recording_label'];
-		                                  $dir_img="../../logo/".$row['track_logo'];
-		                                  $dir_mp3="../../track/".$row['track_mp3'];
+		                                  $dir_img="../logo/".$row['track_logo'];
+		                                  $dir_mp3="../track/".$row['track_mp3'];
 		                                  $track_id=$row['id'];
 		                                  ?>
 		                                  <div class="poca-music-area mt-100 d-flex align-items-center flex-wrap" data-animation="fadeInUp" data-delay="900ms" style="background: #333;margin-top: -3%;">
@@ -347,8 +347,8 @@ if(isset($_SESSION['usermail'])){
 		                                  $song_name=$row['track_name'];
 		                                  $artist=$artist_info['artist_stage_name'];
 		                                  $label=$recording_label['recording_label'];
-		                                  $dir_img="../../logo/".$row['track_logo'];
-		                                  $dir_mp3="../../track/".$row['track_mp3'];
+		                                  $dir_img="../logo/".$row['track_logo'];
+		                                  $dir_mp3="../track/".$row['track_mp3'];
 		                                  $track_id=$row['id'];
 		                                  ?>
 		                                  <div class="poca-music-area mt-100 d-flex align-items-center flex-wrap" data-animation="fadeInUp" data-delay="900ms" style="background: #333;margin-top: -3%;">
@@ -410,8 +410,8 @@ if(isset($_SESSION['usermail'])){
 			                              $song_name=$row['track_name'];
 			                              $artist=$artist_info['artist_stage_name'];
 			                              $label=$recording_label['recording_label'];
-			                              $dir_img="../../logo/".$row['track_logo'];
-			                              $dir_mp3="../../track/".$row['track_mp3'];
+			                              $dir_img="../logo/".$row['track_logo'];
+			                              $dir_mp3="../track/".$row['track_mp3'];
 			                              $track_id=$row['id'];
 			                              ?>
 			                            <div class="poca-music-area mt-100 d-flex align-items-center flex-wrap" data-animation="fadeInUp" data-delay="900ms" style="background: #333;margin-top: -3%;">
