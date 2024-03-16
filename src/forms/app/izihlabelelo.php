@@ -21,13 +21,14 @@ if(isset($_SESSION['usermail'])){
 
 		        <!-- Single Welcome Slide Active(duplicate when necessary!!) -->
 		        <div class="welcome-welcome-slide bg-img bg-overlay" style=";width:100%;">
-		          <div class="container h-100">
-		            <div class="row h-100 align-items-center">
-		              <div class="col-12">
+		          <div class="container" style="width:100%;">
+		            <div class="row align-items-center">
+		              <div  style="width:100%;">
+
 		                <!-- Welcome Text 1 -->
-		                <div class="welcome-text">
+		                <div class="welcome-text" style="width:100%;">
 		                    <style>
-		                        div.scrollmenu {
+		                            div.scrollmenu {
                                   background-color: #333;
                                   overflow: auto;
                                   white-space: nowrap;
@@ -39,11 +40,18 @@ if(isset($_SESSION['usermail'])){
                                   color: #45f3ff;
                                   text-align: center;
                                   padding: 5px;
-                                  text-decoration: none;
+                                  text-decoration: none;    
                                 }
                                 
                                 div.scrollmenu a:hover {
                                   background-color: #777;
+																}
+																div.scrollmenu::-webkit-scrollbar{
+																  height:1px;
+																}
+																div.scrollmenu::-webkit-scrollbar-thumb {
+																  background: white; 
+																  border-radius: 10px;
 																}
 		                    </style>
 		                    <div class="scrollmenu">
@@ -59,7 +67,7 @@ if(isset($_SESSION['usermail'])){
                     	      }
                     	      ?>
                               
-                            </div>
+                      	</div>
 		                    <br>
 		                  <div class="welcome-btn-groupt" style="">
 		                      <style>
@@ -104,34 +112,33 @@ if(isset($_SESSION['usermail'])){
 		                                  $track_id=$row['id'];
 		                                  ?>
 		                                  <div class="poca-music-area mt-100 d-flex align-items-center flex-wrap" data-animation="fadeInUp" data-delay="900ms" style="background: #333;margin-top: -3%;width:100%;">
-		                                  <div class="poca-music-thumbnail" style="width:100%;">
-		                                    <img src="<?php echo $dir_img;?>" alt="" style="width:100%;">
-		                                  </div>
-		                                  <div class="poca-music-content" style="width:100%;">
-		                                    <span class="music-published-date"><?php echo $publish_date;?> <small style="font-size:7px;padding:2px;border-radius:50px;background-color:#333;color:#45f3ff;border:1px solid #45f3ff;">new</small></span>
-		                                    <h2><?php echo $song_name;?></h2>
-		                                    <div class="music-meta-data">
-		                                      <p>By <a onclick="loader('izihlabelelo&artist=<?php echo $row['artist'];?>')" class="music-author"><?php if(strlen($artist)<10){ echo $artist;}else{ for($i=0;$i<10;$i++){echo $artist[$i];}echo".."; }?></a> | <a onclick="loader('izihlabelelo&recording_label=<?php echo $row['recording_label'];?>')" class="music-catagory"><?php echo $label; ?></a> | <a onclick="loader('izihlabelelo&album=<?php echo $row['album'];?>')" class="music-duration"><?php echo $album;?></a></p>
-		                                    </div>
-		                                    <!-- Music Player -->
-		                                    <div class="poca-music-player" style="width:100%;color:#45f3ff;background-color:#282828;">
-		                                      <audio preload="auto" controls controlsList="nodownload" style="width:100%; color:#45f3ff;background-color:#282828;">
-		                                        <source src="<?php echo $dir_mp3;?>" style="width:100%;">
-		                                      </audio>
-		                                    </div>
-		                                    <!-- Likes, Share & Download -->
-		                                    <div class="likes-share-download d-flex align-items-center justify-content-between">
-		                                      <a onclick="likeSong(<?php echo $track_id;?>)" class="<?php echo $track_id;?>"><i class="fa fa-heart" aria-hidden="true"></i>(<?php
-		                                      
-		                                       echo $musicPdo->trackLikes($track_id);
-		                                    ?>)</a>
-		                                  </div>
-		                                      <div>
-		                                        <a  class="mr-4"><i class="fa fa-share-alt" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
-		                                        <a onclick="download_song(<?php echo $track_id;?>)" id="<?php echo $track_id;?>" href="<?php echo $dir_mp3;?>" download><i class="fa fa-download" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
-		                                      </div>
-		                                    </div>
-		                                  </div>
+			                                  <div class="poca-music-thumbnail" style="width:100%;">
+			                                    <img src="<?php echo $dir_img;?>" alt="" style="width:100%;">
+			                                  </div>
+			                                  <div class="poca-music-content" style="width:100%;">
+				                                    <span class="music-published-date"><?php echo $publish_date;?> <small style="font-size:7px;padding:2px;border-radius:50px;background-color:#333;color:#45f3ff;border:1px solid #45f3ff;">new</small></span>
+				                                    <h2><?php echo $song_name;?></h2>
+				                                    <div class="music-meta-data">
+				                                      <p>By <a onclick="loader('izihlabelelo&artist=<?php echo $row['artist'];?>')" class="music-author"><?php if(strlen($artist)<10){ echo $artist;}else{ for($i=0;$i<10;$i++){echo $artist[$i];}echo".."; }?></a> | <a onclick="loader('izihlabelelo&recording_label=<?php echo $row['recording_label'];?>')" class="music-catagory"><?php echo $label; ?></a> | <a onclick="loader('izihlabelelo&album=<?php echo $row['album'];?>')" class="music-duration"><?php echo $album;?></a></p>
+				                                    </div>
+				                                    <!-- Music Player -->
+				                                    <div class="poca-music-player" style="width:100%;color:#45f3ff;background-color:#282828;">
+				                                      <audio preload="auto" controls controlsList="nodownload" style="width:100%; color:#45f3ff;background-color:#282828;">
+				                                        <source src="<?php echo $dir_mp3;?>" style="width:100%;">
+				                                      </audio>
+				                                    </div>
+				                                    <!-- Likes, Share & Download -->
+				                                    <div class="likes-share-download d-flex align-items-center justify-content-between">
+				                                      <a onclick="likeSong(<?php echo $track_id;?>)" class="<?php echo $track_id;?>"><i class="fa fa-heart" aria-hidden="true"></i>(<?php
+				                                      
+				                                       echo $musicPdo->trackLikes($track_id);
+				                                    ?>)</a>
+				                                      <div>
+				                                        <a  class="mr-4"><i class="fa fa-share-alt" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
+				                                        <a onclick="download_song(<?php echo $track_id;?>)" id="<?php echo $track_id;?>" href="<?php echo $dir_mp3;?>" download><i class="fa fa-download" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
+				                                      </div>
+				                                    </div>
+			                                  </div>
 		                                </div>
 		                                <br>
 		                              <?php
@@ -188,7 +195,6 @@ if(isset($_SESSION['usermail'])){
 		                                      
 		                                       echo $musicPdo->trackLikes($track_id);
 		                                    ?>)</a>
-		                                  </div>
 		                                      <div>
 		                                        <a href="#" class="mr-4"><i class="fa fa-share-alt" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
 		                                        <a onclick="download_song(<?php echo $track_id;?>)" id="<?php echo $track_id;?>" href="<?php echo $dir_mp3;?>" download><i class="fa fa-download" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
@@ -251,7 +257,6 @@ if(isset($_SESSION['usermail'])){
 		                                      
 		                                       echo $musicPdo->trackLikes($track_id);
 		                                    ?>)</a>
-		                                  </div>
 		                                      <div>
 		                                        <a href="#" class="mr-4"><i class="fa fa-share-alt" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
 		                                        <a onclick="download_song(<?php echo $track_id;?>)" id="<?php echo $track_id;?>" href="<?php echo $dir_mp3;?>" download><i class="fa fa-download" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
@@ -314,7 +319,6 @@ if(isset($_SESSION['usermail'])){
 		                                      
 		                                       echo $musicPdo->trackLikes($track_id);
 		                                    ?>)</a>
-		                                  </div>
 		                                      <div>
 		                                        <a href="#" class="mr-4"><i class="fa fa-share-alt" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
 		                                        <a onclick="download_song(<?php echo $track_id;?>)" id="<?php echo $track_id;?>" href="<?php echo $dir_mp3;?>" download><i class="fa fa-download" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
@@ -377,7 +381,6 @@ if(isset($_SESSION['usermail'])){
 		                                      
 		                                       echo $musicPdo->trackLikes($track_id);
 		                                    ?>)</a>
-		                                  </div>
 		                                      <div>
 		                                        <a href="#" class="mr-4"><i class="fa fa-share-alt" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
 		                                        <a onclick="download_song(<?php echo $track_id;?>)" id="<?php echo $track_id;?>" href="<?php echo $dir_mp3;?>" download><i class="fa fa-download" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
@@ -440,7 +443,6 @@ if(isset($_SESSION['usermail'])){
 			                                  <a onclick="likeSong(<?php echo $track_id;?>)" class="<?php echo $track_id;?>"><i class="fa fa-heart" aria-hidden="true"></i>(<?php
 			                                  echo $musicPdo->trackLikes($track_id);
 			                                ?>)</a>
-			                              </div>
 			                                  <div>
 			                                    <a href="#" class="mr-4"><i class="fa fa-share-alt" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
 			                                    <a onclick="download_song(<?php echo $track_id;?>)" id="<?php echo $track_id;?>" href="<?php echo $dir_mp3;?>" download><i class="fa fa-download" aria-hidden="true"></i> (<?php echo $row['downloads'];?>)</a>
