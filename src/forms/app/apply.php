@@ -269,10 +269,10 @@ if(isset($_SESSION['usermail'])){
         	    
         		<h5>
         		    2023/2024 Tertiary Applications including NSFAS & Bursary Applications:
-        		    <br>Opening Date: 20 January 2023
-        		    <br>Closing date: 30 July 2023
+        		    <br>Opening Date: 20 January 2024
+        		    <br>Closing date: 30 July 2024
         		</h5>
-        		<h4 style='color:red;'>Applications are now Closed :</h4> <!--<p id="acho-date">30 July 2023</p>-->
+        		<h4 style='color:green;'>Applications are now OPEN :</h4> <p id="acho-date">30 July 2023</p>
         		<p style='color:red;'>
         		    Applications are only open for Testing|Jusging by MTN AWARDS Competition.
         		 </p>
