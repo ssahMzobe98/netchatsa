@@ -272,7 +272,7 @@ if(isset($_SESSION['usermail'])){
         		    <br>Opening Date: 20 January 2024
         		    <br>Closing date: 30 July 2024
         		</h5>
-        		<h4 style='color:green;'>Applications are now OPEN :</h4> <p id="acho-date">30 July 2023</p>
+        		<h4 style='color:green;'>Applications are now OPEN </h4> <!--<p id="acho-date">30 July 2023</p> -->
         		<p style='color:red;'>
         		    Applications are only open for Testing|Jusging by MTN AWARDS Competition.
         		 </p>
