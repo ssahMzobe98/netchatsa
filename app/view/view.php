@@ -83,8 +83,8 @@ if(isset($_SESSION['usermail'])){
 		$NavigationHistory->InsertPathToHistory($cur_user_row['my_id'],$lastVisit['id'],"izihlabelelo");
 	}
 	elseif(isset($_GET['logout'])){
-		$dom=$pdo->logout($cur_user_row);
-		if($dom['response']=="S"){
+		$dom=$userPdo->loggOff($cur_user_row['usermail']);
+		if($dom->responseStatus==="S"){
 			echo"<h3 style='color:#45f3ff;background:red;'>Logging Out...</h3>";
 			unset($_SESSION['usermail']);
 			session_destroy();
@@ -107,7 +107,7 @@ else{
 	session_destroy();
 	?>
 	<script>
-		window.location=("../../");
+		window.location=("../");
 	</script>
 
 	<?php

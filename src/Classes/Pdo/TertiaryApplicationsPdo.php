@@ -466,6 +466,52 @@ class TertiaryApplicationsPdo{
 		$sql="SELECT *from courses where uni_id=? AND faculty_id=?";
 		return $this->connect->getAllDataSafely($sql,"ss",[$uni_id,$faculty_id])??[];
 	}
+	public function getStudentInfoPayload(string $applicant = null):array{
+	    $strParams = "s";
+	    $params = [$applicant];
+	    $sqlArr=[];
+	    for($i=0;$i<5;$i++){
+	        $k=$i+1;
+	        $sqlArr[]="select 
+	                *
+	            from step{$k}
+	            where applicationid = ?";
+	    }
+	    $results = [];
+	    $i=1;
+	    foreach($sqlArr as $sql){
+	        $results["step{$i}"]=$this->connect->getAllDataSafely($sql,$strParams,$params)[0]??[];
+	        $i++;
+	    }
+	    
+		return $results??[];
+	}
+	public function getDocUrl($my_id):string{
+	    $sql = "select directory_index from create_runaccount where my_id=?";
+	    $params = [$my_id];
+	    $strParams = "s";
+		$res = $this->connect->getAllDataSafely($sql,$strParams,$params)[0]??[];
+		return $res ['directory_index']??"";
+	}
+	public function getfinalApplication($studentId):array{
+	    $sql ="
+	    select fa.*,
+            fa.uni_id,
+            (select uni_name from universities where id =fa.uni_id) as uni_name,
+            fa.faculty_name as faculty_name,
+            fa.course_id,
+            (select course_name from courses where course_id =fa.course_id) as study_choice,
+            (select url_varsy from universities where id =fa.uni_id) as api,
+            asl.student_no as student_no,
+            asl.password as password
+        from finalapplication fa
+            left join application_status_login as asl on asl.student = fa.applicationid and asl.uni =fa.uni_id
+	        where fa.applicationid =?
+	    ";
+	    $params = [$studentId];
+	    $strParams = "s";
+	    return $this->connect->getAllDataSafely($sql,$strParams,$params)??[];
+	}
 	
 }
 ?>

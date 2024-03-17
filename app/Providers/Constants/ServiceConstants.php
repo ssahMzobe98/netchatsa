@@ -22,4 +22,9 @@ class ServiceConstants
     public const PAYMENT_PROCESSOR = "PaymentProcessor";
     public const PAYFAST_INTEGRATION = "PayFastIntegration";
     public const DRAMA_CLASS_PDO = 'DramaClassPdo';
+    public const ADMIN = 'AdminPdo';
+    public const MATRIC_UPGRADE_ADMIN = 'MatricUpgradeAdminPdo';
+    public const UNI_ADMIN_PDO = 'UniAdminPdo';
+    public const SCHOOL_ADMIN_PDO = 'SchoolAdminPdo';
+    public const PROJECT_TICKET_ADMIN = 'ProjetTicketAdminPdo';
 }

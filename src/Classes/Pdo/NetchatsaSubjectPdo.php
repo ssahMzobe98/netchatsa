@@ -80,6 +80,12 @@ class NetchatsaSubjectPdo{
 	    $strParams="s";
         return $this->connect->getAllDataSafely($sql,$strParams,$params)[0]??[];
 	}
+	public function getNetchatsaSubjects(int $min=0,int $max=10){
+		$sql = "select *from netchatsa_subjects order by subj_name limit ?,?";
+		$params = [$min,$max];
+		$strParams = "ss";
+		return $this->connect->getAllDataSafely($sql,$strParams,$params)??[];
+	}
 }
 
 ?>

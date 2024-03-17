@@ -16,6 +16,7 @@ use Src\Classes\PayFast\PaymentProcessor;
 use Src\Classes\PayFast\PayFastIntegration;
 use Src\Classes\CleanData;
 use Src\Classes\Drama\DramaClassPdo;
+use Src\Classes\Admin\AdminPdo;
 class PDOServiceFactory implements IMMSServiceFactory
 {
     protected static $data = [
@@ -32,7 +33,8 @@ class PDOServiceFactory implements IMMSServiceFactory
         ServiceConstants::PAYMENT_PROCESSOR=>PaymentProcessor::class,
         ServiceConstants::PAYFAST_INTEGRATION=>PayFastIntegration::class,
         ServiceConstants::CLEANDATA=>CleanData::class,
-        ServiceConstants::DRAMA_CLASS_PDO=>DramaClassPdo::class
+        ServiceConstants::DRAMA_CLASS_PDO=>DramaClassPdo::class,
+        ServiceConstants::ADMIN=>AdminPdo::class
     ];
     public static function make(string $classString, array $array=[])
     {

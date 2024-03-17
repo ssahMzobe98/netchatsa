@@ -90,6 +90,13 @@ class MatricUpgradePdo{
 		$strParams="ssss";
 		return $this->connect->postDataSafely($sql,$strParams,$params);
 	}
+	public function masomaneAddNewNetchatsaSchool(string $SubjectNameNetchatsa=""|null,string $gradeNetchatsa=""|null,$id):array{
+		$SourceURL = "";
+		$sql = "INSERT into matric_rewrite_subj_content(subject,chapter,term,title,source,content,time_added,added_by) values(?,?,?,?,?,?,NOW(),?)";
+		$strParams = "sssssss";
+		$params = [$subjectNameMatricUpgrade,$subjectChapter,$deremoTerm,$titleOfContent,$SourceName,$SourceURL,$user];
+		return $this->connect->postDataSafely($sql,$strParams,$params);
+	}
 
 	
 }
