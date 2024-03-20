@@ -85,5 +85,45 @@ class UserPdo{
 		$sql = "UPDATE create_runaccount set about=? where id=?";
 		return $this->connect->postDataSafely($sql,"ss",[$writeStoryPoint,$userId]);
 	}
+	public function passwordResetRequest(?string $EmailSetRequest=null,?int $resetCode=null):Response{
+		$this->Response->failureSetter()->messagerSetter("User Does not Exist.")->messagerArraySetter([]);
+		if(!$this->isUserExist($EmailSetRequest)){
+			return $this->Response;
+		}
+		$sql = "UPDATE create_runaccount set reset_code=? where usermail=?";
+		return $this->connect->postDataSafely($sql,"ss",[$resetCode,$EmailSetRequest]);
+	}
+	public function passwordReset(?string $newPassReset=null,?int $reset_code=null):Response{
+		$this->Response->failureSetter()->messagerSetter("Code {$reset_code} does not exists.")->messagerArraySetter([]);
+		$arr=$this->isCodeExist($reset_code);
+		if(empty($arr)){
+			return $this->Response;
+		}
+
+        $sql = "UPDATE create_runaccount set security=?, reset_code=null where reset_code=?";
+		$this->Response=$this->connect->postDataSafely($sql,"ss",[$newPassReset,$reset_code]);
+		if($this->Response->responseStatus===StatusConstants::SUCCESS_STATUS){
+			$this->Response->responseMessage=$arr['usermail'];
+		}
+		
+		return $this->Response;
+		
+
+    }
+
+	public function isUserExist(?string $userMail=null):bool{
+		if(!isset($userMail)){
+			return false;
+		}
+		$sql="SELECT usermail from create_runaccount where usermail=? and status='A'";
+		return $this->connect->numRows($sql,'s',[$userMail])===1;
+	}
+	public function isCodeExist(?int $reset_code=null):array{
+		if(!isset($reset_code)){
+			return [];
+		}
+		$sql="SELECT usermail from create_runaccount where reset_code=? and status='A'";
+		return $this->connect->getAllDataSafely($sql,'s',[$reset_code])[0]??[];
+	}
 }
 ?>

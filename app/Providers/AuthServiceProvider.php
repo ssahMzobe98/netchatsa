@@ -10,14 +10,18 @@ use App\Providers\MMSHightech\MMSHightech;
 use App\Providers\Constants\ServiceConstants;
 use App\Providers\Constants\StatusConstants;
 use App\Providers\Response\Response;
+use App\Providers\Factory\PDOServiceFactory;
 class AuthServiceProvider extends ServiceProvider implements IAuthServiceProvider
 {
     // use DBConnectServiceTrait;
     private $dataProvider;
     public $cleanData;
+    public $userPdo;
     public function __construct(){
         $this->cleanData=MMSServiceFactory::make(ServiceConstants::CLEANDATA,[null]);
-        $this->dataProvider=DataGeneratorFactory::make(ServiceConstants::GENERATE_DATA,[$this->cleanData->connect]);   
+        $this->dataProvider=DataGeneratorFactory::make(ServiceConstants::GENERATE_DATA,[$this->cleanData->connect]); 
+        $this->userPdo = PDOServiceFactory::make(ServiceConstants::GENERATE_DATA,[$this->cleanData->connect]);
+
     }
     public function WashDUnitDataSet(?string $data = null): string
     {
@@ -40,6 +44,12 @@ class AuthServiceProvider extends ServiceProvider implements IAuthServiceProvide
     }
     public function finalizeAccountReg(string $gender='',string $region='',string $dob='',string $address='',string $provice='',?int $otp=null):Response{
         return $this->dataProvider->finalizeAccountRegFromApp($gender,$region,$dob,$address,$provice,$otp);
+    }
+    public function passwordResetRequest(?string $EmailSetRequest=null,?int $resetCode=null):Response{
+        return $this->userPdo->passwordResetRequest($EmailSetRequest,$resetCode);
+    }
+    public function passwordReset($newPassReset,$reset_code):Response{
+        return $this->userPdo->passwordReset($this->cleanData->lockPassWord($newPassReset),$reset_code);
     }
     public function login(?string $pass=null,?string $email=null):array{
         if(!isset($pass)){

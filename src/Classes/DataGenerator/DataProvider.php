@@ -9,6 +9,7 @@ Class DataProvider {
 		return $this->connect->getAllDataSafely($sql,'s',[$email])[0]??[];
 	}
 	public function verifyLogin(?String $pass=null,?string $email=null):int{
+		// echo $pass;;
 		$sql="SELECT usermail from create_runaccount where usermail=? and security=? and status='A'";
 		return $this->connect->numRows($sql,'ss',[$email,$pass])??0;
 	}

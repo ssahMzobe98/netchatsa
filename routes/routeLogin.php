@@ -105,6 +105,53 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 		}
 
 	}
+	elseif(isset($_POST['newPassReset'],$_POST['reset_code'])){
+		$serviceProvider = MMSServiceFactory::make(ServiceConstants::AUTH_SERVICE_PROVIDER,[null]);
+		$mailService = MMSServiceFactory::make(ServiceConstants::MAIL_SERVICE,[new PHPMailer()]);
+		$newPassReset = $serviceProvider->WashDUnitDataSet($_POST['newPassReset']);
+		$reset_code = $serviceProvider->WashDUnitDataSet($_POST['reset_code']);
+		$e = $serviceProvider->passwordReset($newPassReset,$reset_code);
+
+		$date=date("Y-m-d H:m:ia");
+		$message="New password has been made active.<br><br>Date : {$date}<br><br>If you're not aware of this request please report it at netchatsa WhatsApp Support.<br><br>";
+		$subject="PASSWORD RESET SUCCESS";
+		// print_r($e);
+		if($e->responseStatus===StatusConstants::SUCCESS_STATUS){
+			$mailResponse = $mailService->setSMTPSettings(StatusConstants::MAIL_HOST, StatusConstants::DEFAULT_SYSTEM_SENDER, StatusConstants::MAILER_PASS, 465,PHPMailer::ENCRYPTION_SMTPS)
+							->setSender(StatusConstants::DEFAULT_SYSTEM_SENDER,StatusConstants::DEFAULT_SYSTEM_SENDER_NAME)
+							->addRecipient($e->responseMessage,'')
+							->setSubject($subject)
+							->setBody($message)
+							->send();
+				$e->objectError=$mailResponse;
+		}
+		else{
+			$serviceProvider->cleanData->connect->rollback();
+		}
+	}
+	elseif(isset($_POST['EmailSetRequest'])){
+		$serviceProvider = MMSServiceFactory::make(ServiceConstants::AUTH_SERVICE_PROVIDER,[null]);
+		$mailService = MMSServiceFactory::make(ServiceConstants::MAIL_SERVICE,[new PHPMailer()]);
+		$EmailSetRequest = $serviceProvider->WashDUnitDataSet($_POST['EmailSetRequest']);
+		$resetCode = rand(100,1000000);
+		$e = $serviceProvider->passwordResetRequest($EmailSetRequest,$resetCode);
+		$date=date("Y-m-d H:m:ia");
+		$message="New password reset request for this email user : ({$EmailSetRequest})<br><br>Date : {$date}<br><br>Reset Code: {$resetCode}<br><br>If you're not aware of this request please report it at netchatsa WhatsApp Support.<br><br>";
+		$subject="PASSWORD RESET REQUEST";
+
+		if($e->responseStatus===StatusConstants::SUCCESS_STATUS){
+			$mailResponse = $mailService->setSMTPSettings(StatusConstants::MAIL_HOST, StatusConstants::DEFAULT_SYSTEM_SENDER, StatusConstants::MAILER_PASS, 465,PHPMailer::ENCRYPTION_SMTPS)
+							->setSender(StatusConstants::DEFAULT_SYSTEM_SENDER,StatusConstants::DEFAULT_SYSTEM_SENDER_NAME)
+							->addRecipient($EmailSetRequest,'')
+							->setSubject($subject)
+							->setBody($message)
+							->send();
+				$e->objectError=$mailResponse;
+		}
+		else{
+			$serviceProvider->cleanData->connect->rollback();
+		}
+	}
 	elseif(isset($_POST['emailNew'],$_POST['pswdNew'],$_POST['indicator'],$_POST['numberNew'],$_POST['name'],$_POST['surname'])){
 		$serviceProvider = MMSServiceFactory::make(ServiceConstants::AUTH_SERVICE_PROVIDER,[null]);
 		$mailService = MMSServiceFactory::make(ServiceConstants::MAIL_SERVICE,[new PHPMailer()]);

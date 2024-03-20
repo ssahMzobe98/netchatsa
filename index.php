@@ -103,6 +103,12 @@ For inquiries regarding the use of this software, please contact MMS HIGH TECH a
 	height: 100%;
 	margin-top: -20%;
 }
+.signup-y{
+	position: relative;
+	width:100%;
+	height: 40%;
+	margin-top: -20%;
+}
 label{
 	color: #fff;
 	font-size: 2.3em;
@@ -146,7 +152,7 @@ button:hover{
 	background: #6d44b8;
 }
 .login{
-	height: 460px;
+	height: 520px;
 	background: #eee;
 	border-radius: 60% / 10%;
 	transform: translateY(-100px);
@@ -158,7 +164,7 @@ button:hover{
 }
 
 #chk:checked ~ .login{
-	transform: translateY(-400px);
+	transform: translateY(-430px);
 }
 #chk:checked ~ .login label{
 	transform: scale(1);	
@@ -201,10 +207,93 @@ button:hover{
 					<button onclick="login()">Login</button>
 				</div>
 				<div style='font-size: 8px;text-align: center;color:red;'>By logging in you agree to our user TsnCs.</div>
+				<div style='font-size: 12px;text-align: center;color:navy;padding:10px 10px;cursor: pointer;' onclick="loadAfterQuery('.main','forgotPass.php');">Forgot Password</div>
+
 				<div class="errorResolution" hidden></div>
 			</div>
 	</div>
 	<script>
+		function reload(){
+			window.location=("./");
+		}
+		
+
+
+		function newResetPassword(){
+			const newPassReset = $('.newPassReset').val();
+			const newPassReset1 = $('.newPassReset1').val();
+			const reset_code = $('.reset_code').val();
+			$(".errorResolution").removeAttr('hidden').attr("style","padding:10px 10px;color:green").html("<span style='display:flex;'><img src='img/loader.gif' style='width:15%;border-radius: 20px;'>Processing Request...</span>");
+			if(newPassReset===""){
+				$('.newPassReset').attr("style","border:1px solid red;");
+				$(".errorResolution").attr("style","border:1px solid red;color:red;text-align:center;").html("Field Required*");
+			}
+			else if(newPassReset1===""){
+				$('.newPassReset1').attr("style","border:1px solid red;");
+				$(".errorResolution").attr("style","border:1px solid red;color:red;text-align:center;").html("Field Required*");
+			}
+			else if(reset_code===""){
+				$('.reset_code').attr("style","border:1px solid red;");
+				$(".errorResolution").attr("style","border:1px solid red;color:red;text-align:center;").html("Field Required*");
+			}
+			else if(newPassReset!==newPassReset1){
+				$('.newPassReset').attr("style","border:1px solid red;");
+				$('.newPassReset1').attr("style","border:1px solid red;");
+				$(".errorResolution").attr("style","border:1px solid red;color:red;text-align:center;").html("Password does not match.");
+			}
+			else if(newPassReset.length<8){
+				$('.newPassReset').attr("style","border:1px solid red;");
+				$(".errorResolution").attr("style","border:1px solid red;color:red;text-align:center;").html("Password too short.");
+			}
+			else{
+				$.ajax({
+                    url:'./routes/routeLogin.php',
+                    type:'post',
+                    data:{
+                    	newPassReset:newPassReset,reset_code:reset_code
+                    },
+                    success:function(e){
+                        response = JSON.parse(e);
+                        if(response['responseStatus']==='F'){
+                            $(".errorResolution").attr("style","padding:5px 5px;color:red;").html(response['responseMessage']);
+                        }
+                        else{
+                            $(".errorResolution").attr("style","padding:5px 5px;color:green;").html("New Password Set successfully");
+                            reload();
+                            
+                        }
+                    }
+                });
+			}
+		}
+		function resetPassword(){
+			const EmailSetRequest = $('.EmailSet').val();
+			$(".errorResolution").removeAttr('hidden').attr("style","padding:10px 10px;color:green").html("<span style='display:flex;'><img src='img/loader.gif' style='width:15%;border-radius: 20px;'>Processing Request...</span>");
+			if(EmailSetRequest===""){
+				$('.EmailSet').attr("style","border:1px solid red;");
+				$(".errorResolution").attr("style","border:1px solid red;color:red;text-align:center;").html("Field Required*");
+			}
+			else{
+				$.ajax({
+                    url:'./routes/routeLogin.php',
+                    type:'post',
+                    data:{
+                    	EmailSetRequest:EmailSetRequest
+                    },
+                    success:function(e){
+                        response = JSON.parse(e);
+                        if(response['responseStatus']==='F'){
+                            $(".errorResolution").attr("style","padding:5px 5px;color:red;").html(response['responseMessage']);
+                        }
+                        else{
+                            $(".errorResolution").attr("style","padding:5px 5px;color:green;").html("Email Identified, Processing...");
+                            loadAfterQuery('.main','newPass.php');
+                            
+                        }
+                    }
+                });
+			}
+		}
 		function completeDetails(){
 			const gender=$(".gender").val();
 			const region=$(".region").val();
