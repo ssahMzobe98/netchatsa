@@ -52,7 +52,7 @@ if(isset($_SESSION['usermail'])){
 							$email = $row['email']??'N/A';
 							$std = $row['std']??'';
 							$funct="sendReminderPn(`{$std}`)";
-							$url = 'loadAfterQuery(".ApplicantsLoader","./model/applicantApplication.php?applicant='.$std.'");';
+							$url = 'loadAfterQuery(".ApplicantsLoader","../src/forms/admin/applicantApplication.php?applicant='.$std.'");';
 							$push = ($status=="COMPLETED")?"<span style='padding:10px 10px;'  class='badge badge-success text-center text-white' onclick='{$url}'>Start Application</span>":"<span  style='padding:10px 10px;' class='badge badge-danger text-center text-white sendReminderPn{$std}' onclick='{$funct}'>Send PN Reminder</span>";
 							?>
 								<td <?php if($count%2==0){echo 'style="color:limegreen;"';} ?> ><span style="width:100%;padding:10px 10px;" ><?php echo  $id_no;?></span></td>

@@ -655,55 +655,55 @@ select{
 <body>
   <div class="sidebar">
     <div class="logo-details">
-      <i class='bx bxl-c-plus-plus'></i>
+      <i class='bx bxl-c-plus-plus bx-spin' ></i>
       <span class="logo_name">MMS HIGH TECH</span>
     </div>
       <ul class="nav-links">
         <li>
           <a onclick="loadMasomane('masomane')" class="active">
-            <i class='bx bx-grid-alt' ></i>
+            <i class='bx bx-home-heart bx-spin' ></i>
             <span class="links_name">MaSomane</span>
           </a>
         </li>
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/Applicationsa.php")'>
-            <i class='bx bx-grid-alt' ></i>
+            <i class='bx bx-edit-alt bx-spin' ></i>
             <span class="links_name">Applicationsa</span>
           </a>
         </li>
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/highSchools.php")'>
-            <i class='bx bx-grid-alt' ></i>
+            <i class='bx bxs-school bx-spin' ></i>
             <span class="links_name">High Schools</span>
           </a>
         </li>
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/tertiaries.php")'>
-            <i class='bx bx-box' ></i>
+            <i class='bx bx-buildings bx-spin' ></i>
             <span class="links_name">Universities</span>
           </a>
         </li>
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/funding.php")'>
-            <i class='bx bx-list-ul' ></i>
+            <i class='bx bxs-bank bx-spin' ></i>
             <span class="links_name">Bursaries</span>
           </a>
         </li>
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/matricUpgrade.php")'>
-            <i class='bx bx-pie-chart-alt-2' ></i>
+            <i class='bx bx-trending-up bx-spin bx-flip-horizontal' ></i>
             <span class="links_name">Matric Upgrade</span>
           </a>
         </li>
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/netchatsaSchooling.php")'>
-            <i class='bx bx-coin-stack' ></i>
+            <i class='bx bxs-mouse-alt bx-spin' ></i>
             <span class="links_name">netchatsa</span>
           </a>
         </li>
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/payments.php")'>
-            <i class='bx bx-book-alt' ></i>
+            <i class='bx bxs-wallet bx-spin' ></i>
             <span class="links_name">Payments</span>
           </a>
         </li>
@@ -721,13 +721,13 @@ select{
         </li> -->
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/settings.php")'>
-            <i class='bx bx-cog' ></i>
+            <i class='bx bxs-cog bx-spin' ></i>
             <span class="links_name">Setting</span>
           </a>
         </li>
         <li class="log_out">
           <a onclick="logout()">
-            <i class='bx bx-log-out'></i>
+            <i class='bx bx-log-out-circle bx-spin' ></i>
             <span class="links_name">Log out</span>
           </a>
         </li>
@@ -1026,9 +1026,9 @@ function searchStudentsByIdNumber(){
       data:{findMe:findMe},
       cache:false,
       success:function(e){
-        response = JSON.parse(e);
+        // response = JSON.parse(e);
         // if(response['responseStatus']==='S'){
-        document.getElementById("ApplicantsLoader").innerHTML = response['responseMessage'];
+        document.getElementById("ApplicantsLoader").innerHTML = e;
       }
     });
   }
@@ -1046,9 +1046,7 @@ function searchInputSchool(){
       data:{findMe:findMe},
       cache:false,
       success:function(e){
-        response = JSON.parse(e);
-        // if(response['responseStatus']==='S'){
-        document.getElementById("AsivezeIzikoleLaphaLeft").innerHTML = response['responseMessage'];
+        document.getElementById("AsivezeIzikoleLaphaLeft").innerHTML = e;
       }
     });
   }
@@ -1066,8 +1064,7 @@ function SearchSubjectMatricUpgrade(){
       data:{findMe:findMe},
       cache:false,
       success:function(e){
-        response = JSON.parse(e);
-        document.getElementById("dataDisplayerIdrMatricUpgradeSubjects").innerHTML = response['responseMessage'];
+        document.getElementById("dataDisplayerIdrMatricUpgradeSubjects").innerHTML = e;
       }
     });
   }
@@ -1086,9 +1083,9 @@ function searchMasomaneSchoolFunc(){
       data:{findMe:findMe},
       cache:false,
       success:function(e){
-        response = JSON.parse(e);
+        
         // if(response['responseStatus']==='S'){
-        document.getElementById("dynamicalLoad1").innerHTML = response['responseMessage'];
+        document.getElementById("dynamicalLoad1").innerHTML = e;
       }
     });
   }
@@ -1107,9 +1104,8 @@ function searchBursaries(){
       data:{findMe:findMe},
       cache:false,
       success:function(e){
-        response = JSON.parse(e);
         // if(response['responseStatus']==='S'){
-        document.getElementById("dataDisplayerIdr").innerHTML = response['responseMessage'];
+        document.getElementById("dataDisplayerIdr").innerHTML = e;
       }
     });
   }
@@ -1128,9 +1124,7 @@ function searchCourseFundedbyInstitution(){
       data:{findMe:findMe},
       cache:false,
       success:function(e){
-        response = JSON.parse(e);
-        // if(response['responseStatus']==='S'){
-        document.getElementById("dataDisplayerIdrCourses").innerHTML = response['responseMessage'];
+        document.getElementById("dataDisplayerIdrCourses").innerHTML = e;
       }
     });
   }

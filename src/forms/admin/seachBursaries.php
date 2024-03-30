@@ -5,13 +5,14 @@ use App\Providers\Constants\ServiceConstants;
 use App\Providers\Constants\StatusConstants;
 use App\Providers\Factory\PDOServiceFactory;
 use App\Providers\Constants\Flags;
+use App\Providers\Factory\Admin\PDOAdminFactory;
 if(session_status() !== PHP_SESSION_ACTIVE){
   session_start();
 }
 if(isset($_SESSION['usermail'])){
   	$userPdo = PDOServiceFactory::make(ServiceConstants::USER,[null]);
   	$cur_user_row=$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
-  	$cleanData = PDOAdminFactory::make(ServiceConstants::CLEANDATA,[$userPdo->connect]);
+  	$cleanData = PDOServiceFactory::make(ServiceConstants::CLEANDATA,[$userPdo->connect]);
 		$schoolAdminPdo = PDOAdminFactory::make(ServiceConstants::SCHOOL_ADMIN_PDO,[$userPdo->connect]);
 		if(isset($_POST["findMe"])){
 			$SEARCH=$cleanData->OMO($_POST["findMe"]);

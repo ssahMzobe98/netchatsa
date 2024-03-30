@@ -12,9 +12,10 @@ if(session_status() !== PHP_SESSION_ACTIVE){
 if(isset($_SESSION['usermail'])){
   	$userPdo = PDOServiceFactory::make(ServiceConstants::USER,[null]);
   	$cur_user_row=$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
-  	$cleanData = PDOAdminFactory::make(ServiceConstants::CLEANDATA,[$userPdo->connect]);
+  	$cleanData = PDOServiceFactory::make(ServiceConstants::CLEANDATA,[$userPdo->connect]);
 		$schoolAdminPdo = PDOAdminFactory::make(ServiceConstants::SCHOOL_ADMIN_PDO,[$userPdo->connect]);
-		$adminPdo = PDOAdminFactory::make(ServiceConstants::ADMIN,[$userPdo->connect]);
+		$adminPdo = PDOServiceFactory::make(ServiceConstants::ADMIN,[$userPdo->connect]);
+		$ProjectTicketAdminPdo = PDOAdminFactory::make(ServiceConstants::PROJECT_TICKET_ADMIN,[$userPdo->connect]);
 			$SEARCH=$cleanData->OMO($_POST["findMe"]);
 			$response = $schoolAdminPdo->searchMasomaneBySchool($SEARCH);
 			if(count($response)==0){
@@ -42,7 +43,7 @@ if(isset($_SESSION['usermail'])){
 								$read=1;$write=2;?>
 							  <tr  >
 					        <td <?php if($count%2==0){echo 'style="color:limegreen;"';} ?> ><?php echo  explode(" ",$row["time_added"])[0];?></td>
-					        <td <?php if($count%2==0){echo 'style="color:limegreen;"';} ?> ><?php echo  $pdo->add3dots($school_name,"...",50);?></td>
+					        <td <?php if($count%2==0){echo 'style="color:limegreen;"';} ?> ><?php echo  $adminPdo->add3dots($school_name,"...",50);?></td>
 					        <td <?php if($count%2==0){echo 'style="color:limegreen;"';} ?> ><?php echo  $row["name"]." ".$row["surname"];?></td>
 					        <td>
 					        	<a onclick="viewThisSchooInfo('<?php echo $row['id'];?>','<?php echo $read;?>')" class="badge badge-primary text-white text-center">-></a> 

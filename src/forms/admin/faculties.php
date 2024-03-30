@@ -24,7 +24,7 @@ if(isset($_SESSION['usermail'])){
 			foreach($faculties as $data){
 					?>
 						<div class="box-shadow soloVp">
-							<span style="display: flex; cursor: pointer;white-space: nowrap;word-wrap: break-word;hyphens: auto;overflow-wrap: break-word;-ms-word-break: break-all;word-break: break-all;clear: both;vertical-align: bottom;width:100%;" onclick="loadAfterQuery('.DataSetRight-b','./model/courses.php?course=<?php echo $data['faculty_id'];?>');">
+							<span style="display: flex; cursor: pointer;white-space: nowrap;word-wrap: break-word;hyphens: auto;overflow-wrap: break-word;-ms-word-break: break-all;word-break: break-all;clear: both;vertical-align: bottom;width:100%;" onclick="loadAfterQuery('.DataSetRight-b','../src/forms/admin/courses.php?course=<?php echo $data['faculty_id'];?>');">
 								<div class="projectElo"><?php echo wordwrap($data['faculty_name'],37,"<br>\n");?></div>
 							</span>
 							<span title="Edit Faculty" style="padding:10px 10px;cursor: pointer;"><i onclick="fa_fa_edit_campus('<?php echo $data['faculty_id'];?>')" class="fa fa-edit"></i></span>

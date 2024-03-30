@@ -5,6 +5,7 @@ use App\Providers\Constants\ServiceConstants;
 use App\Providers\Constants\StatusConstants;
 use App\Providers\Factory\PDOServiceFactory;
 use App\Providers\Constants\Flags;
+use App\Providers\Factory\Admin\PDOAdminFactory;
 if(session_status() !== PHP_SESSION_ACTIVE){
   session_start();
 }
@@ -13,18 +14,18 @@ if(isset($_SESSION['usermail'])){
   $cur_user_row=$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
   $tertiaryApplicationsPdo = PDOServiceFactory::make(ServiceConstants::TERTIARY_APPLICATIONS,[$userPdo->connect]);
   $adminPdo = PDOServiceFactory::make(ServiceConstants::ADMIN,[$userPdo->connect]);
-  $uniAdminPdo = PDOServiceFactory::make(ServiceConstants::UNI_ADMIN_PDO,[$userPdo->connect]);
+  $uniAdminPdo = PDOAdminFactory::make(ServiceConstants::UNI_ADMIN_PDO,[$userPdo->connect]);
   $cleanData = PDOServiceFactory::make(ServiceConstants::CLEANDATA,[$userPdo->connect]);
-  $matricUpgradeAdminPdo = PDOServiceFactory::make(ServiceConstants::MATRIC_UPGRADE_ADMIN,[$userPdo->connect]);
+  $matricUpgradeAdminPdo = PDOAdminFactory::make(ServiceConstants::MATRIC_UPGRADE_ADMIN,[$userPdo->connect]);
 	if(isset($_GET['applicant'])){
 	    $studentId = $cleanData->OMO($_GET['applicant']);
-		$response = $tertiaryApplicationsPdo->getStudentInfoPayload($studentId);
-		$step1=$response['step1'];
-		$getDocUrl = $tertiaryApplicationsPdo->getDocUrl($step1['std_id']);
-		$step2=$response['step2'];
-		$step3=$response['step3'];
-		$step4=$response['step4'];
-		$step5=$response['step5'];
+			$response = $tertiaryApplicationsPdo->getStudentInfoPayload($studentId);
+			$step1=$response['step1'];
+			$getDocUrl = $tertiaryApplicationsPdo->getDocUrl($step1['std_id']);
+			$step2=$response['step2'];
+			$step3=$response['step3'];
+			$step4=$response['step4'];
+			$step5=$response['step5'];
 		?>
 	 
 	    <style>
@@ -202,7 +203,7 @@ if(isset($_SESSION['usermail'])){
 			            </tr>
 			            <tr>
 			                <td><span  style="width:100%;padding:10px 10px;"><?php echo $step2['ethnicgroup'];?></span></td>
-			                <td><span  style="width:100%;padding:10px 10px;"><?php echo $adminPdo->languagesString($step2['hlang']);?></span></td>
+			                <td><span  style="width:100%;padding:10px 10px;"><?php echo $uniAdminPdo->languagesString($step2['hlang']);?></span></td>
 			            </tr>
 			            <tr>
 			                <th>Are you Employed?</th>

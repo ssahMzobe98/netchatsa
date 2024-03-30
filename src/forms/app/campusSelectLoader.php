@@ -5,6 +5,7 @@ use App\Providers\Constants\ServiceConstants;
 use App\Providers\Constants\StatusConstants;
 use App\Providers\Factory\PDOServiceFactory;
 use App\Providers\Constants\Flags;
+use App\Providers\Factory\Admin\PDOAdminFactory;
 use Src\Classes\Pdo\TimePdo;
 if(session_status() !== PHP_SESSION_ACTIVE){
 	session_start();
@@ -42,7 +43,7 @@ if(isset($_SESSION['usermail'])){
 								}
 								else{
 									const uni="<?php echo $uni;?>";
-									$(".saleInput").html("waiting for response...").loadQuery('className',"./model/CourseSelectLoader.php?unisaleInpu="+uni+"&faculty_id="+select);
+									$(".saleInput").html("waiting for response...").loadQuery('className',"../src/forms/admin/CourseSelectLoader.php?unisaleInpu="+uni+"&faculty_id="+select);
 
 								}
 							});

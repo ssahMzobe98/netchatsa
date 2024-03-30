@@ -42,13 +42,13 @@ if(isset($_SESSION['masomane'])){
 		</style>
 		<div class="topicHorizontal">
 			<div class="margin_SetterTop">
-				<span class="badge badge-success text-white text-center span-asset" onclick='loadAfterQuery(".bodyMagnitude","./model/myWork.php")'>My Work</span>
+				<span class="badge badge-success text-white text-center span-asset" onclick='loadAfterQuery(".bodyMagnitude","../src/forms/admin/myWork.php")'>My Work</span>
 			</div>
 			<div class="margin_SetterTop">
-				<span class="badge badge-secondary text-white text-center span-asset" onclick='loadAfterQuery(".bodyMagnitude","./model/Projects.php")'>Projects</span>
+				<span class="badge badge-secondary text-white text-center span-asset" onclick='loadAfterQuery(".bodyMagnitude","../src/forms/admin/Projects.php")'>Projects</span>
 			</div>
 			<div class="margin_SetterTop">
-				<span class="badge badge-primary text-white text-center span-asset" onclick='loadAfterQuery(".bodyMagnitude","./model/teamWork.php")'>Team Work</span>
+				<span class="badge badge-primary text-white text-center span-asset" onclick='loadAfterQuery(".bodyMagnitude","../src/forms/admin/teamWork.php")'>Team Work</span>
 			</div>
 			<div class="margin_SetterTop">
 				<span class="badge badge-dark text-white text-center span-asset" onclick="CreateNewTicket()">New Ticket</span>
@@ -58,7 +58,7 @@ if(isset($_SESSION['masomane'])){
 			
 		</div>
 		<script>
-			loadAfterQuery(".bodyMagnitude","./model/myWork.php");
+			loadAfterQuery(".bodyMagnitude","../src/forms/admin/myWork.php");
 		</script>
 
 
@@ -68,7 +68,7 @@ if(isset($_SESSION['masomane'])){
 		session_destroy();
 		?>
 			<script>
-				window.location=("../../../?Yazi uyajwayela wena!!, Stop trying to access somebody's account through your own login details.");
+				window.location=("../../?Yazi uyajwayela wena!!, Stop trying to access somebody's account through your own login details.");
 			</script>
 		<?php
 	}
@@ -77,7 +77,7 @@ else{
 	session_destroy();
 	?>
 	<script>
-		window.location=("../../../?fghfghfghgfh");
+		window.location=("../../?fghfghfghgfh");
 	</script>
 
 	<?php

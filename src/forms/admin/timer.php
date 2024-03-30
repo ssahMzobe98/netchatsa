@@ -13,6 +13,7 @@ if(session_status() !== PHP_SESSION_ACTIVE){
 if(isset($_SESSION['usermail'])){
   $userPdo = PDOServiceFactory::make(ServiceConstants::USER,[null]);
   $cur_user_row=$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
+  date_default_timezone_set('Africa/Johannesburg');
 		$y=date("Y");
 		$m=TimePdo::getMonth(date("m"));
 		$d=date("d");

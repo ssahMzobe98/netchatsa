@@ -5,7 +5,7 @@ use App\Providers\Constants\ServiceConstants;
 use App\Providers\Constants\StatusConstants;
 use App\Providers\Factory\PDOServiceFactory;
 use App\Providers\Constants\Flags;
-
+use App\Providers\Factory\Admin\PDOAdminFactory;
 use Src\Classes\Pdo\TimePdo;
 if(session_status() !== PHP_SESSION_ACTIVE){
 	session_start();
@@ -311,7 +311,7 @@ if(isset($_SESSION['usermail'])){
                      {
                       const chapter="<?php echo $chapter?>";
                       $.ajax({
-                       url:"./model/fetchUniContent.php",
+                       url:"../src/forms/admin/fetchUniContent.php",
                        method:"POST",
                        data:{limit:limit, start:start,chapter:chapter},
                        cache:false,

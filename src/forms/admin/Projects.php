@@ -92,7 +92,7 @@ if(isset($_SESSION['masomane'])){
 		</div>
 		<div class="ProjectbodyMagnitude"></div>
 		<script>
-			loadAfterQuery(".ProjectbodyMagnitude","./model/allProjects.php");
+			loadAfterQuery(".ProjectbodyMagnitude","../src/forms/admin/allProjects.php");
 		</script>
 		<?php
 	}

@@ -19,7 +19,7 @@ class UniAdminPdo{
 		$sql = "insert into bursaries_institutions(institutions,api,api_key,api_key_1,token,added_by,time_adedd)values(?,?,?,?,?,?,now())";
 		$params = [$TextNewInstitution,$TextNewInstitutionApiLink,$TextNewInstitutionAPIKey,$TextNewInstitutionAipKey2,$TextNewInstitutiontoken,$added_by];
 		$strParams = "ssssss";
-		$e=$this->connect->postDataSafely($sql,$strParams,$params);
+		return $this->connect->postDataSafely($sql,$strParams,$params);
 	}
 	public function masomaneGetInstitutionCourses($funder):array{
 		$sql = "select 
@@ -45,7 +45,7 @@ class UniAdminPdo{
 		$sql = "insert into bursary_funding_courses(course_id,institution_id,added_by,time_added)values(?,?,?,NOW())";
 		$params = [$selectCourse,$selectInstitution,$user];
 		$strParams = 'sss';
-		$e=$this->connect->postDataSafely($sql,$strParams,$params);
+		return $this->connect->postDataSafely($sql,$strParams,$params);
 	}
 	public function isCourseAddedToInstitution(int $selectInstitution = 0,int $selectCourse = 0):bool{
 		$sql = "select id from bursary_funding_courses where course_id =? and institution_id =? and status = 'A'";

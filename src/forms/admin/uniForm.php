@@ -1,18 +1,22 @@
 <?php
+include_once("../../../vendor/autoload.php");
+use Src\Classes\Pdo\UserPdo;
+use App\Providers\Constants\ServiceConstants;
+use App\Providers\Constants\StatusConstants;
+use App\Providers\Factory\PDOServiceFactory;
+use App\Providers\Constants\Flags;
+use App\Providers\Factory\Admin\PDOAdminFactory;
 if(session_status() !== PHP_SESSION_ACTIVE){
   session_start();
 }
-if(isset($_SESSION['masomane'])){
-	require_once("../controller/pdo.php");
-	$pdo=new _pdo_();
-	$cur_user_row =$pdo->userInfo($_SESSION['masomane']);
-	$userDirect=$cur_user_row['user_nav'];
-	$url = explode("/",$_SERVER['REQUEST_URI']);
-	$url=$url[count($url)-4]."/".str_replace("%20", " ",$url[count($url)-3]);
-	if($url==$userDirect){
+if(isset($_SESSION['usermail'])){
+ $userPdo = PDOServiceFactory::make(ServiceConstants::USER,[null]);
+  	$cur_user_row=$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
+  	$cleanData = PDOServiceFactory::make(ServiceConstants::CLEANDATA,[$userPdo->connect]);
+		$UniAdminPdo = PDOAdminFactory::make(ServiceConstants::UNI_ADMIN_PDO,[$userPdo->connect]);
 		if(isset($_GET['uni_id'])){
-			$uniForm = $pdo->masomaneGetUniInfo($pdo->OMO($_GET['uni_id']??0));
-			$campuses =$pdo->masomaneGetUniCampusInfo($pdo->OMO($_GET['uni_id']??0));
+			$uniForm = $UniAdminPdo->masomaneGetUniInfo($cleanData->OMO($_GET['uni_id']??0));
+			$campuses =$UniAdminPdo->masomaneGetUniCampusInfo($cleanData->OMO($_GET['uni_id']??0));
 			$uni_name = $uniForm['uni_name']??'';
 			?>
 			<style>
@@ -156,7 +160,7 @@ if(isset($_SESSION['masomane'])){
 								foreach($campuses as $row){
 									?>
 									<div  style="display: flex;" class="box-shadow">
-										<div style="cursor: pointer;white-space: nowrap;word-wrap: break-word;hyphens: auto;overflow-wrap: break-word;-ms-word-break: break-all;word-break: break-all;clear: both;vertical-align: bottom;" class="projectElo" onclick="loadAfterQuery('.DataSetCenter-b','./model/faculties.php?campus=<?php echo $row['campus_id'];?>');"><?php echo $row['campus_name'];?>
+										<div style="cursor: pointer;white-space: nowrap;word-wrap: break-word;hyphens: auto;overflow-wrap: break-word;-ms-word-break: break-all;word-break: break-all;clear: both;vertical-align: bottom;" class="projectElo" onclick="loadAfterQuery('.DataSetCenter-b','../src/forms/admin/faculties.php?campus=<?php echo $row['campus_id'];?>');"><?php echo $row['campus_name'];?>
 											
 										</div>
 										<span title="Edit Campus" style="padding:10px 10px;cursor: pointer;"><i onclick="fa_fa_edit_campus('<?php echo $row['campus_id'];?>')" class="fa fa-edit"></i></span>
@@ -196,15 +200,7 @@ if(isset($_SESSION['masomane'])){
 			<h3>BAD REQUEST!!!</h3>
 			<?php
 		}
-	}
-	else{
-		session_destroy();
-		?>
-			<script>
-				window.location=("../../../?Yazi uyajwayela wena!!, Stop trying to access somebody's account through your own login details.");
-			</script>
-		<?php
-	}
+	
 }
 else{
 	session_destroy();
