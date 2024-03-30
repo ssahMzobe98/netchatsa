@@ -28,6 +28,11 @@ class UserPdo{
 		}
 		return $response;
     }
+    public function setUserLoginHistory(?string $email=null,object|null|string|array $response=null,object|null|string|array $server=null,object|null|string|array $request=null,object|null|string|array $env=null,object|null|string|array $session=null,object|null|string|array $cookies=null):Response{
+    	$sql = "INSERT into userHistoryDeviceTracker(email,response,server,request,env,session,cookies,date_time)values(?,?,?,?,?,?,?,NOW())";
+    	$params = [$email,$response,$server,$request,$env,$session,$cookies];
+        return$this->connect->postDataSafely($sql,'sssssss',$params);
+    }
 	public function getPosterUserMy_id(?int $post_id=null):string{
     	$sql="SELECT posted_by from studyarea where post_id=?";
     	$params=[$post_id];

@@ -51,6 +51,9 @@ class AuthServiceProvider extends ServiceProvider implements IAuthServiceProvide
     public function passwordReset($newPassReset,$reset_code):Response{
         return $this->userPdo->passwordReset($this->cleanData->lockPassWord($newPassReset),$reset_code);
     }
+    public function setUserLoginHistory(?string $email=null,object|null|string|array $response=null,object|null|string|array $server=null,object|null|string|array $request=null,object|null|string|array $env=null,object|null|string|array $session=null,object|null|string|array $cookies=null):Response{
+        return $this->userPdo->setUserLoginHistory($email,$response,$server,$request,$env,$session,$cookies);
+    }
     public function login(?string $pass=null,?string $email=null):array{
         if(!isset($pass)){
             return ['responseStatus'=>'F','responseMessage'=>'Password Required!'];

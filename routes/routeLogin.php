@@ -5,10 +5,14 @@ use App\Providers\Constants\ServiceConstants;
 use App\Providers\Constants\StatusConstants;
 use PHPMailer\PHPMailer\PHPMailer;
 use Src\Classes\SAIDValidator;
+use App\Providers\Response\Response;
+
 if(session_status() === PHP_SESSION_ACTIVE){
     session_destroy();
 }
-$e = ['responseStatus'=>'F','responseMessage'=>'UNKNOWN REQUEST!'];
+$e=new Response();
+$e->responseStatus=StatusConstants::FAILED_STATUS;
+$e->responseMessage="UNKNOWN REQUEST!!.";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 	if(isset($_POST['emailLogin'],$_POST['passLogin'])){
 		$serviceProvider = MMSServiceFactory::make(ServiceConstants::AUTH_SERVICE_PROVIDER,[null]);
@@ -74,6 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 			$_SESSION['usermail']=$email;
 			$e=$response;
 		}
+		$serviceProvider->setUserLoginHistory($email,json_encode($e),json_encode($_SERVER),json_encode($_REQUEST),json_encode($_ENV),json_encode($_SESSION),json_encode($_COOKIE));
 		
 	}
 	elseif(isset($_POST['gender'],$_POST['region'],$_POST['dob'],$_POST['address'],$_POST['provice'],$_POST['otp'])){
