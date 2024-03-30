@@ -37,33 +37,33 @@ if(isset($_SESSION['usermail'])){
       <link rel="icon" href="../img/aa.jpg">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-      <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" crossorigin="anonymous">-->
-      <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>-->
-      <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <script src="https://www.payfast.co.za/onsite/engine.js"></script>
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" crossorigin="anonymous">-->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>-->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<script src="https://www.payfast.co.za/onsite/engine.js"></script>
 
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-      <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
-      <!-- <script src="https://kit.fontawesome.com/a076d05399.js"></script> -->
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-      <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<!-- <script src="https://kit.fontawesome.com/a076d05399.js"></script> -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-        <!-- <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-ckfinder@41.2.0/src/index.min.js"></script>  -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+  <!-- <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-ckfinder@41.2.0/src/index.min.js"></script>  -->
 
-       <!-- <script src="../ckeditor/ckeditor.js"></script>
-       <script src="../ckfinder/ckfinder.js"></script> -->
+ <!-- <script src="../ckeditor/ckeditor.js"></script>
+ <script src="../ckfinder/ckfinder.js"></script> -->
    </head>
    <style>
      /* Googlefont Poppins CDN Link */
@@ -660,21 +660,21 @@ select{
     </div>
       <ul class="nav-links">
         <li>
-          <a onclick="loadMasomane('masomane')" class="active">
+          <a onclick='loadAfterQuery(".makhanyile","../src/forms/uni/applicationsa.php")' class="active">
             <i class='bx bx-grid-alt' ></i>
-            <span class="links_name">MaSomane</span>
+            <span class="links_name">Applications</span>
           </a>
         </li>
         <li>
-          <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/Applicationsa.php")'>
+          <a onclick='loadAfterQuery(".makhanyile","../src/forms/uni/Applicationsa.php")'>
             <i class='bx bx-grid-alt' ></i>
-            <span class="links_name">Applicationsa</span>
+            <span class="links_name">Accepted Std</span>
           </a>
         </li>
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/highSchools.php")'>
             <i class='bx bx-grid-alt' ></i>
-            <span class="links_name">High Schools</span>
+            <span class="links_name">Regretted Std</span>
           </a>
         </li>
         <li>
@@ -957,12 +957,11 @@ $(document).on("change",".ticket_status",function(){
     data:{ticket_status:ticket_status,ticket_id:ticket_id},
     cache:false,
     success:function(e){
-      response = JSON.parse(e);
-      if(response['responseStatus']==='S'){
+      if(e.length==1){
         console.log("added");
       }
       else{
-        console.log("Error: "+response['responseMessage']);
+        console.log("Error: "+e);
       }
     }
   });
@@ -980,9 +979,11 @@ let sidebarBtn = document.querySelector(".sidebarBtn");
 sidebarBtn.onclick = function() {
   sidebar.classList.toggle("active");
   if(sidebar.classList.contains("active")){
-  sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
-}else
-  sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+    sidebarBtn.classList.replace("bx-menu" ,"bx-menu-alt-right");
+  }
+  else{
+        sidebarBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+    }
 }
 function loadMasomane(url){
   LoadOnClick(url);
@@ -997,13 +998,13 @@ function logout(){
       data:{logoutExit:logoutExit},
       cache:false,
       success:function(e){
-        response = JSON.parse(e);
-        if(response['responseStatus']==='S'){
+        console.log(e);
+        if(e.length==1){
           $("#log_out").html('Good Bye...');
           window.location("../");
         }
         else{
-          $("#log_out").html('Error: '+response['responseMessage']);
+          $("#log_out").html('Error: '+e);
         }
       }
     });
@@ -1026,9 +1027,7 @@ function searchStudentsByIdNumber(){
       data:{findMe:findMe},
       cache:false,
       success:function(e){
-        response = JSON.parse(e);
-        // if(response['responseStatus']==='S'){
-        document.getElementById("ApplicantsLoader").innerHTML = response['responseMessage'];
+        document.getElementById("ApplicantsLoader").innerHTML = e;
       }
     });
   }
@@ -1046,9 +1045,8 @@ function searchInputSchool(){
       data:{findMe:findMe},
       cache:false,
       success:function(e){
-        response = JSON.parse(e);
-        // if(response['responseStatus']==='S'){
-        document.getElementById("AsivezeIzikoleLaphaLeft").innerHTML = response['responseMessage'];
+        // console.log(e);
+        document.getElementById("AsivezeIzikoleLaphaLeft").innerHTML = e;
       }
     });
   }
@@ -1066,8 +1064,8 @@ function SearchSubjectMatricUpgrade(){
       data:{findMe:findMe},
       cache:false,
       success:function(e){
-        response = JSON.parse(e);
-        document.getElementById("dataDisplayerIdrMatricUpgradeSubjects").innerHTML = response['responseMessage'];
+        // console.log(e);
+        document.getElementById("dataDisplayerIdrMatricUpgradeSubjects").innerHTML = e;
       }
     });
   }
@@ -1086,9 +1084,7 @@ function searchMasomaneSchoolFunc(){
       data:{findMe:findMe},
       cache:false,
       success:function(e){
-        response = JSON.parse(e);
-        // if(response['responseStatus']==='S'){
-        document.getElementById("dynamicalLoad1").innerHTML = response['responseMessage'];
+        document.getElementById("dynamicalLoad1").innerHTML = e;
       }
     });
   }
@@ -1107,9 +1103,7 @@ function searchBursaries(){
       data:{findMe:findMe},
       cache:false,
       success:function(e){
-        response = JSON.parse(e);
-        // if(response['responseStatus']==='S'){
-        document.getElementById("dataDisplayerIdr").innerHTML = response['responseMessage'];
+        document.getElementById("dataDisplayerIdr").innerHTML = e;
       }
     });
   }
@@ -1128,9 +1122,7 @@ function searchCourseFundedbyInstitution(){
       data:{findMe:findMe},
       cache:false,
       success:function(e){
-        response = JSON.parse(e);
-        // if(response['responseStatus']==='S'){
-        document.getElementById("dataDisplayerIdrCourses").innerHTML = response['responseMessage'];
+        document.getElementById("dataDisplayerIdrCourses").innerHTML = e;
       }
     });
   }
@@ -1153,9 +1145,8 @@ function saveSchoolName(){
         schoolNameInput:schoolNameInput
           },
       success:function(e){
-        response = JSON.parse(e);
-        if(response['responseStatus']==='F'){
-            $(".randOffInputError").attr("style","padding:5px 5px;color:red;").html(response['responseMessage']);
+        if(e.length>1){
+            $(".randOffInputError").attr("style","padding:5px 5px;color:red;").html(e);
         }
         else{
             $(".randOffInputError").attr("style","padding:5px 5px;color:green;border:1px solid green;").html("School Added Successfuly");
@@ -1234,9 +1225,8 @@ function maSomaneAddNewSchool(){
             PrincipaPersal:PrincipaPersal
           },
       success:function(e){
-        response = JSON.parse(e);
-        if(response['responseStatus']==='F'){
-            $(".errorLogMasoManeAddSchool").attr("style","padding:5px 5px;color:red;").html(response['responseMessage']);
+        if(e.length>1){
+            $(".errorLogMasoManeAddSchool").attr("style","padding:5px 5px;color:red;").html(e);
         }
         else{
             $(".errorLogMasoManeAddSchool").attr("style","padding:5px 5px;color:green;border:1px solid green;").html("School Added Successfuly");
@@ -1264,13 +1254,12 @@ function sendReminderPn(StudentIdQRQR){
       $(".sendReminderPn"+StudentIdQRQR).removeAttr("hidden").attr("style","color:white;").attr("style","color:white;").html("<center><img src='../img/loader.gif' style='width:5%;padding:10px 10px;justify-content:center;align-content:center;text-align:center;'>Submitting Request...</center>");
     },
     success:function(e){
-        response = JSON.parse(e);
-        if(response['responseStatus']==='S'){
+        if(e.length==1){
           $(".sendReminderPn"+StudentIdQRQR).attr("style","color:green;").html("<center>Email Sent</center>");
           
         }
         else{
-          $(".sendReminderPn"+StudentIdQRQR).attr("style","color:red;").html("<center>"+response['responseMessage']+"</center>");
+          $(".sendReminderPn"+StudentIdQRQR).attr("style","color:red;").html("<center>"+e+"</center>");
         }
     }
   });
@@ -1287,6 +1276,7 @@ function viewThisSchooInfo(viewThisSchooInfoID,is_read){
           $(".showModal").html("<img style='width:10%;' src='../img/loader.gif'><h5 style='color:green;'>Fetching Data..</h5>");
       },
       success:function(e){
+          // console.log(e);
           $(".showModal").html(e);
       }
     });
@@ -1356,8 +1346,7 @@ function saveInsititution(){
 
       },
       success:function(e){
-          response = JSON.parse(e);
-          if(response['responseStatus']==='S'){
+          if(e.length==1){
             $(".error-logSettup").attr("style","color:green;").html("<center>Institution Added.</center>");
             loadAfterQuery(".dataDisplayerIdr","../src/forms/admin/DisplayFunding.php");
             clearInput(['.TextNewInstitution',
@@ -1367,7 +1356,7 @@ function saveInsititution(){
                         '.TextNewInstitutiontoken']);
           }
           else{
-            $(".error-logSettup").attr("style","color:red;").html("<center>"+response['responseMessage']+"</center>");
+            $(".error-logSettup").attr("style","color:red;").html("<center>"+e+"</center>");
           }
       }
     });
@@ -1480,14 +1469,13 @@ function saveNewProject(){
 
       },
       success:function(e){
-          response = JSON.parse(e);
-          if(response['responseStatus']==='S'){
+          if(e.length==1){
             $(".error-logSettup").attr("style","color:green;").html("<center>Project Saved</center>");
             loadAfterQuery(".ProjectbodyMagnitude","../src/forms/admin/myWork.php");
             clearInput(['.projectName','.Decription','.Sprint']);
           }
           else{
-            $(".error-logSettup").attr("style","color:red;").html("<center>"+response['responseMessage']+"</center>");
+            $(".error-logSettup").attr("style","color:red;").html("<center>"+e+"</center>");
           }
       }
     });
@@ -1530,14 +1518,13 @@ function saveNewTicket(){
 
       },
       success:function(e){
-          response = JSON.parse(e);
-          if(response['responseStatus']==='S'){
+          if(e.length==1){
             $(".errorSubmit").attr("style","color:green;").html("<center>Ticket Saved</center>");
             // loadAfterQuery(".ProjectbodyMagnitude","../src/forms/admin/myWork.php");
             clearInput(['#editorEDS','.projectStatsI','.textTicketDescription','.textTicketWeight']);
           }
           else{
-            $(".errorSubmit").attr("style","color:red;").html("<center>"+response['responseMessage']+"</center>");
+            $(".errorSubmit").attr("style","color:red;").html("<center>"+e+"</center>");
           }
       }
     });
@@ -1568,13 +1555,12 @@ function saveMatricUpgradeNewChapter(){
         $(".error-logSettup").removeAttr("hidden").attr("style","color:white;").html("<center><img src='../img/loader.gif' style='width:5%;padding:10px 10px;justify-content:center;align-content:center;text-align:center;'>Processing Request...</center>");
       },
       success:function(e){
-          response = JSON.parse(e);
-          if(response['responseStatus']==='S'){
+          if(e.length==1){
             $(".error-logSettup").attr("style","color:green;").html("<center>Course Saved</center>");
             clearInput(['.TextChapter']);
           }
           else{
-            $(".error-logSettup").attr("style","color:red;").html("<center>"+response['responseMessage']+"</center>");
+            $(".error-logSettup").attr("style","color:red;").html("<center>"+e+"</center>");
           }
       }
     });
@@ -1605,13 +1591,12 @@ function saveNewFunding(){
         $(".error-logSettup").removeAttr("hidden").attr("style","color:white;").html("<center><img src='../img/loader.gif' style='width:5%;padding:10px 10px;justify-content:center;align-content:center;text-align:center;'>Processing Request...</center>");
       },
       success:function(e){
-          response = JSON.parse(e);
-          if(response['responseStatus']==='S'){
+          if(e.length==1){
             $(".error-logSettup").attr("style","color:green;").html("<center>Course Saved</center>");
             clearInput(['.selectCourse']);
           }
           else{
-            $(".error-logSettup").attr("style","color:red;").html("<center>"+response['responseMessage']+"</center>");
+            $(".error-logSettup").attr("style","color:red;").html("<center>"+e+"</center>");
           }
       }
     });
@@ -1639,13 +1624,12 @@ function removeContentFromDb(deleteThisContent){
     type:'post',
     data:{deleteThisContent:deleteThisContent},
     success:function(e){
-        response = JSON.parse(e);
-        if(response['responseStatus']==='S'){
+        if(e.length<=2){
             $(".deleteThisContent"+deleteThisContent).attr("hidden","true");
             $(".deleteThisContent"+deleteThisContent).html('removed');
         }
         else{
-            $(".deleteThisContent"+deleteThisContent).html("error:"+response['responseMessage']);
+            $(".deleteThisContent"+deleteThisContent).html("error:"+e);
         }
     }
   });
@@ -1698,13 +1682,12 @@ function sendButtonAddingContent(){
             SourceName:SourceName,
             SourceURL:SourceURL},
       success:function(e){
-          response = JSON.parse(e);
-          if(response['responseStatus']==='S'){
+          if(e.length==1){
               $(".failerError").removeAttr("hidden").attr("style","color:green;").html("<center>Content Saved.</center>");
               clearInput(['.titleOfContent','.SourceURL']);
           }
           else{
-              $(".failerError").removeAttr("hidden").attr("style","color:red;").html("error:"+response['responseMessage']);
+              $(".failerError").removeAttr("hidden").attr("style","color:red;").html("error:"+e);
           }
       }
     });
@@ -1731,13 +1714,12 @@ function MasoManeAddNetchatsaSubject(){
       data:{SubjectNameNetchatsa:SubjectNameNetchatsa,
             gradeNetchatsa:gradeNetchatsa},
       success:function(e){
-        response = JSON.parse(e);
-        if(response['responseStatus']==='S'){
+        if(e.length==1){
             $(".errorLogMasoManeAddNetchatsaSubjectError").removeAttr("hidden").attr("style","color:green;").html("<center>Subject Saved.</center>");
             clearInput(['.SubjectNameNetchatsa','.gradeNetchatsa']);
         }
         else{
-            $(".errorLogMasoManeAddNetchatsaSubjectError").removeAttr("hidden").attr("style","color:red;").html("error:"+response['responseMessage']);
+            $(".errorLogMasoManeAddNetchatsaSubjectError").removeAttr("hidden").attr("style","color:red;").html("error:"+e);
         }
       }
     });

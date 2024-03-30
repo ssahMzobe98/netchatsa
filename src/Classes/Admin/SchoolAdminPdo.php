@@ -11,15 +11,16 @@ class SchoolAdminPdo{
 	private $adminPdo;
 	private $cleanPdo;
 	use DBConnectServiceTrait;
-	public function init(){
-		$this->adminPdo = PDOServiceFactory::make(ServiceConstants::ADMIN,[$userPdo->connect]);
-		$this->cleanPdo = PDOServiceFactory::make(ServiceConstants::CLEANDATA,[$userPdo->connect]);
-	}
+	// public function init(){
+		
+	// }
 	public function maSomaneSaveSchool(string $PrincipalName="",string $PrincipalSurname="",int $PrincipalPhoneNo=0,string $PrincipalEmail="",int $selectMasomaneSchool=0,int $PrincipaIdNo=0,string $PrincipaPass="",int $PrincipaPersal=0,int $added_by=0):Response{
-		$getSchool=$this->adminPdo->getSchool($selectMasomaneSchool);
+		$adminPdo = PDOServiceFactory::make(ServiceConstants::ADMIN,[$this->connect]);
+		$cleanPdo = PDOServiceFactory::make(ServiceConstants::CLEANDATA,[$this->connect]);
+		$getSchool=$adminPdo->getSchool($selectMasomaneSchool);
 		$school_name=$getSchool['school'];
 		$user_nav="../school/".$school_name.rand(0,999999);
-		$params=[$PrincipalName,$PrincipalSurname,$PrincipalEmail,$this->cleanPdo->lockPassWord($PrincipaPass),"Principal",$user_nav,$PrincipalPhoneNo,$selectMasomaneSchool,$PrincipaIdNo,$PrincipaPersal,$PrincipaPersal,$added_by];
+		$params=[$PrincipalName,$PrincipalSurname,$PrincipalEmail,$cleanPdo->lockPassWord($PrincipaPass),"Principal",$user_nav,$PrincipalPhoneNo,$selectMasomaneSchool,$PrincipaIdNo,$PrincipaPersal,$PrincipaPersal,$added_by];
 		$sql="INSERT into masomane_users(name,surname,usermail,security,type,user_nav,grade_studying,phone,school,id_number,persal_number,school_student_num,school_employee_no,is_principal,time_added,added_by)values(?,?,?,?,?,?,'',?,?,?,?,'',?,1,NOW(),?)";
 		$strParams="ssssssssssss";
 		return $this->connect->postDataSafely($sql,$strParams,$params);

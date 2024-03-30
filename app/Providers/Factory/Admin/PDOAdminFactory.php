@@ -5,6 +5,7 @@ use App\Providers\Constants\ServiceConstants;
 use Src\Classes\Admin\MatricUpgradeAdminPdo;
 use Src\Classes\Admin\UniAdminPdo;
 use Src\Classes\Admin\SchoolAdminPdo;
+use Src\Classes\Admin\ProjectTicketAdminPdo;
 class PDOAdminFactory implements IMMSServiceFactory
 {
     protected static $data = [

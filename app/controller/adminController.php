@@ -26,7 +26,7 @@ if(isset($_SESSION['usermail'])){
 	$matricUpgrade = PDOServiceFactory::make(ServiceConstants::MATRIC_UPGRADE_PDO,[$userPdo->connect]);
 	// $sgelaPdo = PDOServiceFactory::make(ServiceConstants::SGELA_UNI_PDO,[$userPdo->connect]);
 	$adminPdo = PDOServiceFactory::make(ServiceConstants::ADMIN,[$userPdo->connect]);
-	$ProjectTicketAdminPdo = PDOAdminFactory(ServiceConstants::PROJECT_TICKET_ADMIN,[$userPdo->connect]);
+	$ProjectTicketAdminPdo = PDOAdminFactory::make(ServiceConstants::PROJECT_TICKET_ADMIN,[$userPdo->connect]);
 	$cur_user_row = $userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
 		if(isset($_POST['PrincipalName'],
 							$_POST['PrincipalSurname'],
@@ -44,9 +44,7 @@ if(isset($_SESSION['usermail'])){
 				$PrincipaIdNo=$cleanData->OMO($_POST['PrincipaIdNo']);
 				$PrincipaPass=$cleanData->OMO($_POST['PrincipaPass']);
 				$PrincipaPersal=$cleanData->OMO($_POST['PrincipaPersal']);
-				$e = $schoolAdminPdo->maSomaneSaveSchool($PrincipalName,
-																							$PrincipalSurname,
-																							$PrincipalPhoneNo,
+				$e = $schoolAdminPdo->maSomaneSaveSchool($PrincipalName,$PrincipalSurname,$PrincipalPhoneNo,
 																							$PrincipalEmail,
 																							$selectMasomaneSchool,
 																							$PrincipaIdNo,
@@ -103,21 +101,25 @@ if(isset($_SESSION['usermail'])){
 			$TextNewInstitutionAipKey2 = $uniAdminPdo->connect->EncryptThis($_POST['TextNewInstitutionAipKey2']);
 			$TextNewInstitutiontoken = $uniAdminPdo->connect->EncryptThis($_POST['TextNewInstitutiontoken']);
 			$e = $uniAdminPdo->masomaneSaveInstituions($TextNewInstitution,$TextNewInstitutionApiLink,$TextNewInstitutionAPIKey,$TextNewInstitutionAipKey2,$TextNewInstitutiontoken,$cur_user_row['id']);
+
 		}
 		elseif(isset($_POST['selectInstitution'],$_POST['selectCourse'])){
 			$selectInstitution=$cleanData->OMO($_POST['selectInstitution']);
 			$selectCourse=$cleanData->OMO($_POST['selectCourse']);
+			$e->responseStatus=StatusConstants::FAILED_STATUS;
+			$e->responseMessage="This course has already been added.";
 			if(!$uniAdminPdo->isCourseAddedToInstitution($selectInstitution,$selectCourse)){
 				$e = $uniAdminPdo->masomaneCreateNewCourse($selectInstitution,$selectCourse,$cur_user_row['id']);
+			}
 		}
 		elseif(isset($_POST['subjectName'],$_POST['TextChapter'])){
 			$subjectName=$cleanData->OMO($_POST['subjectName']);
 			$TextChapter=$cleanData->OMO($_POST['TextChapter']);
-	    $e = $matricUpgradeAdminPdo->andNewMatricUpgradeChapter($subjectName,$TextChapter,$cur_user_row['id']);
+	    	$e = $matricUpgradeAdminPdo->andNewMatricUpgradeChapter($subjectName,$TextChapter,$cur_user_row['id']);
 		}
 		elseif(isset($_POST['deleteThisContent'])){
-	    $deleteThisContent=$cleanData->OMO($_POST['deleteThisContent']);
-	    $e = $matricUpgradeAdminPdo->deleteThisContent($deleteThisContent);
+	    	$deleteThisContent=$cleanData->OMO($_POST['deleteThisContent']);
+	    	$e = $matricUpgradeAdminPdo->deleteThisContent($deleteThisContent);
 		}
 		elseif(isset($_POST['deremoTerm'],
 								 $_POST['subjectChapter'],
@@ -139,7 +141,6 @@ if(isset($_SESSION['usermail'])){
 			$gradeNetchatsa = $cleanData->OMO($_POST['gradeNetchatsa']);
 			$e = $matricUpgrade->masomaneAddNewNetchatsaSchool($SubjectNameNetchatsa,$gradeNetchatsa,$cur_user_row['id']);
 		}
-		
 		echo json_encode($e);
 }
 else{

@@ -1,18 +1,22 @@
 <?php
+include_once("../../../vendor/autoload.php");
+use Src\Classes\Pdo\UserPdo;
+use App\Providers\Constants\ServiceConstants;
+use App\Providers\Constants\StatusConstants;
+use App\Providers\Factory\PDOServiceFactory;
+use App\Providers\Factory\Admin\PDOAdminFactory;
+use App\Providers\Constants\Flags;
 if(session_status() !== PHP_SESSION_ACTIVE){
   session_start();
 }
-if(isset($_SESSION['masomane'])){
-	require_once("../controller/pdo.php");
-	$pdo=new _pdo_();
-	$cur_user_row =$pdo->userInfo($_SESSION['masomane']);
-	$userDirect=$cur_user_row['user_nav'];
-	$url = explode("/",$_SERVER['REQUEST_URI']);
-	$url=$url[count($url)-4]."/".str_replace("%20", " ",$url[count($url)-3]);
-	if($url==$userDirect){
+if(isset($_SESSION['usermail'])){
+		$userPdo = PDOServiceFactory::make(ServiceConstants::USER,[null]);
+  	$cur_user_row=$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
+  	$cleanData = PDOServiceFactory::make(ServiceConstants::CLEANDATA,[$userPdo->connect]);
+		$UniAdminPdo = PDOAdminFactory::make(ServiceConstants::UNI_ADMIN_PDO,[$userPdo->connect]);
 		if(isset($_GET['course'])&&$_GET['course']>0){
-			$course = $pdo->OMO($_GET['course']);
-			$courses = $pdo->masomaneGetUniCoursesInfo($course);
+			$course = $cleanData->OMO($_GET['course']);
+			$courses = $UniAdminPdo->masomaneGetUniCoursesInfo($course);
 			
 			if(count($courses)==0){
 				echo"No data to display";
@@ -34,15 +38,6 @@ if(isset($_SESSION['masomane'])){
 		else{
 			echo"BAD REQUEST!!";
 		}
-	}
-	else{
-		session_destroy();
-		?>
-			<script>
-				window.location=("../../?Yazi uyajwayela wena!!, Stop trying to access somebody's account through your own login details.");
-			</script>
-		<?php
-	}
 }
 else{
 	session_destroy();
