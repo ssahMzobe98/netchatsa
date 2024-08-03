@@ -461,23 +461,23 @@ button:hover{
 
 	</script>
 	<script>
-		function autoCompleteAddress() {
-		    var input = document.querySelector('.address');
-		    var autocomplete = new google.maps.places.Autocomplete(input);
-		    autocomplete.setFields(['address_components', 'formatted_address']);
-		    autocomplete.addListener('place_changed', function() {
-		        var place = autocomplete.getPlace();
-		        console.log(place.formatted_address);
-		    });
-		}
-		function loadGoogleMapsScript() {
-		    var script = document.createElement('script');
-		    script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB89PxjqngFvCG66ljG_CLVc3oQlzk0YBI&libraries=places&callback=autoCompleteAddress';
-		    script.defer = true;
-		    //AIzaSyB89PxjqngFvCG66ljG_CLVc3oQlzk0YBI&callback=initMap&libraries=places&v=weekly
-		    document.body.appendChild(script);
-		}
-		loadGoogleMapsScript();
+		// function autoCompleteAddress() {
+		//     var input = document.querySelector('.address');
+		//     var autocomplete = new google.maps.places.Autocomplete(input);
+		//     autocomplete.setFields(['address_components', 'formatted_address']);
+		//     autocomplete.addListener('place_changed', function() {
+		//         var place = autocomplete.getPlace();
+		//         console.log(place.formatted_address);
+		//     });
+		// }
+		// function loadGoogleMapsScript() {
+		//     var script = document.createElement('script');
+		//     script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB89PxjqngFvCG66ljG_CLVc3oQlzk0YBI&libraries=places&callback=autoCompleteAddress';
+		//     script.defer = true;
+		//     //AIzaSyB89PxjqngFvCG66ljG_CLVc3oQlzk0YBI&callback=initMap&libraries=places&v=weekly
+		//     document.body.appendChild(script);
+		// }
+		// loadGoogleMapsScript();
 
 
 	</script>

@@ -1691,7 +1691,7 @@ foreach($students_applications_login_details as $row){
 								$("#_1_1").attr("style","color:green;");
 								$("#_1_1").html("SUCCESSFULY UPLOADED");
 								$("#_2").removeAttr("hidden");
-								loader("apply");
+								window.location= './';
 								
 							}
 						}
@@ -1738,7 +1738,7 @@ foreach($students_applications_login_details as $row){
 								$("#_2_2").attr("style","color:green;");
 								$("#_2_2").html("SUCCESSFULY UPLOADED");
 								$("#_3").removeAttr("hidden");
-								loader("apply");
+								window.location= './';
 								
 							}
 						}
@@ -1785,8 +1785,8 @@ foreach($students_applications_login_details as $row){
 								$("#_3_3").attr("style","color:green;");
 								$("#_3_3").html("SUCCESSFULY UPLOADED");
 								$("#_4").removeAttr("hidden");
-								loader("apply");
-								
+								window.location= './';
+							
 							}
 						}
 					});

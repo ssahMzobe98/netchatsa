@@ -653,7 +653,7 @@
             "version": "v3.0.0",
             "source": {
                 "type": "git",
-                "url": "git@github.com:maxmind/GeoIP2-php.git",
+                "url": "https://github.com/maxmind/GeoIP2-php.git",
                 "reference": "1a802ce9356cdd1c6b681c030fd9563750e11e6a"
             },
             "dist": {
@@ -700,6 +700,10 @@
                 "geolocation",
                 "maxmind"
             ],
+            "support": {
+                "issues": "https://github.com/maxmind/GeoIP2-php/issues",
+                "source": "https://github.com/maxmind/GeoIP2-php/tree/v3.0.0"
+            },
             "time": "2023-12-04T17:16:34+00:00"
         },
         {
@@ -8445,5 +8449,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

@@ -80,7 +80,7 @@ try{
 				$_SESSION['usermail']=$email;
 				$e=$response;
 			}
-			$serviceProvider->setUserLoginHistory($email,json_encode($e),json_encode($_SERVER),json_encode($_REQUEST),json_encode($_ENV),json_encode($_SESSION),json_encode($_COOKIE));
+			//$serviceProvider->setUserLoginHistory($email,json_encode($e),json_encode($_SERVER),json_encode($_REQUEST),json_encode($_ENV),json_encode($_SESSION),json_encode($_COOKIE));
 			
 		}
 		elseif(isset($_POST['gender'],$_POST['region'],$_POST['dob'],$_POST['address'],$_POST['provice'],$_POST['otp'])){

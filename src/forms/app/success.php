@@ -1,5 +1,5 @@
 <?php
-include_once("../../vendor/autoload.php");
+include_once("../../../vendor/autoload.php");
 use Src\Classes\Pdo\UserPdo;
 use App\Providers\Constants\ServiceConstants;
 use App\Providers\Constants\StatusConstants;
@@ -98,14 +98,14 @@ if(isset($_SESSION['usermail'])){
         if($e->responseStatus===StatusConstants::SUCCESS_STATUS){
 			$emailTo=$matricUpgrade->getEmailUser($id);
 		    $emailFrom="np-reply@netchatsa.com";
-		    $Message="<p>Dear Applicant</p><h5 style='color:green;'>PAYMENT OF (".$amountToPay.") SUCCESSFUL</h5><p>You have started Tertiary Applications with TAMA Organizationsa via netchatsa APP. Please note that you just completed the 9th step of the application. CONGRATS!!👏 😇</p><h5 style='color:green;'>BURSARIES & NSFAS</h5><p>By completing your Application TAMA Organizationsa you give TAMA Organizationsa the authority to start and complete applications with NSFAS and other relevant Bursary applications depending on the choice of Career/Course </p><h5 style='color:green;'>TERTIARY INSTITUTIONS</h5><p>With TAMA Organizationsa, You will place one application with all the tertiary institutions you desire. TAMA ORGANIZATIONSA will forward your application to all selected (by applicant choice) Tertiry Institutions.</p>";
+		    $Message="<p>Dear Applicant</p><h5 style='color:green;'>PAYMENT OF (".$amount_gross.") SUCCESSFUL</h5><p>You have started Tertiary Applications with TAMA Organizationsa via netchatsa APP. Please note that you just completed the 9th step of the application. CONGRATS!!👏 😇</p><h5 style='color:green;'>BURSARIES & NSFAS</h5><p>By completing your Application TAMA Organizationsa you give TAMA Organizationsa the authority to start and complete applications with NSFAS and other relevant Bursary applications depending on the choice of Career/Course </p><h5 style='color:green;'>TERTIARY INSTITUTIONS</h5><p>With TAMA Organizationsa, You will place one application with all the tertiary institutions you desire. TAMA ORGANIZATIONSA will forward your application to all selected (by applicant choice) Tertiry Institutions.</p>";
 		    $subject="TAMA APPLICATIONSA (Completion of step9 Alert)";
 		    // require_once("../controller/pdo.php");
 		    $e->extraData=$notification->sendEmail($emailTo,$emailFrom,$Message,$subject);
 		    
 		    $emailTo=$matricUpgrade->getEmailUser($id);
 		    $emailFrom="np-reply@netchatsa.com";
-		    $Message="<p>Mr MS Mzobe </p><h5 style='color:green;'>PAYMENT OF (".$amountToPay.") SUCCESSFUL By user ({$emailTo} - {$id})</h5><p></p>";
+		    $Message="<p>Mr MS Mzobe </p><h5 style='color:green;'>PAYMENT OF (".$amount_gross.") SUCCESSFUL By user ({$emailTo} - {$id})</h5><p></p>";
 		    $subject="TAMA APPLICATIONSA (Completion of step9 Alert)";
 		    $notification->sendEmail("netchatsa@gmail.com",$emailFrom,$Message,$subject);
         }

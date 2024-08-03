@@ -98,7 +98,11 @@ class TertiaryApplicationsPdo{
 			if(!$skip){
 				$getCount=$this->connect->numRows("SELECT applicationid from finalapplication where applicationid=?","s",[$applicationId])??0;
 				if($getCount==3 || $getCount>3){
+				    
 					$response=$this->testingUpdater(7,true,$my_id);
+					if($response->responseStatus===StatusConstants::SUCCESS_STATUS){
+					    $response->responseMessage ='NEXT';
+					}
 				}
 			}
 		}
@@ -125,7 +129,7 @@ class TertiaryApplicationsPdo{
 		}
 		return $this->Response;
 	}
-	private function testingUpdater(int $level=0,bool $isStarted=false, string $my_id=""):Response{
+	public function testingUpdater(int $level=0,bool $isStarted=false, string $my_id=""):Response{
 		$sql="";
 		$params=[];
 		$stringSetter="";

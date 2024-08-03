@@ -19,7 +19,7 @@ class NotificationsPdo{
 		}
 		return $this->Response;
 	}
-	public function sendEmail($message,$reciever,$sender,$subject,$name,$surname):Response {
+	public function sendEmail(string $message='',string $reciever='',string $sender='',string $subject='',string $name='',string $surname=''):Response {
 		$mailService = MMSServiceFactory::make(ServiceConstants::MAIL_SERVICE,[new PHPMailer()]);
 		return $mailService->setSMTPSettings(StatusConstants::MAIL_HOST, StatusConstants::DEFAULT_SYSTEM_SENDER, StatusConstants::MAILER_PASS, 465,PHPMailer::ENCRYPTION_SMTPS)
 						->setSender(StatusConstants::DEFAULT_SYSTEM_SENDER,StatusConstants::DEFAULT_SYSTEM_SENDER_NAME)

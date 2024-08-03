@@ -10,6 +10,7 @@ class Response implements IResponse
     public string $responseStatus='';
     public string $responseMessage='';
     public int $otp;
+    public int $countT = 0;
     public string $status;
     public string|object|array $extraData;
     public string|object|array $moreExtraData;

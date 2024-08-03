@@ -1379,6 +1379,7 @@ class DramaClassPdo{
 								const year_of_study=$("#year_of_study").val();
 								const campus_id=$("#campus_id").val();
 								$(id).html("<small><img style='width:8%;' src='../img/processor.gif'> <span style='color:green;'>Processing Data...</span></small>");
+								// console.log("Log Check 1382"+id);
 								$.ajax({
 									url:"./controller/ajaxCallProcessor.php",
 									type:"POST",
@@ -1386,21 +1387,24 @@ class DramaClassPdo{
 									},
 									cache:false,
 									beforeSend:function(){
+										// console.log("Log Check 1382"+id+" Sending Data");
 										$(id).html("<small><img style='width:8%;' src='../img/processor.gif'> <span style='color:green;'>Submitting Data...</span></small>");
 									},
 									success:function(e){
-										console.log(e);
-										if(e.length>2){
-											$(id).html("ERROR: REPORT THIS ERROR :"+e);
+
+										response = JSON.parse(e);
+										// console.log("Log Check 1382"+id+" Recieving Reasponse");
+										// console.log(response);
+										if(response['responseStatus']==='F'){
+											$(id).html("ERROR: REPORT THIS ERROR :"+response['responseMessage']);
 											$(id).attr("style","color:red;background-color:#000;");
 											$(error).removeAttr("hidden");
 											$(error).attr("style","border-radius:10px;padding:10px;width:100%;color:red;background-color:#000;");
-											$(error).html("REPORT THIS ERROR <br>Error 320 : "+e);
-											console.log("Erroring..");
+											$(error).html("REPORT THIS ERROR <br>Error 320 : "+response['responseMessage']);
 										}
 
-										else if(e.length==1){
-											console.log(e.length+" loader to change")
+										else if(response['responseMessage']==='NEXT'){
+											// console.log(e.length+" loader to change");
 											$(id).html("Application Submitted!!");
 											$(id).attr("disabled",true);
 											$(id).html("<small><img style='width:8%;' src='../img/processor.gif'> <span style='color:green;'>Redirecting...</span></small>");
@@ -1418,7 +1422,7 @@ class DramaClassPdo{
 											$("#year_of_study").attr("disabled",true);
 											$("#campus_id").attr("disabled",true);
 											$(id).attr("disabled",true);
-											console.log("Not suppossed to change");
+											// console.log(response);
 										}
 									}
 								});
@@ -1568,17 +1572,17 @@ class DramaClassPdo{
 		//print_r($this->getApplicationId($array['std_id']));echo'----';
 	    $amountToPay=$this->matricUpgrade->getAmountToPay($this->TertiaryApplications->getApplicationId($array['std_id']));
 	    
-	    if($amountToPay=="R150.00"){
-            $amountToPay="150.00";
+	    if($amountToPay=="R220.00"){
+            $amountToPay="220.00";
         }
-        elseif($amountToPay=="R200.00"){
-            $amountToPay="200.00";
+        elseif($amountToPay=="R220.00"){
+            $amountToPay="220.00";
         }
-        elseif($amountToPay=="R250.00"){
-            $amountToPay="250.00";
+        elseif($amountToPay=="R220.00"){
+            $amountToPay="220.00";
         }
         else{
-            $amountToPay="150.00";
+            $amountToPay="220.00";
         }
         $tax=($amountToPay*0.15)+3;
         $amountToPay+=$tax;
@@ -1596,17 +1600,17 @@ class DramaClassPdo{
             		$step3_info=$this->TertiaryApplications->getStep3Info($applicant_id);
             		$step4_info=$this->TertiaryApplications->getStep4Info($applicant_id);
             		$step5_info=$this->TertiaryApplications->getStep5Info($applicant_id);
-                    if($amountToPay=="R150.00"){
-                        $amountToPay="150.00";
+                    if($amountToPay=="R220.00"){
+                        $amountToPay="220.00";
                     }
-                    elseif($amountToPay=="R200.00"){
-                        $amountToPay="200.00";
+                    elseif($amountToPay=="R220.00"){
+                        $amountToPay="220.00";
                     }
-                    elseif($amountToPay=="R250.00"){
-                        $amountToPay="250.00";
+                    elseif($amountToPay=="R220.00"){
+                        $amountToPay="220.00";
                     }
                     else{
-                        $amountToPay="150.00";
+                        $amountToPay="220.00";
                     }
                     $tax=($amountToPay*0.15)+3;
 	                $amountToPay=$amountToPay+=$tax;

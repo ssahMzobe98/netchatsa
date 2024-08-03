@@ -128,7 +128,7 @@ function pUPLOAD_DOME_POPUP(){
 		        <input type="text"  id="studyAreaMathTitle" placeholder="Enter Your Title Here..">
 		    </div>
 		    <div class="img_selector">
-		        <input type="file" name="file" id="studyAreaMathInput" accept="video/*,image/*">
+		        <input type="file" name="file" id="studyAreaMathInput" >
 		    </div>
 		    <br>
 		    <div class="text_editor">
