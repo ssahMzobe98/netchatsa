@@ -1,20 +1,26 @@
 <?php
-session_start();
+include_once("../../../vendor/autoload.php");
+use Src\Classes\Pdo\UserPdo;
+use App\Providers\Constants\ServiceConstants;
+use App\Providers\Constants\StatusConstants;
+use App\Providers\Factory\PDOServiceFactory;
+use App\Providers\Constants\Flags;
+use App\Providers\Factory\Admin\PDOAdminFactory;
+use Src\Classes\Pdo\TimePdo;
+if(session_status() !== PHP_SESSION_ACTIVE){
+	session_start();
+}
 if(isset($_SESSION['usermail'])){
-	require_once("../controller/pdo.php");
-	$pdo=new _pdo_();
-	$cur_user_row =$pdo->userInfo($_SESSION['usermail']);
-	$userDirect=$cur_user_row['directory_index'];
-	$url = explode("/",$_SERVER['REQUEST_URI']);
-	$url=str_replace("%20", " ",$url[2]);
-	if($url==$userDirect){
+	$userPdo = PDOServiceFactory::make(ServiceConstants::USER,[null]);
+	$tertiaryApplications = PDOServiceFactory::make(ServiceConstants::TERTIARY_APPLICATIONS,[$userPdo->connect]);
+	$cur_user_row =$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
 		if(isset($_GET['unisaleInpu'],$_GET['faculty_id'])){
 			if(!empty($_GET['unisaleInpu'])&&!empty($_GET['faculty_id'])){
 				$uni_id=$_GET['unisaleInpu'];$faculty_id=$_GET['faculty_id'];
-				$Courses=$pdo->getCoursesOfThisFaculty($uni_id,$faculty_id);
-				$facultyName=$pdo->getFacultyName($faculty_id)['faculty_name'];
+				$Courses=$tertiaryApplications->getCoursesOfThisFaculty($uni_id,$faculty_id);
+				$facultyName=$tertiaryApplications->getFacultyName($faculty_id)['faculty_name'];
 				$campus_id=$Courses[0]['campus_id'];
-				$getUniName=$pdo->uniName($uni_id)['uni_name'];
+				$getUniName=$tertiaryApplications->uniName($uni_id)['uni_name'];
 				if(count($Courses)==0){
 					echo"No Courses Found";
 				}
@@ -52,8 +58,8 @@ if(isset($_SESSION['usermail'])){
                                 		type:'post',
                                 		data:{course_id:course_id,uni_id:uni_id,faculty_id:faculty_id,faculty_name:faculty_name,uni_name:uni_name,campus_id:campus_id,mode_of_attendance:mode_of_attendance,year_of_study:year_of_study},
                                 		success:function(e){
-                                		    console.log(e);
-                                		    if(e.length<=2){
+                                		    response = JSON.parse(e);
+											if(response['responseStatus']==='S'){
                                 		        $(".saleInput-err").attr("style","width:100%;padding:10px 10px;color:#45f3ff;background:green;border:2px solid white;text-align:center;font-size:14px;");
                                 		        $(".saleInput-err").html("Request Successful..");
                                 		        loader("apply");
@@ -81,15 +87,7 @@ if(isset($_SESSION['usermail'])){
 		else{
 			echo"Engathi Suyaphaphjake manje, Whoever you are stop it!!...";
 		}
-	}
-	else{
-		session_destroy();
-		?>
-			<script>
-				window.location=("../../?Yazi uyajwayela wena!!, Stop trying to access somebody's account through your own login details.");
-			</script>
-		<?php
-	}
+
 }
 else{
 	session_destroy();

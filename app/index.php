@@ -677,36 +677,7 @@ background: #23242a;
 				</div>
 			</section>
 
-<div class="modal fade" id="addApplicationTertiary" role="dialog" >
-    <div class="modal-dialog" >
-      <div class="modal-content"style="color:#45f3ff;background-color:#212121;">
-       <div class="header-malo">
-           <h5>Add Application here</h5>
-       </div>
-        <div class="modal-body">
-            <div class="rode-map">  
-              <select class="uni-row" name="uni" >
-                  <option value="">-- Select University --</option>
-                  <?php
-                  // echo"kldnflkdnslk";
-                  $response=$tertiaryApplications->getUniversities();                       
-                  foreach($response as $row){
-                      ?>
-                      <option value="<?php echo $row['id'];?>" ><?php echo $row['uni_name'];?></option>
-                      <?php
-                  }
-                  ?>
-              </select> 
-              <br><br>
-              <button class="btn " style="border:1px solid #45f3ff;color:#45f3ff;" onclick="selectTertiary()" data-dismiss="modal">Select Tertiary</button>
-            </div>    
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default set" data-dismiss="modal" style="">Close</button>
-        </div>
-      </div>
-    </div>
-</div>
+
 <?php 
 $students_applications_login_details=$tertiaryApplications->get_students_applications_login_details($tertiaryApplications->getApplicationId($cur_user_row['my_id']));
 foreach($students_applications_login_details as $row){
@@ -987,7 +958,9 @@ foreach($students_applications_login_details as $row){
 					});
 				}
 			});
-
+		function loadQuery(classD,url){
+			$(classD).html("<img src='../img/loader.gif' width='50%'>").load(url);
+		}
 		function uploadMathQuestion(){
 			const studyAreaMathInput=$("#studyAreaMathInput").val();
 			const studyAreaMathText=$("#studyAreaMathText").val();
@@ -1168,12 +1141,13 @@ foreach($students_applications_login_details as $row){
 		}
 		function selectTertiary(){
 			const uniSelected=$(".uni-row").val();
+			// console.log(uniSelected + ' ffff');
 			if(uniSelected==""){
 				$(".fallbackEmptyOrError").attr("style","color:red;").html("Please select one university to process!!..");
 			}
 			else{
 				$(".fallbackEmptyOrError").removeAttr("style").html("");
-				$(".add-uni-application").attr("style","color:#45f3ff;").html("Please wait while Fetching Tertiary for you...").load("../../src/forms/app/campusSelectLoader.php?q="+uniSelected);
+				$(".add-uni-application").attr("style","color:#45f3ff;").html("Please wait while Fetching Tertiary for you...").load("../src/forms/app/campusSelectLoader.php?q="+uniSelected);
 			}
 		}
 		function firstLoader(){

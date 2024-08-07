@@ -43,7 +43,7 @@ if(isset($_SESSION['usermail'])){
 								}
 								else{
 									const uni="<?php echo $uni;?>";
-									$(".saleInput").html("waiting for response...").loadQuery('className',"../src/forms/admin/CourseSelectLoader.php?unisaleInpu="+uni+"&faculty_id="+select);
+									$(".saleInput").html("waiting for response...").load("../src/forms/app/CourseSelectLoader.php?unisaleInpu="+uni+"&faculty_id="+select);
 
 								}
 							});

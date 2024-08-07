@@ -1973,7 +1973,7 @@ class DramaClassPdo{
                 else{
                     ?>
                 <div class="add-uni-application">
-                    <button class="btn btn-mob" data-toggle="modal" data-target="#addApplicationTertiary">Add Application</button>
+                    <button class="btn btn-mob" onclick="DynamicDomeSmallModal('addTertiaryApplication','addTertiaryApplicationModal')">Add Application</button>
                 </div>
                 <div class="fallbackEmptyOrError"></div>
                     <?php
@@ -1986,6 +1986,7 @@ class DramaClassPdo{
                 
     		    
     		</div>
+    		
 
 		<?php
 		}
