@@ -1947,22 +1947,22 @@ class DramaClassPdo{
                                     $(".bedant").removeAttr('hidden');
                                     $(".bedant").html("<img style='width:4%;color:#45f3ff;' src='../img/processor.gif'> Adding Course...");
                                     $.ajax({
-                            		url:'./controller/ajaxCallProcessor.php',
-                            		type:'post',
-                            		data:{a:a,b:b,c:c},
-                            		success:function(e){
-                            		    if(e.length<=2){
-                            		        $(".bedant").attr("style","background-color:green;color:#fff;");
-                            		        $(".bedant").html("Course Added Successfuly...");
-                            		        loader("apply");
-                            		    }
-                            		    else{
-                            		        $(".bedant").attr("style","background-color:black;color:red;");
-                            		        $(".bedant").html(e);
-                            		    }
-                            			
-                            		}
-                	});
+	                            		url:'./controller/ajaxCallProcessor.php',
+	                            		type:'post',
+	                            		data:{a:a,b:b,c:c},
+	                            		success:function(e){
+	                            		    if(e.length<=2){
+	                            		        $(".bedant").attr("style","background-color:green;color:#fff;");
+	                            		        $(".bedant").html("Course Added Successfuly...");
+	                            		        loader("apply");
+	                            		    }
+	                            		    else{
+	                            		        $(".bedant").attr("style","background-color:black;color:red;");
+	                            		        $(".bedant").html(e);
+	                            		    }
+	                            			
+	                            		}
+                					});
                                 }
                                 
                             });
@@ -1978,23 +1978,22 @@ class DramaClassPdo{
                 <div class="fallbackEmptyOrError"></div>
                     <?php
                 }
-                ?>
-                
-                
+                ?>                
                 <br>
                 <p style="color:red;border:1px solid red;font-size:11.5px;">NOTE that NSFAS & Relavant Bursary Applications will be displayed here once application process has been started with SOON to open Bursary offering Institutions.</p>
-                
-    		    
+                <div class="runBursaryUp">
+                	
+                </div>
     		</div>
-    		
-
+    		<script>
+    			loadQuery('.runBursaryUp','../src/forms/app/displayBursaryApplication.php');
+    		</script>
 		<?php
 		}
 		else{
 		    echo "YOU HAVE NOT MADE PAYMENT!!";	
 		}
 	}
-	
 }
 
 ?>

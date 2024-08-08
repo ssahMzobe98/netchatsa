@@ -476,7 +476,7 @@ class TertiaryApplicationsPdo{
 	    $sqlArr=[];
 	    for($i=0;$i<5;$i++){
 	        $k=$i+1;
-	        $sqlArr[]="select 
+	        $sqlArr[]="SELECT 
 	                *
 	            from step{$k}
 	            where applicationid = ?";
@@ -491,7 +491,7 @@ class TertiaryApplicationsPdo{
 		return $results??[];
 	}
 	public function getDocUrl($my_id):string{
-	    $sql = "select directory_index from create_runaccount where my_id=?";
+	    $sql = "SELECT directory_index from create_runaccount where my_id=?";
 	    $params = [$my_id];
 	    $strParams = "s";
 		$res = $this->connect->getAllDataSafely($sql,$strParams,$params)[0]??[];
@@ -499,7 +499,7 @@ class TertiaryApplicationsPdo{
 	}
 	public function getfinalApplication($studentId):array{
 	    $sql ="
-	    select fa.*,
+	    SELECT fa.*,
             fa.uni_id,
             (select uni_name from universities where id =fa.uni_id) as uni_name,
             fa.faculty_name as faculty_name,
@@ -515,6 +515,18 @@ class TertiaryApplicationsPdo{
 	    $params = [$studentId];
 	    $strParams = "s";
 	    return $this->connect->getAllDataSafely($sql,$strParams,$params)??[];
+	}
+	public function getBursaryApplications(?string $my_id=null):array{
+		$sql = "SELECT sba.*, 
+       				GROUP_CONCAT(c.course_name) AS courses_funded
+				FROM student_bursary_application AS sba
+				LEFT JOIN step1 AS s ON s.applicationid = sba.student_application_id
+				LEFT JOIN courses AS c ON FIND_IN_SET(c.course_id, (sba.list_of_courses_applied_funded_by_institution))
+				WHERE s.std_id = ? 
+  						AND sba.status = 'A'
+				GROUP BY sba.id;
+		";
+		return $this->connect->getAllDataSafely($sql,'s',[$my_id])??[];
 	}
 	
 }
