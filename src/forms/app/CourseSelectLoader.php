@@ -81,11 +81,11 @@ if(isset($_SESSION['usermail'])){
 				}
 			}
 			else{
-				echo"Yewna Yey!!, Musa ukusijwayela kabi!!...";
+				echo"UNKNOWN REQUEST!";
 			}
 		}	
 		else{
-			echo"Engathi Suyaphaphjake manje, Whoever you are stop it!!...";
+			echo"PERMISSION DENIED!";
 		}
 
 }
