@@ -517,16 +517,72 @@ class TertiaryApplicationsPdo{
 	    return $this->connect->getAllDataSafely($sql,$strParams,$params)??[];
 	}
 	public function getBursaryApplications(?string $my_id=null):array{
-		$sql = "SELECT sba.*, 
-       				GROUP_CONCAT(c.course_name) AS courses_funded
-				FROM student_bursary_application AS sba
-				LEFT JOIN step1 AS s ON s.applicationid = sba.student_application_id
-				LEFT JOIN courses AS c ON FIND_IN_SET(c.course_id, (sba.list_of_courses_applied_funded_by_institution))
-				WHERE s.std_id = ? 
-  						AND sba.status = 'A'
-				GROUP BY sba.id;
+		$sql = "SELECT baq.id,baq.student_id_ref,baq.bursary_institution_id,baq.is_sent,baq.application_status,baq.time_sent, 
+       			GROUP_CONCAT(c.course_name ,' , ',c.course_id,' - ') AS courses_funded,
+                bi.institutions as bursary_institution,
+                date(bi.open_date)as open_date,
+                date(bi.closing_date) as closing_date,
+                time(bi.open_date) as open_time,
+                time(bi.closing_date) as closing_time,
+                if(now()>=bi.open_date and NOW()<bi.closing_date,'Y','N') as is_open
+				FROM bursary_application_queue AS baq
+				LEFT JOIN step1 AS s ON s.applicationid = baq.student_id_ref
+				LEFT JOIN courses AS c ON c.course_id = baq.caurse_id
+                LEFT JOIN bursaries_institutions AS bi ON bi.id = baq.bursary_institution_id
+				WHERE s.std_id = ?
+                GROUP by baq.bursary_institution_id
 		";
 		return $this->connect->getAllDataSafely($sql,'s',[$my_id])??[];
+	}
+	public function getIdOfCompletedApplications():array{
+		$sql="SELECT applicationid as applicationid  from payment where payment_status =? and YEAR(time_uploaded)=YEAR(NOW())";
+		return $this->connect->getAllDataSafely($sql,'s',['PAID'])??[];
+	}
+	public function getAppliedStudentCauses(?string $applicationid=null):array{
+		if($applicationid===null){
+			return [];
+		}
+		$sql = "SELECT course_id from finalapplication where applicationid=?";
+		return $this->connect->getAllDataSafely($sql,'s',[$applicationid])??[];
+	}
+	public function getBursariesThatFundTheseCauses(array $applicantCauses=[]):array{
+		if(empty($applicantCauses)){
+			return [];
+		}
+		$sql = "SELECT institution_id from bursary_funding_courses where course_id=?";
+		$institutionsFundingCauses = [];
+		foreach($applicantCauses as $data){
+			$params=[$data['course_id']];
+			$institutionsFundingCauses[$data['course_id']] = $this->connect->getAllDataSafely($sql,'s',$params)??[];
+		}
+		return $institutionsFundingCauses;
+	}
+	public function sendBursaryApplicationToQueue(string $student_id_ref, array $data = []):Response{
+		$sql = "INSERT INTO bursary_application_queue(student_id_ref,caurse_id,bursary_institution_id,time_added,is_sent,time_sent)values(?,?,?,NOW(),'N',NULL)";
+		$this->Response->responseStatus=StatusConstants::SUCCESS_STATUS; 
+		$this->Response->responseMessage='Queue for this user data already exist.'; 
+		foreach($data as $cause_id => $bursaries){
+			foreach($bursaries as $value){
+				$params = [$student_id_ref,$cause_id,$value['institution_id']];
+				if(!$this->paramsExistsInQueue($params)){
+					$this->Response=$this->connect->postDataSafely($sql,'sss',$params);
+					// echo json_encode($this->Response)." - 562";
+					if($this->Response === StatusConstants::FAILED_STATUS){
+						$this->Response->responseArray=$data; 
+						return $this->Response;
+					}
+				}
+			}
+		}
+		$this->Response->responseArray=$data;
+		return $this->Response;
+	}
+	protected function paramsExistsInQueue(array $params = []):bool{
+		if(empty($params)){
+			return false;
+		}
+		$sql = "SELECT id from bursary_application_queue where student_id_ref=? and caurse_id=? and bursary_institution_id=?";
+		return ($this->connect->numRows($sql,'sss',$params)!==0);
 	}
 	
 }

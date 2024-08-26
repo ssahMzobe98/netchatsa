@@ -725,6 +725,12 @@ select{
             <span class="links_name">Setting</span>
           </a>
         </li>
+        <li>
+          <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/runServices.php")'>
+            <i class='bx bxs-cog bx-spin' ></i>
+            <span class="links_name">Services</span>
+          </a>
+        </li>
         <li class="log_out">
           <a onclick="logout()">
             <i class='bx bx-log-out-circle bx-spin' ></i>

@@ -8,6 +8,7 @@ use App\Providers\Factory\Admin\PDOAdminFactory;
 use App\Providers\Constants\Flags;
 use Src\Classes\Pdo\TimePdo;
 use App\Providers\Response\Response;
+use Src\Classes\logs\WriteResponseLog;
 
 if(session_status() !== PHP_SESSION_ACTIVE){
 	session_start();
@@ -16,18 +17,21 @@ if(isset($_SESSION['usermail'])){
 	$e=new Response();
 	$e->responseStatus=StatusConstants::FAILED_STATUS;
 	$e->responseMessage="UNKNOWN REQUEST!!.";
-	$userPdo = PDOServiceFactory::make(ServiceConstants::USER,[null]);
-	$cleanData = PDOServiceFactory::make(ServiceConstants::CLEANDATA,[$userPdo->connect]);
-	$schoolAdminPdo = PDOAdminFactory::make(ServiceConstants::SCHOOL_ADMIN_PDO,[$userPdo->connect]);
-	$uniAdminPdo = PDOAdminFactory::make(ServiceConstants::UNI_ADMIN_PDO,[$userPdo->connect]);
-	$matricUpgradeAdminPdo = PDOAdminFactory::make(ServiceConstants::MATRIC_UPGRADE_ADMIN,[$userPdo->connect]);
-	$notification = PDOServiceFactory::make(ServiceConstants::NOTIFICATION_PDO,[$userPdo->connect]);
-	//$tertiaryApplications = PDOServiceFactory::make(ServiceConstants::TERTIARY_APPLICATIONS,[$userPdo->connect]);
-	$matricUpgrade = PDOServiceFactory::make(ServiceConstants::MATRIC_UPGRADE_PDO,[$userPdo->connect]);
-	// $sgelaPdo = PDOServiceFactory::make(ServiceConstants::SGELA_UNI_PDO,[$userPdo->connect]);
-	$adminPdo = PDOServiceFactory::make(ServiceConstants::ADMIN,[$userPdo->connect]);
-	$ProjectTicketAdminPdo = PDOAdminFactory::make(ServiceConstants::PROJECT_TICKET_ADMIN,[$userPdo->connect]);
-	$cur_user_row = $userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
+	try{
+
+		$userPdo = PDOServiceFactory::make(ServiceConstants::USER,[null]);
+		$cleanData = PDOServiceFactory::make(ServiceConstants::CLEANDATA,[$userPdo->connect]);
+		$schoolAdminPdo = PDOAdminFactory::make(ServiceConstants::SCHOOL_ADMIN_PDO,[$userPdo->connect]);
+		$uniAdminPdo = PDOAdminFactory::make(ServiceConstants::UNI_ADMIN_PDO,[$userPdo->connect]);
+		$matricUpgradeAdminPdo = PDOAdminFactory::make(ServiceConstants::MATRIC_UPGRADE_ADMIN,[$userPdo->connect]);
+		$notification = PDOServiceFactory::make(ServiceConstants::NOTIFICATION_PDO,[$userPdo->connect]);
+		//$tertiaryApplications = PDOServiceFactory::make(ServiceConstants::TERTIARY_APPLICATIONS,[$userPdo->connect]);
+		$matricUpgrade = PDOServiceFactory::make(ServiceConstants::MATRIC_UPGRADE_PDO,[$userPdo->connect]);
+		// $sgelaPdo = PDOServiceFactory::make(ServiceConstants::SGELA_UNI_PDO,[$userPdo->connect]);
+		$adminPdo = PDOServiceFactory::make(ServiceConstants::ADMIN,[$userPdo->connect]);
+		$bursaryApplicationJobService = PDOAdminFactory::make(ServiceConstants::BURSARY_APPLICATION_JOB_SERVICE,[$userPdo->connect]);
+		$ProjectTicketAdminPdo = PDOAdminFactory::make(ServiceConstants::PROJECT_TICKET_ADMIN,[$userPdo->connect]);
+		$cur_user_row = $userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
 		if(isset($_POST['PrincipalName'],
 							$_POST['PrincipalSurname'],
 							$_POST['PrincipalPhoneNo'],
@@ -141,7 +145,25 @@ if(isset($_SESSION['usermail'])){
 			$gradeNetchatsa = $cleanData->OMO($_POST['gradeNetchatsa']);
 			$e = $matricUpgrade->masomaneAddNewNetchatsaSchool($SubjectNameNetchatsa,$gradeNetchatsa,$cur_user_row['id']);
 		}
-		echo json_encode($e);
+		elseif(isset($_POST['runBursaryApplicationService'])){
+			$e=$bursaryApplicationJobService->fireJob();
+
+		}
+		WriteResponseLog::writelogResponse('../../storage/logs/', 'error', 'adminController', 'UNKNOWN', $e);
+		if($e->responseStatus == StatusConstants::FAILED_STATUS){
+        	WriteResponseLog::writelogResponse('../../storage/logs/', 'error', 'adminController', 'UNKNOWN', $e);
+	    }
+	    else{
+	    	$userPdo->connect->commit();
+	    }
+    }
+    catch(\Exception $error){
+        $erroObject= WriteResponseLog::exceptionBuiler($error);
+        $e->responseStatus = StatusConstants::FAILED_STATUS;
+        $e->responseMessage = $error->getMessage();
+        WriteResponseLog::writelogResponse('../../storage/logs/', $erroObject->issueType, $erroObject->class, $erroObject->method, $erroObject);
+    }
+	echo json_encode($e);
 }
 else{
 	session_destroy();

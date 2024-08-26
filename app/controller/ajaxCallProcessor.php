@@ -13,18 +13,20 @@ if(session_status() !== PHP_SESSION_ACTIVE){
 }
 if(isset($_SESSION['usermail'])){
 	$e=new Response();
-	$userPdo = PDOServiceFactory::make(ServiceConstants::USER,[null]);
-	$cleanData = PDOServiceFactory::make(ServiceConstants::CLEANDATA,[$userPdo->connect]);
-	$studyArea = PDOServiceFactory::make(ServiceConstants::STUDY_AREA_PDO,[$userPdo->connect]);
-	$notification = PDOServiceFactory::make(ServiceConstants::NOTIFICATION_PDO,[$userPdo->connect]);
-	$tertiaryApplications = PDOServiceFactory::make(ServiceConstants::TERTIARY_APPLICATIONS,[$userPdo->connect]);
-	$matricUpgrade = PDOServiceFactory::make(ServiceConstants::MATRIC_UPGRADE_PDO,[$userPdo->connect]);
-	$sgelaPdo = PDOServiceFactory::make(ServiceConstants::SGELA_UNI_PDO,[$userPdo->connect]);
-	$musicPdo = PDOServiceFactory::make(ServiceConstants::MUSIC_PDO,[$userPdo->connect]);
-	$cur_user_row =$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
-	$std_id = $cur_user_row['my_id']??'';
-		$e->responseStatus=StatusConstants::FAILED_STATUS;
-		$e->responseMessage="YOU DO NOT PERMITTED TO BE ON THIS PAGE";
+	$e->responseStatus=StatusConstants::FAILED_STATUS;
+	$e->responseMessage="YOU'RE NOT PERMITTED TO BE ON THIS PAGE";
+	try{
+		$userPdo = PDOServiceFactory::make(ServiceConstants::USER,[null]);
+		$cleanData = PDOServiceFactory::make(ServiceConstants::CLEANDATA,[$userPdo->connect]);
+		$studyArea = PDOServiceFactory::make(ServiceConstants::STUDY_AREA_PDO,[$userPdo->connect]);
+		$notification = PDOServiceFactory::make(ServiceConstants::NOTIFICATION_PDO,[$userPdo->connect]);
+		$tertiaryApplications = PDOServiceFactory::make(ServiceConstants::TERTIARY_APPLICATIONS,[$userPdo->connect]);
+		$matricUpgrade = PDOServiceFactory::make(ServiceConstants::MATRIC_UPGRADE_PDO,[$userPdo->connect]);
+		$sgelaPdo = PDOServiceFactory::make(ServiceConstants::SGELA_UNI_PDO,[$userPdo->connect]);
+		$musicPdo = PDOServiceFactory::make(ServiceConstants::MUSIC_PDO,[$userPdo->connect]);
+		$bursaryApplicationJobService = PDOAdminFactory::make(ServiceConstants::BURSARY_APPLICATION_JOB_SERVICE,[$userPdo->connect]);
+		$cur_user_row =$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
+		$std_id = $cur_user_row['my_id']??'';
 		if(isset(
 			$_POST['grdlevel'],$_POST['subjects1'],$_POST['levelMark1'],$_POST['levelMark11'],$_POST['subjects2'],
 			$_POST['levelMark2'],$_POST['levelMark22'],$_POST['subjects3'],$_POST['levelMark3'],$_POST['levelMark33'],
@@ -1083,41 +1085,51 @@ if(isset($_SESSION['usermail'])){
 			}
 		}
 		elseif(isset($_POST['unFlagUser'],$_POST['unflaggeeUser'])){
-        $unFlagUser=$_POST['unFlagUser'];
-        $flaggeeUser=$_POST['unflaggeeUser'];
-        $aa=$posterInfo=$userPdo->userInfoUNINGmyID($flaggeeUser);
-        $e=$userPdo->unFlagUser($unFlagUser);
-        if($e->responseStatus===StatusConstants::SUCCESS_STATUS){
-            $emailFrom="No-Reply@netchatsa.com";
-            $subject="reporting of Account User {$aa['name']} {$aa['name']} have been successfully eliminated";
-            $message="<h3 style='color:green;'>Account User {$aa['name']} {$aa['name']} have been successfully unReported.</h3>
-            <p>You will now be able to see content by {$aa['name']} {$aa['name']}, You can block the user at any time.</p>
-            <br><br>";
-            $from_sender="no-Reply@netchatsa.com";
-            $e->extraData=$notification->fakaKuNotification($subject,$message,$cur_user_row['my_id'],$from_sender,$cur_user_row);
-            
-        }
-        else{
-        	$cleanData->connect->rollback();
-        }
-	}
-    elseif(isset($_POST['unblockThisUser'],$_POST['unblockeeId'])){
-        $unblockThisUser=$_POST['unblockThisUser'];
-        $aa=$posterInfo=$userPdo->userInfoUNINGmyID($_POST['unblockeeId']);
-        $e=$userPdo->unBlocUser($unblockThisUser);
-       	if($e->responseStatus===StatusConstants::FAILED_STATUS){
-            $emailFrom="No-Reply@netchatsa.com";
-            $subject="Account User {$aa['name']} {$aa['name']} have been successfully unBlocked! ";
-            $message="<h3 style='color:green;'>Account User {$aa['name']} {$aa['name']} have been successfully unBlocked.</h3>
-            <p>You will now be able to see content by {$aa['name']} {$aa['name']}, You can block the user at any time.</p>
-            <br><br>";
-            $from_sender="no-Reply@netchatsa.com";
-            $e=$notification->fakaKuNotification($subject,$message,$cur_user_row['my_id'],$from_sender,$cur_user_row);
-            
-        }
-        else{
-        	$cleanData->connect->rollback();
-        }
+	        $unFlagUser=$_POST['unFlagUser'];
+	        $flaggeeUser=$_POST['unflaggeeUser'];
+	        $aa=$posterInfo=$userPdo->userInfoUNINGmyID($flaggeeUser);
+	        $e=$userPdo->unFlagUser($unFlagUser);
+	        if($e->responseStatus===StatusConstants::SUCCESS_STATUS){
+	            $emailFrom="No-Reply@netchatsa.com";
+	            $subject="reporting of Account User {$aa['name']} {$aa['name']} have been successfully eliminated";
+	            $message="<h3 style='color:green;'>Account User {$aa['name']} {$aa['name']} have been successfully unReported.</h3>
+	            <p>You will now be able to see content by {$aa['name']} {$aa['name']}, You can block the user at any time.</p>
+	            <br><br>";
+	            $from_sender="no-Reply@netchatsa.com";
+	            $e->extraData=$notification->fakaKuNotification($subject,$message,$cur_user_row['my_id'],$from_sender,$cur_user_row);
+	            
+	        }
+	        else{
+	        	$cleanData->connect->rollback();
+	        }
+		}
+	    elseif(isset($_POST['unblockThisUser'],$_POST['unblockeeId'])){
+	        $unblockThisUser=$_POST['unblockThisUser'];
+	        $aa=$posterInfo=$userPdo->userInfoUNINGmyID($_POST['unblockeeId']);
+	        $e=$userPdo->unBlocUser($unblockThisUser);
+	       	if($e->responseStatus===StatusConstants::FAILED_STATUS){
+	            $emailFrom="No-Reply@netchatsa.com";
+	            $subject="Account User {$aa['name']} {$aa['name']} have been successfully unBlocked! ";
+	            $message="<h3 style='color:green;'>Account User {$aa['name']} {$aa['name']} have been successfully unBlocked.</h3>
+	            <p>You will now be able to see content by {$aa['name']} {$aa['name']}, You can block the user at any time.</p>
+	            <br><br>";
+	            $from_sender="no-Reply@netchatsa.com";
+	            $e=$notification->fakaKuNotification($subject,$message,$cur_user_row['my_id'],$from_sender,$cur_user_row);
+	            
+	        }
+	        else{
+	        	$cleanData->connect->rollback();
+	        }
+	    }
+	    if($e->responseStatus == Constants::FAILED_STATUS){
+        	WriteResponseLog::writelogResponse('../../storage/logs/', 'error', 'ajaxCallProcessor', 'UNKNOWN',, $e);
+	    }
+    }
+    catch(\Exception $error){
+        $erroObject= WriteResponseLog::exceptionBuiler($error);
+        $e->responseStatus = Constants::FAILED_STATUS;
+        $e->responseMessage = $error->getMessage();
+        WriteResponseLog::writelogResponse('../../storage/logs/', $erroObject->issueType, $erroObject->class, $erroObject->method, $erroObject);
     }
 	echo json_encode($e);
 }

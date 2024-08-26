@@ -16,24 +16,50 @@ if(isset($_SESSION['usermail'])){
     $tertiaryApplications = PDOServiceFactory::make(ServiceConstants::TERTIARY_APPLICATIONS,[$userPdo->connect]);
     $cur_user_row=$userPdo->getUserInfo(Flags::USER_EMAIL_COLUMN,$_SESSION['usermail']);
     $getBursaryApplications = $tertiaryApplications->getBursaryApplications($cur_user_row['my_id']);
+
+    // echo "<pre>";print_r($getBursaryApplications);echo"</pre>";
     if(empty($getBursaryApplications)){
         echo"<h4 style='text-align:center;'>No Bursary Applications Available yet</h4>";
     }
     else{
         ?>
+        <style>
+            table{
+                width: 100%;
+                border:1px solid #ddd;
+                border-radius: 10px;
+            }
+            table tr{
+                width: 100%;
+
+            }
+            table tr td{
+                padding: 2px 2px;
+            }
+        </style>
         <table >
             <tr>
-            <td>Bursary</td>
-            <td>Funded Applied Causes</td>
-            <td>Application Status</td>
+            <td style="width:30%;">Bursary</td>
+            <td style="width:40%;">Funded Applied Causes</td>
+            <td style="width:30%;">Application Status</td>
            </tr>
         <?php
+        // $getBursaryApplications[]=[
+        //     'bursary_institution' => 'dfsdfsdfsd',
+        //     'courses_funded' => [
+        //         [
+        //             'course_name' => 'khjhkhjhkjhj'
+        //         ]
+        //     ],
+        //     'application_status' => 'PENDING'
+        // ];
         foreach ($getBursaryApplications as $value) {
             ?>
                <tr>
                 <td><?php echo $value['bursary_institution'];?></td>
                 <td>
                     <select disabled>
+                        
                     <?php 
                         foreach($value['courses_funded'] as $data){
                             ?>

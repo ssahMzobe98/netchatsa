@@ -14,7 +14,7 @@ if(isset($_SESSION['usermail'])){
 		$schoolAdminPdo = PDOAdminFactory::make(ServiceConstants::SCHOOL_ADMIN_PDO,[$userPdo->connect]);
 		if(isset($_GET["institutions"])){
 			$institutions=(array) json_decode($_GET["institutions"]);
-			print_r($institutions);
+//			print_r($institutions);
 			if(empty($institutions)){
 				?>
 				<h5 style="padding:10px 10px; width:100%;color:red;">NO SEARCH RESULTS FOUND </h5>

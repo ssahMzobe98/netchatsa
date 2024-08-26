@@ -19,7 +19,7 @@ class MMSHightech{
         $pass = '';//'netchatsa';
         $dbnam = 'netchatsa';//'u405316555_netchatsa';
         $this->connection = mysqli_connect('localhost', $user, $pass, $dbnam) or die("Connection was not established!!");
-        // Disable auto-commit
+        // Disable auto-commit if false
         mysqli_autocommit($this->connection, true);
     }
 

@@ -27,4 +27,5 @@ class ServiceConstants
     public const UNI_ADMIN_PDO = 'UniAdminPdo';
     public const SCHOOL_ADMIN_PDO = 'SchoolAdminPdo';
     public const PROJECT_TICKET_ADMIN = 'ProjetTicketAdminPdo';
+    public const BURSARY_APPLICATION_JOB_SERVICE = 'ApplicationJobService';
 }

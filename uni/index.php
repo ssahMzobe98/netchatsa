@@ -661,49 +661,49 @@ select{
       <ul class="nav-links">
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/uni/applicationsa.php")' class="active">
-            <i class='bx bx-grid-alt' ></i>
+            <i class='bx bx-grid-alt bx-spin' ></i>
             <span class="links_name">Applications</span>
           </a>
         </li>
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/uni/Applicationsa.php")'>
-            <i class='bx bx-grid-alt' ></i>
+            <i class='bx bx-grid-alt bx-spin' ></i>
             <span class="links_name">Accepted Std</span>
           </a>
         </li>
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/highSchools.php")'>
-            <i class='bx bx-grid-alt' ></i>
+            <i class='bx bx-grid-alt bx-spin' ></i>
             <span class="links_name">Regretted Std</span>
           </a>
         </li>
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/tertiaries.php")'>
-            <i class='bx bx-box' ></i>
+            <i class='bx bx-box bx-spin' ></i>
             <span class="links_name">Universities</span>
           </a>
         </li>
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/funding.php")'>
-            <i class='bx bx-list-ul' ></i>
+            <i class='bx bx-list-ul bx-spin' ></i>
             <span class="links_name">Bursaries</span>
           </a>
         </li>
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/matricUpgrade.php")'>
-            <i class='bx bx-pie-chart-alt-2' ></i>
+            <i class='bx bx-pie-chart-alt-2 bx-spin' ></i>
             <span class="links_name">Matric Upgrade</span>
           </a>
         </li>
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/netchatsaSchooling.php")'>
-            <i class='bx bx-coin-stack' ></i>
+            <i class='bx bx-coin-stack bx-spin' ></i>
             <span class="links_name">netchatsa</span>
           </a>
         </li>
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/payments.php")'>
-            <i class='bx bx-book-alt' ></i>
+            <i class='bx bx-book-alt bx-spin' ></i>
             <span class="links_name">Payments</span>
           </a>
         </li>
@@ -721,8 +721,14 @@ select{
         </li> -->
         <li>
           <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/settings.php")'>
-            <i class='bx bx-cog' ></i>
+            <i class='bx bx-cog bx-spin' ></i>
             <span class="links_name">Setting</span>
+          </a>
+        </li>
+        <li>
+          <a onclick='loadAfterQuery(".makhanyile","../src/forms/admin/runServices.php")'>
+            <i class='bx bxs-cog bx-spin' ></i>
+            <span class="links_name">Services</span>
           </a>
         </li>
         <li class="log_out">
@@ -957,11 +963,12 @@ $(document).on("change",".ticket_status",function(){
     data:{ticket_status:ticket_status,ticket_id:ticket_id},
     cache:false,
     success:function(e){
-      if(e.length==1){
+      response = JSON.parse(e);
+      if(response['responseStatus']==='S'){
         console.log("added");
       }
       else{
-        console.log("Error: "+e);
+        console.log("Error: "+response['responseMessage']);
       }
     }
   });
@@ -998,13 +1005,13 @@ function logout(){
       data:{logoutExit:logoutExit},
       cache:false,
       success:function(e){
-        console.log(e);
-        if(e.length==1){
+        response = JSON.parse(e);
+        if(response['responseStatus']==='S'){
           $("#log_out").html('Good Bye...');
           window.location("../");
         }
         else{
-          $("#log_out").html('Error: '+e);
+          $("#log_out").html('Error: '+response['responseMessage']);
         }
       }
     });
@@ -1145,8 +1152,9 @@ function saveSchoolName(){
         schoolNameInput:schoolNameInput
           },
       success:function(e){
-        if(e.length>1){
-            $(".randOffInputError").attr("style","padding:5px 5px;color:red;").html(e);
+        response = JSON.parse(e);
+        if(response['responseStatus']==='F'){
+            $(".randOffInputError").attr("style","padding:5px 5px;color:red;").html(response['responseMessage']);
         }
         else{
             $(".randOffInputError").attr("style","padding:5px 5px;color:green;border:1px solid green;").html("School Added Successfuly");
@@ -1225,8 +1233,9 @@ function maSomaneAddNewSchool(){
             PrincipaPersal:PrincipaPersal
           },
       success:function(e){
-        if(e.length>1){
-            $(".errorLogMasoManeAddSchool").attr("style","padding:5px 5px;color:red;").html(e);
+        response = JSON.parse(e);
+        if(response['responseStatus']==='F'){
+            $(".errorLogMasoManeAddSchool").attr("style","padding:5px 5px;color:red;").html(response['responseMessage']);
         }
         else{
             $(".errorLogMasoManeAddSchool").attr("style","padding:5px 5px;color:green;border:1px solid green;").html("School Added Successfuly");
@@ -1254,12 +1263,13 @@ function sendReminderPn(StudentIdQRQR){
       $(".sendReminderPn"+StudentIdQRQR).removeAttr("hidden").attr("style","color:white;").attr("style","color:white;").html("<center><img src='../img/loader.gif' style='width:5%;padding:10px 10px;justify-content:center;align-content:center;text-align:center;'>Submitting Request...</center>");
     },
     success:function(e){
-        if(e.length==1){
+        response = JSON.parse(e);
+        if(response['responseStatus']==='F'){
           $(".sendReminderPn"+StudentIdQRQR).attr("style","color:green;").html("<center>Email Sent</center>");
           
         }
         else{
-          $(".sendReminderPn"+StudentIdQRQR).attr("style","color:red;").html("<center>"+e+"</center>");
+          $(".sendReminderPn"+StudentIdQRQR).attr("style","color:red;").html("<center>"+response['responseMessage']+"</center>");
         }
     }
   });
@@ -1346,7 +1356,8 @@ function saveInsititution(){
 
       },
       success:function(e){
-          if(e.length==1){
+          response = JSON.parse(e);
+          if(response['responseStatus']==='S'){
             $(".error-logSettup").attr("style","color:green;").html("<center>Institution Added.</center>");
             loadAfterQuery(".dataDisplayerIdr","../src/forms/admin/DisplayFunding.php");
             clearInput(['.TextNewInstitution',
@@ -1356,7 +1367,7 @@ function saveInsititution(){
                         '.TextNewInstitutiontoken']);
           }
           else{
-            $(".error-logSettup").attr("style","color:red;").html("<center>"+e+"</center>");
+            $(".error-logSettup").attr("style","color:red;").html("<center>"+response['responseMessage']+"</center>");
           }
       }
     });
@@ -1469,13 +1480,14 @@ function saveNewProject(){
 
       },
       success:function(e){
-          if(e.length==1){
+          response = JSON.parse(e);
+          if(response['responseStatus']==='S'){
             $(".error-logSettup").attr("style","color:green;").html("<center>Project Saved</center>");
             loadAfterQuery(".ProjectbodyMagnitude","../src/forms/admin/myWork.php");
             clearInput(['.projectName','.Decription','.Sprint']);
           }
           else{
-            $(".error-logSettup").attr("style","color:red;").html("<center>"+e+"</center>");
+            $(".error-logSettup").attr("style","color:red;").html("<center>"+response['responseMessage']+"</center>");
           }
       }
     });
@@ -1518,13 +1530,14 @@ function saveNewTicket(){
 
       },
       success:function(e){
-          if(e.length==1){
+          response = JSON.parse(e);
+          if(response['responseStatus']==='S'){
             $(".errorSubmit").attr("style","color:green;").html("<center>Ticket Saved</center>");
             // loadAfterQuery(".ProjectbodyMagnitude","../src/forms/admin/myWork.php");
             clearInput(['#editorEDS','.projectStatsI','.textTicketDescription','.textTicketWeight']);
           }
           else{
-            $(".errorSubmit").attr("style","color:red;").html("<center>"+e+"</center>");
+            $(".errorSubmit").attr("style","color:red;").html("<center>"+response['responseMessage']+"</center>");
           }
       }
     });
@@ -1555,12 +1568,13 @@ function saveMatricUpgradeNewChapter(){
         $(".error-logSettup").removeAttr("hidden").attr("style","color:white;").html("<center><img src='../img/loader.gif' style='width:5%;padding:10px 10px;justify-content:center;align-content:center;text-align:center;'>Processing Request...</center>");
       },
       success:function(e){
-          if(e.length==1){
+          response = JSON.parse(e);
+          if(response['responseStatus']==='S'){
             $(".error-logSettup").attr("style","color:green;").html("<center>Course Saved</center>");
             clearInput(['.TextChapter']);
           }
           else{
-            $(".error-logSettup").attr("style","color:red;").html("<center>"+e+"</center>");
+            $(".error-logSettup").attr("style","color:red;").html("<center>"+response['responseMessage']+"</center>");
           }
       }
     });
@@ -1591,12 +1605,13 @@ function saveNewFunding(){
         $(".error-logSettup").removeAttr("hidden").attr("style","color:white;").html("<center><img src='../img/loader.gif' style='width:5%;padding:10px 10px;justify-content:center;align-content:center;text-align:center;'>Processing Request...</center>");
       },
       success:function(e){
-          if(e.length==1){
+          response = JSON.parse(e);
+          if(response['responseStatus']==='S'){
             $(".error-logSettup").attr("style","color:green;").html("<center>Course Saved</center>");
             clearInput(['.selectCourse']);
           }
           else{
-            $(".error-logSettup").attr("style","color:red;").html("<center>"+e+"</center>");
+            $(".error-logSettup").attr("style","color:red;").html("<center>"+response['responseMessage']+"</center>");
           }
       }
     });
@@ -1624,12 +1639,13 @@ function removeContentFromDb(deleteThisContent){
     type:'post',
     data:{deleteThisContent:deleteThisContent},
     success:function(e){
-        if(e.length<=2){
+        response = JSON.parse(e);
+        if(response['responseStatus']==='S'){
             $(".deleteThisContent"+deleteThisContent).attr("hidden","true");
             $(".deleteThisContent"+deleteThisContent).html('removed');
         }
         else{
-            $(".deleteThisContent"+deleteThisContent).html("error:"+e);
+            $(".deleteThisContent"+deleteThisContent).html("error:"+response['responseMessage']);
         }
     }
   });
@@ -1682,12 +1698,13 @@ function sendButtonAddingContent(){
             SourceName:SourceName,
             SourceURL:SourceURL},
       success:function(e){
-          if(e.length==1){
+          response = JSON.parse(e);
+          if(response['responseStatus']==='S'){
               $(".failerError").removeAttr("hidden").attr("style","color:green;").html("<center>Content Saved.</center>");
               clearInput(['.titleOfContent','.SourceURL']);
           }
           else{
-              $(".failerError").removeAttr("hidden").attr("style","color:red;").html("error:"+e);
+              $(".failerError").removeAttr("hidden").attr("style","color:red;").html("error:"+response['responseMessage']);
           }
       }
     });
@@ -1714,12 +1731,13 @@ function MasoManeAddNetchatsaSubject(){
       data:{SubjectNameNetchatsa:SubjectNameNetchatsa,
             gradeNetchatsa:gradeNetchatsa},
       success:function(e){
-        if(e.length==1){
+        response = JSON.parse(e);
+        if(response['responseStatus']==='S'){
             $(".errorLogMasoManeAddNetchatsaSubjectError").removeAttr("hidden").attr("style","color:green;").html("<center>Subject Saved.</center>");
             clearInput(['.SubjectNameNetchatsa','.gradeNetchatsa']);
         }
         else{
-            $(".errorLogMasoManeAddNetchatsaSubjectError").removeAttr("hidden").attr("style","color:red;").html("error:"+e);
+            $(".errorLogMasoManeAddNetchatsaSubjectError").removeAttr("hidden").attr("style","color:red;").html("error:"+response['responseMessage']);
         }
       }
     });
